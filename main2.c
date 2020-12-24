@@ -25,13 +25,13 @@ typedef struct infoProva
     int tempoProva;
 } PROVA;
 
-typedef struct infoEtapas
+typedef struct infotempos
 {
     int num;
     char etapaI[1]; //Etapa inicial
     char etapaF[1]; //Etapa Final
     int tempo;
-} ETAPAS;
+} tempos;
 
 void infoPilotos();
 void guardarPilotos(int num, char nome, char carro);
@@ -256,7 +256,7 @@ void loadInfo()
 }
 void main()
 {
-    // int n = 0, nE = 0; //n-> nº pilotos,nE->nº Etapas
+    // int n = 0, nE = 0; //n-> nº pilotos,nE->nº tempos
 
     loadInfo();
 

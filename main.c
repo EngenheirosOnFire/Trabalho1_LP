@@ -27,13 +27,13 @@ typedef struct infoProva
     int tempoProva;
 } PROVA;
 
-typedef struct infoEtapas
+typedef struct infotempos
 {
     int num;
     char etapaI[3]; //Etapa inicial
     char etapaF[3]; //Etapa Final
     int tempo;
-} ETAPAS;
+} TEMPOS;
 
 typedef struct infoDistancias
 {
@@ -43,7 +43,7 @@ typedef struct infoDistancias
 } DISTANCIAS;
 
 void mostrarPilotos(PILOTO *pilotos);
-void loadTempos(ETAPAS *etapas);
+void loadTempos(TEMPOS *tempos);
 
 void mostrarPilotos(PILOTO *pilotos)
 {
@@ -149,7 +149,7 @@ void loadInfo() // para n pilotos
     fclose(f);
 }
 
-void nTempos(int *n) // para registo de etapas e pilotos
+void nEtapas(int *n) // para registo de tempos e pilotos
 {
 
     FILE *f;
@@ -160,7 +160,7 @@ void nTempos(int *n) // para registo de etapas e pilotos
     fclose(f);
 }
 
-void loadTempos(ETAPAS *etapa)
+void loadTempos(TEMPOS *etapa)
 {
 
     FILE *f;
@@ -230,26 +230,44 @@ int nPilotosCount()
     fclose(f);
     return i;
 }
+
 void main()
 {
-
-    // int n = 0, nE = 0; //n-> nº pilotos,nE->nº Etapas
-
-    //loadInfo();
-
-    int n[1], nTotal, nEtapas, nPilotos;
-    nTempos(n);
-    nEtapas = n[0];
+    int n[1], nTotal, nTempos, nPilotos;
+    nEtapas(n);
+    nTempos = n[0];
     nPilotos = n[1];
-    nTotal = nEtapas * nPilotos;
+    nTotal = nTempos * nPilotos;
 
-    ETAPAS etapas[nTotal];
-    loadTempos(etapas);
+    TEMPOS tempos[nTotal];
+    loadTempos(tempos);
+    printf("\nTempos:");
+    for (int i = 0; i < nTotal; i++)
+    {
+        printf("\n Numero Piloto: %d", tempos[i].num);
+        printf("\n Etapa inicial: %s", tempos[i].etapaI);
+        printf("\n Etapa Final: %s", tempos[i].etapaF);
+        printf("\n Tempo: %dms\n", tempos[i].tempo);
+    }
 
-    DISTANCIAS distancias[nEtapas];
+    DISTANCIAS distancias[nTempos];
     loadDistancias(distancias);
+    printf("\nDistancias:");
+    for (int i = 0; i < nTempos; i++)
+    {
+        printf("\n Etapa inicial: %s", distancias[i].etapaI);
+        printf("\n Etapa Final: %s", distancias[i].etapaF);
+        printf("\n Distancia: %.2fM\n", distancias[i].distancia);
+    }
 
     nPilotos = nPilotosCount();
     PILOTO pilotos[nPilotos];
     loadPilotos(pilotos);
+    printf("\nPilotos:");
+    for (int i = 0; i < nPilotos; i++)
+    {
+        printf("\n Num: %d", pilotos[i].num);
+        printf("\n Nome: %s", pilotos[i].nome);
+        printf("\n Carro: %s\n", pilotos[i].carro);
+    }
 }
