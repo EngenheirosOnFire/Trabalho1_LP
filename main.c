@@ -42,43 +42,11 @@ typedef struct infoDistancias
     float distancia;
 } DISTANCIAS;
 
-void mostrarPilotos(PILOTO *pilotos);
-void loadTempos(TEMPOS *tempos);
-
-void mostrarPilotos(PILOTO *pilotos)
-{
-    FILE *f;
-    int res, num, i = 0;
-    char nome[50], carro[50], string[50];
-    f = fopen("pilotos.txt", "r");
-    //colocar aqui para ler o primeiro valor e não repetir o valor final
-    res = fscanf(f, "%d;%2s;%2s;%d\n", &num, &string);
-    //enquanto tiver o que ler, vai ler
-    while (res != EOF)
-    {
-        //separar a string por ;
-        char *ptr = strtok(string, ";");
-        strcpy(nome, ptr);
-
-        //como sempre que a função strtok encontra um delimitador ela substitui por \0
-        //entao sempre que se separa a string temos de partir do \0 ou NULL
-        //EX:Roberto;Mustang | Roberto\0Mustang
-        ptr = strtok(NULL, ";");
-        strcpy(carro, ptr);
-
-        printf("\nNumero \t:%d", num);
-        printf("\nNome \t:%s", nome);
-        printf("\nCarro \t:%s\n", carro);
-
-        /*pilotos[i]->num = num;
-        strcpy(pilotos[i]->nome, nome);
-        strcpy(pilotos[i]->carro, carro);*/
-
-        res = fscanf(f, "%d;%s;%s\n", &num, &string);
-        i++;
-    }
-    fclose(f);
-}
+int nPilotosCount();                         //contagem do numero de pilotos registados no ficheiro pilotos.txt
+void nEtapas(int *n);                        //função que retira os valores no começo do ficheiro de tempos.txt e guarda em duas posições do vetor n, sendo n[0]<-nEtapas,n[1]<-nPilotos
+void loadTempos(TEMPOS *etapa);              //carregamento das informações do ficheiro tempos.txt para uma estrutura que guarda os tempos, saltando os valores iniciais a frente
+void loadDistancias(DISTANCIAS *distancias); //carregamento das informações do distancias.txt para o struck DISTANCIAS
+void loadPilotos(PILOTO *piloto);            //carregamento das informações ds pilotos.txt para o struct PILoTOS
 
 void menu()
 {
@@ -122,34 +90,7 @@ void menu()
     //menu(pilotos, n, nE);*/
 }
 
-void loadInfo() // para n pilotos
-{
-
-    FILE *f;
-    int res, num, i = 0;
-
-    f = fopen("pilotos.txt", "r");
-
-    //colocar aqui para ler o primeiro valor e não repetir o valor final
-    res = fscanf(f, "%d\n", &num);
-    if (res == EOF)
-    {
-        num = 0;
-    }
-    else
-    {
-        //enquanto tiver o que ler, vai ler
-        while (res != EOF)
-        {
-            res = fscanf(f, "%d\n", &num);
-            i++;
-        }
-    }
-    printf("%d", num);
-    fclose(f);
-}
-
-void nEtapas(int *n) // para registo de tempos e pilotos
+void nEtapas(int *n)
 {
 
     FILE *f;
@@ -213,6 +154,7 @@ void loadPilotos(PILOTO *piloto)
     }
     fclose(f);
 }
+
 int nPilotosCount()
 {
     FILE *f;
@@ -235,10 +177,13 @@ void main()
 {
     int n[1], nTotal, nTempos, nPilotos;
     nEtapas(n);
+    //valores q estão no começo do ficheiro tempos.txt com as informações dos Pilotos e Etapas
     nTempos = n[0];
     nPilotos = n[1];
+    //o total de etapas que têm de estar registadas é o numero de etapas a multiplicar pelo
+    //numero de pilotos que está no ficheiro
     nTotal = nTempos * nPilotos;
-
+    //carregamento dos tempos para o vetor da estrutura TEMPOS
     TEMPOS tempos[nTotal];
     loadTempos(tempos);
     printf("\nTempos:");
@@ -250,6 +195,7 @@ void main()
         printf("\n Tempo: %dms\n", tempos[i].tempo);
     }
 
+    //Carregamento das distancias das etapas para o vetor da estrutura DISTANCIAS
     DISTANCIAS distancias[nTempos];
     loadDistancias(distancias);
     printf("\nDistancias:");
@@ -260,6 +206,7 @@ void main()
         printf("\n Distancia: %.2fM\n", distancias[i].distancia);
     }
 
+    //carregamento das informações dos pilotos para o vetor da estrutura PILOTO
     nPilotos = nPilotosCount();
     PILOTO pilotos[nPilotos];
     loadPilotos(pilotos);
