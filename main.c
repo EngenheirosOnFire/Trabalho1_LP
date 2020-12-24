@@ -1,5 +1,5 @@
 /*****************************************************************
-**    Nome: Exemplo nome		                                **
+**    Nome: Prova de Rally		                                **
 **    Autor: Roberto Barreto\Henrique Cartucho\Vincent Rebena	**
 **    Data: 18/12/2020			                                **
 ****************************************************************/
