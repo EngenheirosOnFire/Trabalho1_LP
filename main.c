@@ -10,9 +10,6 @@
 #include <stdlib.h>
 #define _CRT_SECURE_NO_WARNINGS
 
-//variaveis globais
-//int n = 0; //tamanho do vetor de PILOTOS inicialmente
-
 typedef struct infoPiloto
 {
     int num;
@@ -29,10 +26,9 @@ typedef struct infoProva
 
 typedef struct infotempos
 {
-    int num;
+    int num, tempo;
     char etapaI[3]; //Etapa inicial
     char etapaF[3]; //Etapa Final
-    int tempo;
 } TEMPOS;
 
 typedef struct infoDistancias
@@ -43,7 +39,7 @@ typedef struct infoDistancias
 } DISTANCIAS;
 
 int nPilotosCount();                         //contagem do numero de pilotos registados no ficheiro pilotos.txt
-void nEtapas(int *n);                        //função que retira os valores no começo do ficheiro de tempos.txt e guarda em duas posições do vetor n, sendo n[0]<-nEtapas,n[1]<-nPilotos
+void Etapas(int *n);                         //função que retira os valores no começo do ficheiro de tempos.txt e guarda em duas posições do vetor n, sendo n[0]<-nEtapas,n[1]<-nPilotos
 void loadTempos(TEMPOS *etapa);              //carregamento das informações do ficheiro tempos.txt para uma estrutura que guarda os tempos, saltando os valores iniciais a frente
 void loadDistancias(DISTANCIAS *distancias); //carregamento das informações do distancias.txt para o struck DISTANCIAS
 void loadPilotos(PILOTO *piloto);            //carregamento das informações ds pilotos.txt para o struct PILoTOS
@@ -90,13 +86,10 @@ void menu()
     //menu(pilotos, n, nE);*/
 }
 
-void nEtapas(int *n)
+void Etapas(int *n)
 {
-
     FILE *f;
-
     f = fopen("tempos.txt", "r");
-    //colocar aqui para ler o primeiro valor e não repetir o valor final
     fscanf(f, "%d;%d\n", &n[0], &n[1]);
     fclose(f);
 }
@@ -108,8 +101,6 @@ void loadTempos(TEMPOS *etapa)
     int res, i = 0;
     f = fopen("tempos.txt", "r");
     fseek(f, sizeof(int), SEEK_SET);
-    //colocar aqui para ler o primeiro valor e não repetir o valor final
-
     //enquanto tiver o que ler, vai ler
     while (res != EOF)
     {
@@ -175,14 +166,14 @@ int nPilotosCount()
 
 void main()
 {
-    int n[1], nTotal, nTempos, nPilotos;
-    nEtapas(n);
+    int n[1], nTotal, nEtapas, nPilotos;
+    Etapas(n);
     //valores q estão no começo do ficheiro tempos.txt com as informações dos Pilotos e Etapas
-    nTempos = n[0];
+    nEtapas = n[0];
     nPilotos = n[1];
     //o total de etapas que têm de estar registadas é o numero de etapas a multiplicar pelo
     //numero de pilotos que está no ficheiro
-    nTotal = nTempos * nPilotos;
+    nTotal = nEtapas * nPilotos;
     //carregamento dos tempos para o vetor da estrutura TEMPOS
     TEMPOS tempos[nTotal];
     loadTempos(tempos);
