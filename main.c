@@ -149,19 +149,17 @@ void loadPilotos(PILOTO *piloto)
 int nPilotosCount()
 {
     FILE *f;
-    int res, i = 0, num;
-    char nome[50], carro[50];
+    int contador = 1; //pois sempre irá existir pelomenos um piloto
+    char c;
     f = fopen("pilotos.txt", "r");
-    res = fscanf(f, "%d;%[^;];%[^\n]\n", &num, nome, carro);
-    //colocar aqui para ler o primeiro valor e não repetir o valor final
-    //enquanto tiver o que ler, vai ler
-    while (res != EOF)
+    //verificar todos os caracteres até encontrar \n, sempre q \n for encontrado é contado mais um piloto
+    for (c = getc(f); c != EOF; c = getc(f))
     {
-        res = fscanf(f, "%d;%[^;];%[^\n]\n", &num, nome, carro);
-        i++;
+        if (c == '\n')
+            contador++;
     }
     fclose(f);
-    return i;
+    return contador;
 }
 
 void main()
