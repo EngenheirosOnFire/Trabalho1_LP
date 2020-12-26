@@ -187,10 +187,10 @@ void main()
     }
 
     //Carregamento das distancias das etapas para o vetor da estrutura DISTANCIAS
-    DISTANCIAS distancias[nTempos];
+    DISTANCIAS distancias[nEtapas];
     loadDistancias(distancias);
     printf("\nDistancias:");
-    for (int i = 0; i < nTempos; i++)
+    for (int i = 0; i < nEtapas; i++)
     {
         printf("\n Etapa inicial: %s", distancias[i].etapaI);
         printf("\n Etapa Final: %s", distancias[i].etapaF);
