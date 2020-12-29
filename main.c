@@ -38,11 +38,20 @@ typedef struct infoDistancias
     float distancia;
 } DISTANCIAS;
 
-int nPilotosCount();                         //contagem do numero de pilotos registados no ficheiro pilotos.txt
-void Etapas(int *n);                         //função que retira os valores no começo do ficheiro de tempos.txt e guarda em duas posições do vetor n, sendo n[0]<-nEtapas,n[1]<-nPilotos
-void loadTempos(TEMPOS *etapa);              //carregamento das informações do ficheiro tempos.txt para uma estrutura que guarda os tempos, saltando os valores iniciais a frente
-void loadDistancias(DISTANCIAS *distancias); //carregamento das informações do distancias.txt para o struck DISTANCIAS
-void loadPilotos(PILOTO *piloto);            //carregamento das informações ds pilotos.txt para o struct PILoTOS
+int nPilotosCount();                                                                                                                    //contagem do numero de pilotos registados no ficheiro pilotos.txt
+void Etapas(int *n);                                                                                                                    //função que retira os valores no começo do ficheiro de tempos.txt e guarda em duas posições do vetor n, sendo n[0]<-nEtapas,n[1]<-nPilotos
+void loadTempos(TEMPOS *etapa);                                                                                                         //carregamento das informações do ficheiro tempos.txt para uma estrutura que guarda os tempos, saltando os valores iniciais a frente
+void loadDistancias(DISTANCIAS *distancias);                                                                                            //carregamento das informações do distancias.txt para o struck DISTANCIAS
+void loadPilotos(PILOTO *piloto);                                                                                                       //carregamento das informações ds pilotos.txt para o struct PILoTOS
+int nPilotosCount();                                                                                                                    //contagem de pilotos contidos no ficheiro pilotos.txt
+int verificaProva(TEMPOS *tempos, int n);                                                                                               //verificação de quantos pilotos têm prova valida
+void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int n, int nPilotos);                                                      //carregamenteo das informações dos vários structs para um struct final contento informação da prova por completo
+void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados);                                                                       //ordenção e amostra dos tempos por ordem descendente
+void medTemposEtapa(TEMPOS *tempos, int n, int aprovados);                                                                              //media de tempos por etapa
+void extremos(PROVA *prova, int nPilotos);                                                                                              //Amostra do piloto mais rapido e mais lento
+void menorTempo(TEMPOS *tempos, int nEtapas);                                                                                           //Amostra do menor tempo possivel para realizar a prova
+void velocidadesMedias(PROVA *prova, DISTANCIAS *distancias, int nPilotos, int nEtapas, int aprovados);                                 //Amostra das velocidades medias da prova
+void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova, int nTotal, int nPilotos, int nEtapas, int aprovados); //Menu principal do programa
 
 void Etapas(int *n)
 {
@@ -58,7 +67,7 @@ void loadTempos(TEMPOS *etapa)
     FILE *f;
     int res, i = 0;
     f = fopen("tempos.txt", "r");
-    fseek(f, sizeof(int), SEEK_SET); //saltou a primeira linha a frente
+    fseek(f, sizeof(int), SEEK_SET); //saltar a primeira linha a frente
     //enquanto tiver o que ler, vai ler
     while (res != EOF)
     {
@@ -73,10 +82,10 @@ void loadDistancias(DISTANCIAS *distancias)
     FILE *f;
     int res, i = 0;
     f = fopen("distancias.txt", "r");
-
+    //ler o ficheiro até a função encontrar o fim do ficheiro
     while (res != EOF)
     {
-
+        //%[^;]->ler todos os carateres até encontrar o caracter ';'
         res = fscanf(f, "%[^;];%[^;];%f\n", distancias[i].etapaI, distancias[i].etapaF, &distancias[i].distancia);
 
         i++;
@@ -90,10 +99,10 @@ void loadPilotos(PILOTO *piloto)
     int res, i = 0;
     f = fopen("pilotos.txt", "r");
 
-    //enquanto tiver o que ler, vai ler
+    //ler o ficheiro até a função encontrar o fim do ficheiro
     while (res != EOF)
     {
-
+        //%[^;]->ler todos os carateres até encontrar o caracter ';'
         res = fscanf(f, "%d;%[^;];%[^\n]\n", &piloto[i].num, piloto[i].nome, piloto[i].carro);
 
         i++;
@@ -107,7 +116,7 @@ int nPilotosCount()
     int contador = 0; //pois sempre irá existir pelomenos um piloto
     char c;
     f = fopen("pilotos.txt", "r");
-    //verificar todos os caracteres até encontrar \n, sempre q \n for encontrado é contado mais um piloto
+    //verificar todos os caracteres até encontrar '\n', sempre que '\n' for encontrado é contado mais um piloto pois existe 1 piloto por linha
     for (c = getc(f); c != EOF; c = getc(f))
     {
         if (c == '\n')
@@ -132,7 +141,7 @@ int verificaProva(TEMPOS *tempos, int n)
         //verificar se existem 3 etapas com o numero do piloto
         if (contador == 3)
         {
-            contadorPilotos++;
+            contadorPilotos++; //contar mais um piloto
         }
         contador = 0;
     }
@@ -156,16 +165,16 @@ void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int n, int nPilotos
             }
         }
         //encontrar o piloto com o numero do piloto com prova valida
-        strcpy(prova[i].piloto.nome, piloto[i].nome);
-        strcpy(prova[i].piloto.carro, piloto[i].carro);
-        prova[i].tempoProva = tempoTotal;
+        strcpy(prova[i].piloto.nome, piloto[i].nome);   //copia do nome do piloto
+        strcpy(prova[i].piloto.carro, piloto[i].carro); //copia do carro do piloto
+        prova[i].tempoProva = tempoTotal;               //copia do tempo total de prova para o struct
         if (contador == 3)
         {
-            prova[i].aprovado = 1;
+            prova[i].aprovado = 1; //se tiver todas as etapas registadas está aprovado
         }
         else
         {
-            prova[i].aprovado = 0;
+            prova[i].aprovado = 0; //senão não está aprovado
         }
         contador = 0;
     }
@@ -177,6 +186,7 @@ void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados)
     char auxNome[50], auxCarro[50];
     PROVA provaOrdenado[aprovados];
 
+    //copia do vetor prova para outro vetor para assim não alterar o vetor original e este vetor apenas conter os pilotos aprovados
     for (int i = 0; i <= nPilotos; i++)
     {
 
@@ -192,7 +202,7 @@ void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados)
             a++;
         }
     }
-
+    //ordenação de forma descendente do vetor que contém a copia do original
     for (int i = 0; i < aprovados; i++)
     {
 
@@ -201,7 +211,8 @@ void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados)
 
             if (provaOrdenado[i].tempoProva < provaOrdenado[j].tempoProva)
             {
-
+                //existiu a necessidade de criar uam variavel do tipo aux para guardar os valores da posição i
+                //visto que esta ia ser substituida por as informações da posição j
                 auxNum = provaOrdenado[i].piloto.num;
                 auxTempo = provaOrdenado[i].tempoProva;
                 auxApr = provaOrdenado[i].aprovado;
@@ -222,7 +233,7 @@ void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados)
             }
         }
     }
-
+    //imprimir as informações ordenadas
     for (int i = 0; i < aprovados; i++)
     {
         printf("\nNumero: %d\t| Nome: %s\t| Carro: %s\t| tempo: %d", provaOrdenado[i].piloto.num, provaOrdenado[i].piloto.nome, provaOrdenado[i].piloto.carro, provaOrdenado[i].tempoProva);
@@ -237,15 +248,19 @@ void medTemposEtapa(TEMPOS *tempos, int n, int aprovados)
         contador++;
         for (int j = i; j <= n; j++)
         {
+            //verificar se o piloto foi aprovado
             if (tempos[i].num == tempos[j].num)
                 contador++;
 
-            num = tempos[i].num;
+            num = tempos[i].num; //guardar o numero do piloto
         }
+        //se for um piloto aprovado
         if (contador == 3)
         {
+            //verificar o vetor tempos por completo
             for (int t = 0; t <= n; t++)
             {
+                //se o numero for igual ao numero do piloto aprovado ir buscar as informações do tempo
                 if (tempos[t].num == num)
                 {
 
@@ -266,9 +281,11 @@ void medTemposEtapa(TEMPOS *tempos, int n, int aprovados)
         }
         contador = 0;
     }
+    //media vai ser a soma dos tempos dividindo por o total de aprovados
     mediaP_E1 = somaP_E1 / aprovados;
     mediaE1_E2 = somaE1_E2 / aprovados;
     mediaE2_C = somaE2_C / aprovados;
+    //apresentação das medias
     printf("\nMedia tempos entre Partida e Etapa1 : %d", mediaP_E1);
     printf("\nMedia tempos entre Etapa2 e Etapa1 : %d", mediaE1_E2);
     printf("\nMedia tempos entre Etapa1 e Chegada : %d", mediaE2_C);
@@ -277,11 +294,14 @@ void medTemposEtapa(TEMPOS *tempos, int n, int aprovados)
 void extremos(PROVA *prova, int nPilotos)
 {
     int menor = prova[0].tempoProva, maior = prova[0].tempoProva, menorNum = 0, maiorNum = 0;
-
+    //percorrer o vetor prova todo
     for (int i = 0; i <= nPilotos; i++)
     {
+        //verificar se é um piloto aprovado
         if (prova[i].aprovado == 1)
         {
+            //verficar se é maior ou menor que o menor ou maior tempo registado
+            //guardar o local do vetor onde fica o menor e o maior
             if (prova[i].tempoProva < menor)
             {
                 menor = prova[i].tempoProva;
@@ -294,6 +314,7 @@ void extremos(PROVA *prova, int nPilotos)
             }
         }
     }
+    //apresentação das informaçoes dos valores obtidos
     printf("\nMais rapido:");
     printf("\n ->Numero: %d", prova[menorNum].piloto.num);
     printf("\n ->Nome: %s", prova[menorNum].piloto.nome);
