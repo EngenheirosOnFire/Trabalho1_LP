@@ -38,6 +38,51 @@ void guardarPilotos(int num, char nome, char carro);
 void guardarTempos();
 void mostrarPilotos(PILOTO *pilotos);
 
+void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int n, int nPilotos)
+{
+    int contador = 0, a = 0, tempoTotal = 0;
+    for (int i = 0; i <= n; i++)
+    {
+
+        contador++;
+
+        for (int j = i + 1; j <= n; j++)
+        {
+            //tempo que recebemos da primeira leitura tem de ser o primeiro tempo a registar
+            tempoTotal += tempos[i].tempo;
+            //verificar se existe mais numeros iguais e somar o contador
+            if (tempos[i].num == tempos[j].num)
+            {
+                contador++;
+                tempoTotal += tempos[j].tempo; //se houver um numero igual o tempo desse numero tem de ser somado ao tempoTotal
+            }
+        }
+
+        //verificar se existem 3 etapas com o numero do piloto caso sim tem prova valida
+        if (contador == 3)
+        {
+            prova[a].piloto.num = tempos[i].num;
+            //encontrar o piloto com o numero do piloto com prova valida
+            for (int p = 0; p <= nPilotos; p++)
+            {
+                if (piloto[p].num == prova[a].piloto.num)
+                {
+                    strcpy(prova[a].piloto.nome, piloto[p].nome);
+                    strcpy(prova[a].piloto.carro, piloto[p].carro);
+                }
+            }
+            prova[a].tempoProva = tempoTotal;
+            prova[a].aprovado = 1;
+            contador = 0;
+            a++;
+        }
+        else
+        {
+            contador = 0;
+        }
+    }
+}
+
 void infoPilotos() //PILOTO *ptr
 {
     int num;
