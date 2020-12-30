@@ -44,13 +44,13 @@ void loadTempos(TEMPOS *etapa);                                                 
 void loadDistancias(DISTANCIAS *distancias);                                                                                            //carregamento das informações do distancias.txt para o struck DISTANCIAS
 void loadPilotos(PILOTO *piloto);                                                                                                       //carregamento das informações ds pilotos.txt para o struct PILoTOS
 int nPilotosCount();                                                                                                                    //contagem de pilotos contidos no ficheiro pilotos.txt
-int verificaProva(TEMPOS *tempos, int n);                                                                                               //verificação de quantos pilotos têm prova valida
+int verificaProva(TEMPOS *tempos, int n, int *aprovados);                                                                               //verificação de quantos pilotos têm prova valida
 void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int n, int nPilotos);                                                      //carregamenteo das informações dos vários structs para um struct final contento informação da prova por completo
 void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados);                                                                       //ordenção e amostra dos tempos por ordem descendente
-void medTemposEtapa(TEMPOS *tempos, int n, int aprovados, int *medTempos);                                                              //media de tempos por etapa
-void extremos(PROVA *prova, int nPilotos);                                                                                              //Amostra do piloto mais rapido e mais lento
-void menorTempo(TEMPOS *tempos, int nEtapas);                                                                                           //Amostra do menor tempo possivel para realizar a prova
-void velocidadesMedias(DISTANCIAS *distancias, TEMPOS *tempos, int nTotal, int nEtapas, int aprovados);                                 //Amostra das velocidades medias da prova
+void medTemposEtapa(TEMPOS *tempos, int n, int *aprovados, int *medTempos, int nAprovados);                                             //media de tempos por etapa
+void extremos(PROVA *prova, int nPilotos, int *tempoExtremos);                                                                          //Amostra do piloto mais rapido e mais lento
+void menorTempo(TEMPOS *tempos, int nEtapas, int maior);                                                                                //Amostra do menor tempo possivel para realizar a prova
+void velocidadesMedias(DISTANCIAS *distancias, int nEtapas, int aprovados, int *medTempos);                                             //Amostra das velocidades medias da prova
 void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova, int nTotal, int nPilotos, int nEtapas, int aprovados); //Menu principal do programa
 
 void Etapas(int *n)
@@ -126,7 +126,32 @@ int nPilotosCount()
     return contador;
 }
 
-int verificaProva(TEMPOS *tempos, int n)
+int verificaProva(TEMPOS *tempos, int n, int *aprovados)
+{
+    int contador = 0;        //conta numero de vezes que numero aparece
+    int contadorPilotos = 0; //conta o numero de pilotos aprovados
+    int numPilotoAprv;
+    for (int i = 0, a = 0; i <= n; i++)
+    {
+        contador++;
+        for (int j = i + 1; j <= n; j++)
+        {
+            if (tempos[i].num == tempos[j].num)
+                contador++;
+        }
+        //verificar se existem 3 etapas com o numero do piloto
+        if (contador == 3)
+        {
+            aprovados[a] = tempos[i].num; //colocar o numero do piloto aprovado num vetor
+            contadorPilotos++;            //contar mais um piloto
+            a++;
+        }
+        contador = 0;
+    }
+    return contadorPilotos;
+}
+
+int loadVerificaProva(TEMPOS *tempos, int n)
 {
     int contador = 0;        //conta numero de vezes que numero aparece
     int contadorPilotos = 0; //conta o numero de pilotos aprovados
@@ -137,8 +162,8 @@ int verificaProva(TEMPOS *tempos, int n)
         {
             if (tempos[i].num == tempos[j].num)
                 contador++;
+            //verificar se existem 3 etapas com o numero do piloto
         }
-        //verificar se existem 3 etapas com o numero do piloto
         if (contador == 3)
         {
             contadorPilotos++; //contar mais um piloto
@@ -222,8 +247,8 @@ void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados)
                 provaOrdenado[i].piloto.num = provaOrdenado[j].piloto.num;
                 provaOrdenado[i].tempoProva = provaOrdenado[j].tempoProva;
                 provaOrdenado[i].aprovado = provaOrdenado[j].aprovado;
-                strcpy(provaOrdenado[i].piloto.nome, prova[j].piloto.nome);
-                strcpy(provaOrdenado[i].piloto.carro, prova[j].piloto.carro);
+                strcpy(provaOrdenado[i].piloto.nome, provaOrdenado[j].piloto.nome);
+                strcpy(provaOrdenado[i].piloto.carro, provaOrdenado[j].piloto.carro);
 
                 provaOrdenado[j].piloto.num = auxNum;
                 provaOrdenado[j].tempoProva = auxTempo;
@@ -240,58 +265,44 @@ void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados)
     }
 }
 
-void medTemposEtapa(TEMPOS *tempos, int n, int aprovados, int *medTempos)
+void medTemposEtapa(TEMPOS *tempos, int n, int *aprovados, int *medTempos, int nAprovados)
 {
-    int somaP_E1 = 0, mediaP_E1, somaE1_E2 = 0, mediaE1_E2, somaE2_C = 0, mediaE2_C, contador = 0, num;
-    for (int i = 0; i <= n; i++)
+    int somaP_E1 = 0, mediaP_E1, somaE1_E2 = 0, mediaE1_E2, somaE2_C = 0, mediaE2_C;
+    //verificar o vetor tempos por completo
+    for (int t = 0; t <= n; t++)
     {
-        contador++;
-        for (int j = i; j <= n; j++)
+        for (int j = 0; j <= nAprovados; j++)
         {
-            //verificar se o piloto foi aprovado
-            if (tempos[i].num == tempos[j].num)
-                contador++;
-
-            num = tempos[i].num; //guardar o numero do piloto
-        }
-        //se for um piloto aprovado
-        if (contador == 3)
-        {
-            //verificar o vetor tempos por completo
-            for (int t = 0; t <= n; t++)
+            //se o numero for igual ao numero do piloto aprovado ir buscar as informações do tempo
+            if (tempos[t].num == aprovados[j])
             {
-                //se o numero for igual ao numero do piloto aprovado ir buscar as informações do tempo
-                if (tempos[t].num == num)
-                {
 
-                    if ((strcmp(tempos[t].etapaI, "P") == 0) && (strcmp(tempos[t].etapaF, "E1") == 0))
-                    {
-                        somaP_E1 += tempos[t].tempo;
-                    }
-                    else if ((strcmp(tempos[t].etapaI, "E1") == 0) && (strcmp(tempos[t].etapaF, "E2") == 0))
-                    {
-                        somaE1_E2 += tempos[t].tempo;
-                    }
-                    else
-                    {
-                        somaE2_C += tempos[t].tempo;
-                    }
+                if ((strcmp(tempos[t].etapaI, "P") == 0) && (strcmp(tempos[t].etapaF, "E1") == 0))
+                {
+                    somaP_E1 += tempos[t].tempo;
+                }
+                else if ((strcmp(tempos[t].etapaI, "E1") == 0) && (strcmp(tempos[t].etapaF, "E2") == 0))
+                {
+                    somaE1_E2 += tempos[t].tempo;
+                }
+                else
+                {
+                    somaE2_C += tempos[t].tempo;
                 }
             }
         }
-        contador = 0;
     }
     //media vai ser a soma dos tempos dividindo por o total de aprovados
-    mediaP_E1 = somaP_E1 / aprovados;
-    mediaE1_E2 = somaE1_E2 / aprovados;
-    mediaE2_C = somaE2_C / aprovados;
+    mediaP_E1 = somaP_E1 / nAprovados;
+    mediaE1_E2 = somaE1_E2 / nAprovados;
+    mediaE2_C = somaE2_C / nAprovados;
     medTempos[0] = mediaP_E1;
     medTempos[1] = mediaE1_E2;
     medTempos[2] = mediaE2_C;
     //apresentação das medias
 }
 
-void extremos(PROVA *prova, int nPilotos)
+void extremos(PROVA *prova, int nPilotos, int *tempoExtremos)
 {
     int menor = prova[0].tempoProva, maior = prova[0].tempoProva, menorNum = 0, maiorNum = 0;
     //percorrer o vetor prova todo
@@ -314,24 +325,19 @@ void extremos(PROVA *prova, int nPilotos)
             }
         }
     }
-    //apresentação das informaçoes dos valores obtidos
-    printf("\nMais rapido:");
-    printf("\n ->Numero: %d", prova[menorNum].piloto.num);
-    printf("\n ->Nome: %s", prova[menorNum].piloto.nome);
-    printf("\n ->Carro: %s", prova[menorNum].piloto.carro);
-    printf("\n ->Tempo de Prova: %d ms", prova[menorNum].tempoProva);
-    printf("\nMais lento:");
-    printf("\n ->Numero: %d", prova[maiorNum].piloto.num);
-    printf("\n ->Nome: %s", prova[maiorNum].piloto.nome);
-    printf("\n ->Carro: %s", prova[maiorNum].piloto.carro);
-    printf("\n ->Tempo de Prova: %d ms", prova[maiorNum].tempoProva);
+
+    tempoExtremos[0] = maiorNum;
+    tempoExtremos[1] = menorNum;
 }
 
-void menorTempo(TEMPOS *tempos, int nEtapas)
+void menorTempo(TEMPOS *tempos, int nTotal, int maior)
 {
-    int menorP_E1 = tempos[0].tempo, menorE1_E2 = tempos[0].tempo, menorE2_C = tempos[0].tempo, menor;
-    for (int i = 0; i <= nEtapas; i++)
+    int menorP_E1 = maior, menorE1_E2 = maior, menorE2_C = maior, menor;
+    int tempoMin, tempoMinP_E1, tempoMinE1_E2, tempoMinE2_C;
+    float tempoSec, tempoSecP_E1, tempoSecE1_E2, tempoSecE2_C;
+    for (int i = 0; i < nTotal; i++)
     {
+
         if ((strcmp(tempos[i].etapaI, "P") == 0) && (strcmp(tempos[i].etapaF, "E1") == 0))
         {
             if ((tempos[i].tempo < menorP_E1) && (tempos[i].tempo != 0))
@@ -341,13 +347,15 @@ void menorTempo(TEMPOS *tempos, int nEtapas)
         }
         else if ((strcmp(tempos[i].etapaI, "E1") == 0) && (strcmp(tempos[i].etapaF, "E2") == 0))
         {
+
             if ((tempos[i].tempo < menorE1_E2) && (tempos[i].tempo != 0))
             {
                 menorE1_E2 = tempos[i].tempo;
             }
         }
-        else
+        else if ((strcmp(tempos[i].etapaI, "E2") == 0) && (strcmp(tempos[i].etapaF, "C") == 0))
         {
+
             if ((tempos[i].tempo < menorE2_C) && (tempos[i].tempo != 0))
             {
                 menorE2_C = tempos[i].tempo;
@@ -355,14 +363,28 @@ void menorTempo(TEMPOS *tempos, int nEtapas)
         }
     }
     menor = menorP_E1 + menorE1_E2 + menorE2_C;
-    printf("\nMenores tempo possivel:%d ms", menor);
+    //vamos transformar o tempo em minutos
+    tempoMinP_E1 = (menorP_E1 / 1000) / 60;
+    tempoMinE1_E2 = (menorE1_E2 / 1000) / 60;
+    tempoMinE2_C = (menorE2_C / 1000) / 60;
+    tempoMin = (menor / 1000) / 60;
+
+    //transformar o tempo em segundos e milésimos
+    tempoSecP_E1 = ((float)menorP_E1 / (float)1000) - (tempoMinP_E1 * 60);
+    tempoSecE1_E2 = ((float)menorE1_E2 / (float)1000) - (tempoMinE1_E2 * 60);
+    tempoSecE2_C = ((float)menorE2_C / (float)1000) - (tempoMinE2_C * 60);
+    tempoSec = ((float)menor / (float)1000) - (tempoMin * 60);
+
+    printf("\nMenor tempo possivel(Partida-Etapa1):%d:%.3f", tempoMinP_E1, tempoSecP_E1);
+    printf("\nMenor tempo possivel(Etapa1-Etapa2):%d:%.3f", tempoMinE1_E2, tempoSecE1_E2);
+    printf("\nMenor tempo possivel(Etapa2-Chegada):%d:%.3f", tempoMinE2_C, tempoSecE2_C);
+    printf("\nMenor tempo possivel:%d:%.2f", tempoMin, tempoSec);
 }
 
-void velocidadesMedias(DISTANCIAS *distancias, TEMPOS *tempos, int nTotal, int nEtapas, int aprovados)
+void velocidadesMedias(DISTANCIAS *distancias, int nEtapas, int aprovados, int *medTempos)
 {
     float distanciaP_E1, distanciaE1_E2, distanciaE2_C, distancia, medias[aprovados], tempoP_E1, tempoE1_E2, tempoE2_C;
-    int medTempos[aprovados];
-
+    //verificar todas as distancias e guardar em variaveis
     for (int j = 0; j < nEtapas; j++)
     {
         if ((strcmp(distancias[j].etapaI, "P") == 0) && (strcmp(distancias[j].etapaF, "E1") == 0))
@@ -378,11 +400,12 @@ void velocidadesMedias(DISTANCIAS *distancias, TEMPOS *tempos, int nTotal, int n
             distanciaE2_C = distancias[j].distancia;
         }
     }
-    medTemposEtapa(tempos, nTotal, aprovados, medTempos);
+    //transformar o tempo em segundos
     tempoP_E1 = (float)medTempos[0] / (float)1000;
     tempoE1_E2 = (float)medTempos[1] / (float)1000;
     tempoE2_C = (float)medTempos[2] / (float)1000;
 
+    //velocidade media é igual à distancia percorrida a dividir pelo tempo demorado
     medias[0] = distanciaP_E1 / tempoP_E1;
     medias[1] = distanciaE1_E2 / tempoE1_E2;
     medias[2] = distanciaE2_C / tempoE2_C;
@@ -400,14 +423,15 @@ void tabelaClassificativa(PROVA *prova, int nPilotos)
     printf("\n-----------------------------------------------------------------------------------------------------------------");
     printf("\n|    Posicao\t|     Numero\t|      Nome\t|     Carro\t| Tempo de prova |    Di.Ant.    |    Di.Ldr.   |");
     printf("\n-----------------------------------------------------------------------------------------------------------------");
-
+    //organizar de forma crescente de tempo o vetor prova
+    //colocar os não aprovados no final assim facilitando a amostra dos pilotos afrente a realizar
     for (int i = 0; i < nPilotos; i++)
     {
 
         for (int j = i + 1; j < nPilotos; j++)
         {
 
-            if (prova[i].tempoProva > prova[j].tempoProva && prova[j].aprovado == 1)
+            if (prova[i].tempoProva > prova[j].tempoProva)
             {
                 //existiu a necessidade de criar uam variavel do tipo aux para guardar os valores da posição i
                 //visto que esta ia ser substituida por as informações da posição j
@@ -431,31 +455,35 @@ void tabelaClassificativa(PROVA *prova, int nPilotos)
             }
         }
     }
-
+    //percorrer o vetor prova todo apenas mostrando os aprovados
     for (int i = 0, a = 0; i < nPilotos; i++)
     {
+
+        //caso seja um piloto aprovado
         if (prova[i].aprovado == 1)
         {
+            //vamos transformar o tempo em minutos
             tempoMin = (prova[i].tempoProva / 1000) / 60;
-
+            //transformar o tempo em segundos e milésimos
             tempoSec = ((float)prova[i].tempoProva / (float)1000) - (tempoMin * 60);
-            if (tempoMin == (int)tempoSec)
-            {
-                tempoMin = 0;
-            }
+
+            //se for o primeiro colocado
             if (a == 0)
             {
-                printf("\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %2d:%.3f   |\t0\t |\t0\t|", i + 1, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
-                tempoLdr = prova[i].tempoProva;
-
                 a++;
+                //apenas colocar os ultimos valores a zeros
+                printf("\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %2d:%.3f   |\t0\t |\t0\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
+                //guardar o tempo do lider em ms
+                tempoLdr = prova[i].tempoProva;
             }
             else
             {
-
+                //a diferença de tempo para o lider é o o tempo do piloto subtraindo o tempo do lider
                 diTempoLdr = prova[i].tempoProva - tempoLdr;
+                //a dirença do anterior é retornando atrás e vendo o ultimo piloto lido
                 diTempoAnt = prova[i].tempoProva - prova[i - 1].tempoProva;
 
+                //caso os tempos sejam negativos é necessário colocar a zeros, caso não é necessário transformar em segundos e milesimos denovo
                 if (diTempoLdr < 0)
                     diLdr = 0;
                 else
@@ -465,12 +493,18 @@ void tabelaClassificativa(PROVA *prova, int nPilotos)
                     diAnt = 0;
                 else
                     diAnt = ((float)diTempoAnt / (float)1000);
-
-                printf("\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %2d:%6.3f   |     %.3f\t |    %.3f\t|", i + 1, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
+                a++;
+                //mostrar as informações do piloto
+                printf("\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %2d:%6.3f   |     %.3f\t |    %.3f\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
             }
         }
-        else
+    }
+    //percorrer o vetor prova todo apenas mostrando os não aprovados
+    for (int i = 0; i < nPilotos; i++)
+    {
+        if (prova[i].aprovado == 0)
         {
+            //informações dos pilotos que não fizeram a prova por completo
             printf("\n|\t-\t|\t%d\t| %10s\t| %10s\t|\t-\t |\t-\t |\t-\t|", prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro);
         }
     }
@@ -480,7 +514,7 @@ void tabelaClassificativa(PROVA *prova, int nPilotos)
 
 void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova, int nTotal, int nPilotos, int nEtapas, int aprovados)
 {
-    int escolha, medTempos[2];
+    int escolha, medTempos[2], pilotosAprv[aprovados], numExtremos[1], maiorNum, menorNum;
     printf("\n**************************************************");
     printf("\n** 1 - Numero de pilotos\t\t\t**");
     printf("\n** 2 - Numero de pilotos com prova valida\t**");
@@ -494,74 +528,89 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
     printf("\n**************************************************");
     printf("\n escolha: ");
     scanf("%d", &escolha);
-    if (escolha != 9)
+
+    switch (escolha)
     {
-        switch (escolha)
-        {
-        case 1:
-            printf("\nNumero de pilotos: %d", nPilotosCount() + 1);
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        case 2:
-            printf("\nExistem %d concorrentes com prova valida!", verificaProva(tempos, nTotal));
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        case 3:
-            ordenaTemposDesc(prova, nPilotos, aprovados);
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        case 4:
-            medTemposEtapa(tempos, nTotal, aprovados, medTempos);
-            printf("\nMedia tempos entre Partida e Etapa1 : %d", medTempos[0]);
-            printf("\nMedia tempos entre Etapa2 e Etapa1 : %d", medTempos[1]);
-            printf("\nMedia tempos entre Etapa1 e Chegada : %d", medTempos[2]);
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        case 5:
-            extremos(prova, nPilotos);
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        case 6:
-            menorTempo(tempos, nEtapas);
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        case 7:
-            velocidadesMedias(distancias, tempos, nTotal, nEtapas, aprovados);
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        case 8:
-            tabelaClassificativa(prova, nPilotos);
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        default:
-            printf("Opcao invalida");
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        }
-        menu(tempos, pilotos, distancias, prova, nTotal, nPilotos, nEtapas, aprovados);
-    }
-    else
-    {
+    case 1:
+        printf("\nNumero de pilotos: %d", nPilotosCount() + 1);
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 2:
+        printf("\nExistem %d concorrentes com prova valida!", verificaProva(tempos, nTotal, pilotosAprv));
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 3:
+        ordenaTemposDesc(prova, nPilotos, aprovados);
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 4:
+        verificaProva(tempos, nTotal, pilotosAprv);
+        medTemposEtapa(tempos, nTotal, pilotosAprv, medTempos, aprovados);
+        printf("\nMedia tempos entre Partida e Etapa1 : %d", medTempos[0]);
+        printf("\nMedia tempos entre Etapa2 e Etapa1 : %d", medTempos[1]);
+        printf("\nMedia tempos entre Etapa1 e Chegada : %d", medTempos[2]);
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 5:
+        extremos(prova, nPilotos, numExtremos);
+        maiorNum = numExtremos[0];
+        menorNum = numExtremos[1];
+        //apresentação das informaçoes dos valores obtidos
+        printf("\nMais rapido:");
+        printf("\n ->Numero: %d", prova[menorNum].piloto.num);
+        printf("\n ->Nome: %s", prova[menorNum].piloto.nome);
+        printf("\n ->Carro: %s", prova[menorNum].piloto.carro);
+        printf("\n ->Tempo de Prova: %d ms", prova[menorNum].tempoProva);
+        printf("\nMais lento:");
+        printf("\n ->Numero: %d", prova[maiorNum].piloto.num);
+        printf("\n ->Nome: %s", prova[maiorNum].piloto.nome);
+        printf("\n ->Carro: %s", prova[maiorNum].piloto.carro);
+        printf("\n ->Tempo de Prova: %d ms", prova[maiorNum].tempoProva);
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 6:
+        extremos(prova, nPilotos, numExtremos);
+        maiorNum = numExtremos[0];
+        menorTempo(tempos, nTotal, prova[maiorNum].tempoProva);
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 7:
+        verificaProva(tempos, nTotal, pilotosAprv);
+        medTemposEtapa(tempos, nTotal, pilotosAprv, medTempos, aprovados);
+        velocidadesMedias(distancias, nEtapas, aprovados, medTempos);
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 8:
+        tabelaClassificativa(prova, nPilotos);
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 9:
         return;
+        break;
+    default:
+        printf("Opcao invalida");
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
     }
+    menu(tempos, pilotos, distancias, prova, nTotal, nPilotos, nEtapas, aprovados);
 }
 
 void main()
@@ -592,6 +641,6 @@ void main()
 
     PROVA prova[nPilotos];
     loadProva(prova, tempos, pilotos, nTotal, nPilotos);
-    aprovados = verificaProva(tempos, nTotal);
+    aprovados = loadVerificaProva(tempos, nTotal);
     menu(tempos, pilotos, distancias, prova, nTotal, nPilotos, nEtapas, aprovados);
 }
