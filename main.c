@@ -366,6 +366,9 @@ void menorTempo(TEMPOS *tempos, int nEtapas)
         }
     }
     menor = menorP_E1 + menorE1_E2 + menorE2_C;
+    printf("\nMenor tempo possivel(Partida-Etapa1):%d ms", menor);
+    printf("\nMenor tempo possivel(Etapa1-Etapa2):%d ms", menor);
+    printf("\nMenor tempo possivel(Etapa2-Chegada):%d ms", menor);
     printf("\nMenor tempo possivel:%d ms", menor);
 }
 
@@ -516,78 +519,74 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
     printf("\n**************************************************");
     printf("\n escolha: ");
     scanf("%d", &escolha);
-    if (escolha != 9)
+
+    switch (escolha)
     {
-        switch (escolha)
-        {
-        case 1:
-            printf("\nNumero de pilotos: %d", nPilotosCount() + 1);
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        case 2:
-            printf("\nExistem %d concorrentes com prova valida!", verificaProva(tempos, nTotal, pilotosAprv));
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        case 3:
-            printf("\n\n%d", aprovados);
-            ordenaTemposDesc(prova, nPilotos, aprovados);
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        case 4:
-            verificaProva(tempos, nTotal, pilotosAprv);
-            medTemposEtapa(tempos, nTotal, pilotosAprv, medTempos, aprovados);
-            printf("\nMedia tempos entre Partida e Etapa1 : %d", medTempos[0]);
-            printf("\nMedia tempos entre Etapa2 e Etapa1 : %d", medTempos[1]);
-            printf("\nMedia tempos entre Etapa1 e Chegada : %d", medTempos[2]);
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        case 5:
-            extremos(prova, nPilotos);
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        case 6:
-            menorTempo(tempos, nEtapas);
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        case 7:
-            verificaProva(tempos, nTotal, pilotosAprv);
-            medTemposEtapa(tempos, nTotal, pilotosAprv, medTempos, aprovados);
-            velocidadesMedias(distancias, nEtapas, aprovados, medTempos);
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        case 8:
-            tabelaClassificativa(prova, nPilotos);
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        default:
-            printf("Opcao invalida");
-            fflush(stdin);
-            printf("\n(Enter)");
-            getchar();
-            break;
-        }
-        menu(tempos, pilotos, distancias, prova, nTotal, nPilotos, nEtapas, aprovados);
-    }
-    else
-    {
+    case 1:
+        printf("\nNumero de pilotos: %d", nPilotosCount() + 1);
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 2:
+        printf("\nExistem %d concorrentes com prova valida!", verificaProva(tempos, nTotal, pilotosAprv));
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 3:
+        ordenaTemposDesc(prova, nPilotos, aprovados);
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 4:
+        verificaProva(tempos, nTotal, pilotosAprv);
+        medTemposEtapa(tempos, nTotal, pilotosAprv, medTempos, aprovados);
+        printf("\nMedia tempos entre Partida e Etapa1 : %d", medTempos[0]);
+        printf("\nMedia tempos entre Etapa2 e Etapa1 : %d", medTempos[1]);
+        printf("\nMedia tempos entre Etapa1 e Chegada : %d", medTempos[2]);
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 5:
+        extremos(prova, nPilotos);
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 6:
+        menorTempo(tempos, nEtapas);
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 7:
+        verificaProva(tempos, nTotal, pilotosAprv);
+        medTemposEtapa(tempos, nTotal, pilotosAprv, medTempos, aprovados);
+        velocidadesMedias(distancias, nEtapas, aprovados, medTempos);
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 8:
+        tabelaClassificativa(prova, nPilotos);
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
+    case 9:
         return;
+        break;
+    default:
+        printf("Opcao invalida");
+        fflush(stdin);
+        printf("\n(Enter)");
+        getchar();
+        break;
     }
+    menu(tempos, pilotos, distancias, prova, nTotal, nPilotos, nEtapas, aprovados);
 }
 
 void main()
