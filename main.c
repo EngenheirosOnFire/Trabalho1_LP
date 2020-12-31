@@ -208,7 +208,8 @@ void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int n, int nPilotos
 void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados)
 {
     int contador, auxNum = 0, auxTempo = 0, auxApr = 0, a = 0;
-    char auxNome[50], auxCarro[50];
+    char auxNome[50], auxCarro[50], tempoMin;
+    float tempoSec;
     PROVA provaOrdenado[aprovados];
 
     //copia do vetor prova para outro vetor para assim não alterar o vetor original e este vetor apenas conter os pilotos aprovados
@@ -261,7 +262,11 @@ void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados)
     //imprimir as informações ordenadas
     for (int i = 0; i < aprovados; i++)
     {
-        printf("\nNumero: %d\t| Nome: %s\t| Carro: %s\t| tempo: %d", provaOrdenado[i].piloto.num, provaOrdenado[i].piloto.nome, provaOrdenado[i].piloto.carro, provaOrdenado[i].tempoProva);
+        //vamos transformar o tempo em minutos
+        tempoMin = (provaOrdenado[i].tempoProva / 1000) / 60;
+        //transformar o tempo em segundos e milésimos
+        tempoSec = ((float)provaOrdenado[i].tempoProva / (float)1000) - (tempoMin * 60);
+        printf("\nNumero: %d\t| Nome: %s\t| Carro: %s\t| tempo: %d:%.3f", provaOrdenado[i].piloto.num, provaOrdenado[i].piloto.nome, provaOrdenado[i].piloto.carro, tempoMin, tempoSec);
     }
 }
 
@@ -552,9 +557,10 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
     case 4:
         verificaProva(tempos, nTotal, pilotosAprv);
         medTemposEtapa(tempos, nTotal, pilotosAprv, medTempos, aprovados);
-        printf("\nMedia tempos entre Partida e Etapa1 : %d", medTempos[0]);
-        printf("\nMedia tempos entre Etapa2 e Etapa1 : %d", medTempos[1]);
-        printf("\nMedia tempos entre Etapa1 e Chegada : %d", medTempos[2]);
+
+        printf("\nMedia tempos entre Partida e Etapa1 : %d:%.3f", (medTempos[0] / 1000) / 60, ((float)medTempos[0] / (float)1000) - ((medTempos[0] / 1000) / 60) * 60);
+        printf("\nMedia tempos entre Etapa2 e Etapa1 : %d:%.3f", (medTempos[1] / 1000) / 60, ((float)medTempos[1] / (float)1000) - ((medTempos[1] / 1000) / 60) * 60);
+        printf("\nMedia tempos entre Etapa1 e Chegada : %d:%.3f", (medTempos[2] / 1000) / 60, ((float)medTempos[2] / (float)1000) - ((medTempos[2] / 1000) / 60) * 60);
         fflush(stdin);
         printf("\n(Enter)");
         getchar();
@@ -568,12 +574,12 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
         printf("\n ->Numero: %d", prova[menorNum].piloto.num);
         printf("\n ->Nome: %s", prova[menorNum].piloto.nome);
         printf("\n ->Carro: %s", prova[menorNum].piloto.carro);
-        printf("\n ->Tempo de Prova: %d ms", prova[menorNum].tempoProva);
+        printf("\n ->Tempo de Prova: %d:%.3f", (prova[menorNum].tempoProva / 1000) / 60, (((float)prova[menorNum].tempoProva / (float)1000) - ((prova[menorNum].tempoProva / 1000) / 60) * 60));
         printf("\nMais lento:");
         printf("\n ->Numero: %d", prova[maiorNum].piloto.num);
         printf("\n ->Nome: %s", prova[maiorNum].piloto.nome);
         printf("\n ->Carro: %s", prova[maiorNum].piloto.carro);
-        printf("\n ->Tempo de Prova: %d ms", prova[maiorNum].tempoProva);
+        printf("\n ->Tempo de Prova: %d:%.3f", (prova[maiorNum].tempoProva / 1000) / 60, (((float)prova[maiorNum].tempoProva / (float)1000) - ((prova[maiorNum].tempoProva / 1000) / 60) * 60));
         fflush(stdin);
         printf("\n(Enter)");
         getchar();
