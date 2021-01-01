@@ -24,6 +24,11 @@ typedef struct infoProva
     int aprovado;
 } PROVA;
 
+typedef struct infoEtapas
+{
+    char etapaNome[3]; //Etapa inicial
+} ETAPAS;
+
 typedef struct infotempos
 {
     int num, tempo;
@@ -38,20 +43,67 @@ typedef struct infoDistancias
     float distancia;
 } DISTANCIAS;
 
-int nPilotosCount();                                                                                                                    //contagem do numero de pilotos registados no ficheiro pilotos.txt
-void Etapas(int *n);                                                                                                                    //função que retira os valores no começo do ficheiro de tempos.txt e guarda em duas posições do vetor n, sendo n[0]<-nEtapas,n[1]<-nPilotos
-void loadTempos(TEMPOS *etapa);                                                                                                         //carregamento das informações do ficheiro tempos.txt para uma estrutura que guarda os tempos, saltando os valores iniciais a frente
-void loadDistancias(DISTANCIAS *distancias);                                                                                            //carregamento das informações do distancias.txt para o struck DISTANCIAS
-void loadPilotos(PILOTO *piloto);                                                                                                       //carregamento das informações ds pilotos.txt para o struct PILoTOS
-int nPilotosCount();                                                                                                                    //contagem de pilotos contidos no ficheiro pilotos.txt
-int verificaProva(TEMPOS *tempos, int n, int *aprovados);                                                                               //verificação de quantos pilotos têm prova valida
-void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int n, int nPilotos);                                                      //carregamenteo das informações dos vários structs para um struct final contento informação da prova por completo
-void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados);                                                                       //ordenção e amostra dos tempos por ordem descendente
-void medTemposEtapa(TEMPOS *tempos, int n, int *aprovados, int *medTempos, int nAprovados);                                             //media de tempos por etapa
-void extremos(PROVA *prova, int nPilotos, int *tempoExtremos);                                                                          //Amostra do piloto mais rapido e mais lento
-void menorTempo(TEMPOS *tempos, int nEtapas, int maior);                                                                                //Amostra do menor tempo possivel para realizar a prova
-void velocidadesMedias(DISTANCIAS *distancias, int nEtapas, int *medTempos);                                                            //Amostra das velocidades medias da prova
-void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova, int nTotal, int nPilotos, int nEtapas, int aprovados); //Menu principal do programa
+int nPilotosCount();                                                                                                                                    //contagem do numero de pilotos registados no ficheiro pilotos.txt
+void Etapas(int *n);                                                                                                                                    //função que retira os valores no começo do ficheiro de tempos.txt e guarda em duas posições do vetor n, sendo n[0]<-nEtapas,n[1]<-nPilotos
+void loadTempos(TEMPOS *etapa);                                                                                                                         //carregamento das informações do ficheiro tempos.txt para uma estrutura que guarda os tempos, saltando os valores iniciais a frente
+void loadDistancias(DISTANCIAS *distancias);                                                                                                            //carregamento das informações do distancias.txt para o struck DISTANCIAS
+void loadPilotos(PILOTO *piloto);                                                                                                                       //carregamento das informações ds pilotos.txt para o struct PILoTOS
+int nPilotosCount();                                                                                                                                    //contagem de pilotos contidos no ficheiro pilotos.txt
+int verificaProva(TEMPOS *tempos, int n, int *aprovados, int nEtapas);                                                                                  //verificação de quantos pilotos têm prova valida
+void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int n, int nPilotos, int nEtapa);                                                          //carregamenteo das informações dos vários structs para um struct final contento informação da prova por completo
+void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados);                                                                                       //ordenção e amostra dos tempos por ordem descendente
+void medTemposEtapa(TEMPOS *tempos, ETAPAS *etapas, int n, int *aprovados, int *medTempos, int nAprovados, int nEtapas);                                //media de tempos por etapa
+void extremos(PROVA *prova, int nPilotos, int *tempoExtremos);                                                                                          //Amostra do piloto mais rapido e mais lento
+void menorTempo(TEMPOS *tempos, ETAPAS *etapas, int nTotal, int maior, int nEtapas);                                                                    //Amostra do menor tempo possivel para realizar a prova
+void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int aprovados, int *medTempos);                                             //Amostra das velocidades medias da prova
+void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova, ETAPAS *etapas, int nTotal, int nPilotos, int nEtapas, int aprovados); //Menu principal do programa
+
+void arrumarVetor(DISTANCIAS *distancias, int nEtapas)
+{
+    int auxDist;
+    char auxEtapaI[3], auxEtapaF[3];
+    for (int i = 0; i < nEtapas; i++)
+    {
+        if (i != 0 && strcmp(distancias[i].etapaI, "P") == 0)
+        {
+            auxDist = distancias[i].distancia;
+            strcpy(auxEtapaI, distancias[i].etapaI);
+            strcpy(auxEtapaF, distancias[i].etapaF);
+
+            strcpy(distancias[i].etapaI, distancias[0].etapaI);
+            strcpy(distancias[i].etapaF, distancias[0].etapaF);
+            distancias[i].distancia = distancias[0].distancia;
+
+            strcpy(distancias[0].etapaI, auxEtapaI);
+            strcpy(distancias[0].etapaF, auxEtapaF);
+            distancias[0].distancia = auxDist;
+        }
+    }
+    for (int i = 0; i < nEtapas; i++)
+    {
+        char ch[] = "E";
+        char *ptr = strtok(distancias[i].etapaI, ch);
+        for (int j = 0; j < nEtapas; j++)
+        {
+            char ch1[] = "E";
+            char *ptr1 = strtok(distancias[i].etapaI, ch1);
+            if (ptr > ptr1)
+            {
+                strcpy(auxEtapaI, distancias[j].etapaI);
+                strcpy(auxEtapaF, distancias[j].etapaF);
+                auxDist = distancias[j].distancia;
+
+                strcpy(distancias[i].etapaI, distancias[j].etapaI);
+                strcpy(distancias[i].etapaF, distancias[j].etapaF);
+                distancias[i].distancia = distancias[j].distancia;
+
+                strcpy(distancias[j].etapaI, auxEtapaI);
+                strcpy(distancias[j].etapaF, auxEtapaF);
+                distancias[j].distancia = auxDist;
+            }
+        }
+    }
+}
 
 void Etapas(int *n)
 {
@@ -126,7 +178,7 @@ int nPilotosCount()
     return contador;
 }
 
-int verificaProva(TEMPOS *tempos, int n, int *aprovados)
+int verificaProva(TEMPOS *tempos, int n, int *aprovados, int nEtapas)
 {
     int contador = 0;        //conta numero de vezes que numero aparece
     int contadorPilotos = 0; //conta o numero de pilotos aprovados
@@ -140,7 +192,7 @@ int verificaProva(TEMPOS *tempos, int n, int *aprovados)
                 contador++;
         }
         //verificar se existem 3 etapas com o numero do piloto
-        if (contador == 3)
+        if (contador == nEtapas)
         {
             aprovados[a] = tempos[i].num; //colocar o numero do piloto aprovado num vetor
             contadorPilotos++;            //contar mais um piloto
@@ -151,7 +203,7 @@ int verificaProva(TEMPOS *tempos, int n, int *aprovados)
     return contadorPilotos;
 }
 
-int loadVerificaProva(TEMPOS *tempos, int n)
+int loadVerificaProva(TEMPOS *tempos, int n, int nEtapas)
 {
     int contador = 0;        //conta numero de vezes que numero aparece
     int contadorPilotos = 0; //conta o numero de pilotos aprovados
@@ -164,7 +216,7 @@ int loadVerificaProva(TEMPOS *tempos, int n)
                 contador++;
             //verificar se existem 3 etapas com o numero do piloto
         }
-        if (contador == 3)
+        if (contador == nEtapas)
         {
             contadorPilotos++; //contar mais um piloto
         }
@@ -173,7 +225,7 @@ int loadVerificaProva(TEMPOS *tempos, int n)
     return contadorPilotos;
 }
 
-void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int n, int nPilotos)
+void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int n, int nPilotos, int nEtapa)
 {
 
     for (int i = 0; i <= nPilotos; i++)
@@ -193,7 +245,7 @@ void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int n, int nPilotos
         strcpy(prova[i].piloto.nome, piloto[i].nome);   //copia do nome do piloto
         strcpy(prova[i].piloto.carro, piloto[i].carro); //copia do carro do piloto
         prova[i].tempoProva = tempoTotal;               //copia do tempo total de prova para o struct
-        if (contador == 3)
+        if (contador == nEtapa)
         {
             prova[i].aprovado = 1; //se tiver todas as etapas registadas está aprovado
         }
@@ -270,11 +322,15 @@ void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados)
     }
 }
 
-void medTemposEtapa(TEMPOS *tempos, int nTotal, int *aprovados, int *medTempos, int nAprovados)
+void medTemposEtapa(TEMPOS *tempos, ETAPAS *etapas, int n, int *aprovados, int *medTempos, int nAprovados, int nEtapas)
 {
-    int somaP_E1 = 0, mediaP_E1, somaE1_E2 = 0, mediaE1_E2, somaE2_C = 0, mediaE2_C, mediaTotal, somaTotal = 0;
+    float soma[nEtapas], media[nEtapas];
+    for (int i = 0; i <= nEtapas; i++)
+    {
+        soma[i] = 0;
+    }
     //verificar o vetor tempos por completo
-    for (int t = 0; t <= nTotal; t++)
+    for (int t = 0; t <= n; t++)
     {
         for (int j = 0; j <= nAprovados; j++)
         {
@@ -282,32 +338,30 @@ void medTemposEtapa(TEMPOS *tempos, int nTotal, int *aprovados, int *medTempos, 
             if (tempos[t].num == aprovados[j])
             {
 
-                if ((strcmp(tempos[t].etapaI, "P") == 0) && (strcmp(tempos[t].etapaF, "E1") == 0))
+                if ((strcmp(tempos[t].etapaI, "P") == 0))
                 {
-                    somaP_E1 += tempos[t].tempo;
-                }
-                else if ((strcmp(tempos[t].etapaI, "E1") == 0) && (strcmp(tempos[t].etapaF, "E2") == 0))
-                {
-                    somaE1_E2 += tempos[t].tempo;
+                    soma[0] += tempos[t].tempo;
                 }
                 else
                 {
-                    somaE2_C += tempos[t].tempo;
+                    for (int h = 0; h <= nEtapas; h++)
+                    {
+                        if ((strcmp(tempos[t].etapaI, etapas[h].etapaNome) == 0))
+                        {
+
+                            soma[h] += tempos[t].tempo;
+                        }
+                    }
                 }
-                somaTotal += tempos[t].tempo;
             }
         }
     }
     //media vai ser a soma dos tempos dividindo por o total de aprovados
-    mediaP_E1 = somaP_E1 / nAprovados;
-    mediaE1_E2 = somaE1_E2 / nAprovados;
-    mediaE2_C = somaE2_C / nAprovados;
-    mediaTotal = somaTotal / nTotal;
-    medTempos[0] = mediaP_E1;
-    medTempos[1] = mediaE1_E2;
-    medTempos[2] = mediaE2_C;
-    medTempos[3] = mediaTotal;
-    //apresentação das medias
+    //mediaP_E1 = somaP_E1 / nAprovados;
+    for (int i = 0; i <= nEtapas; i++)
+    {
+        medTempos[i] = soma[i] / nAprovados;
+    }
 }
 
 void extremos(PROVA *prova, int nPilotos, int *tempoExtremos)
@@ -338,94 +392,87 @@ void extremos(PROVA *prova, int nPilotos, int *tempoExtremos)
     tempoExtremos[1] = menorNum;
 }
 
-void menorTempo(TEMPOS *tempos, int nTotal, int maior)
+void menorTempo(TEMPOS *tempos, ETAPAS *etapas, int nTotal, int maior, int nEtapas)
 {
-    int menorP_E1 = maior, menorE1_E2 = maior, menorE2_C = maior, menor;
-    int tempoMin, tempoMinP_E1, tempoMinE1_E2, tempoMinE2_C;
-    float tempoSec, tempoSecP_E1, tempoSecE1_E2, tempoSecE2_C;
+    int tempoMin[nEtapas], menorTempoMin;
+    float menores[nEtapas], totalTempo = 0, tempoSec[nEtapas], menorTempoSec;
+
+    for (int i = 0; i < nEtapas; i++)
+    {
+        menores[i] = maior;
+    }
     for (int i = 0; i < nTotal; i++)
     {
-
-        if ((strcmp(tempos[i].etapaI, "P") == 0) && (strcmp(tempos[i].etapaF, "E1") == 0))
+        for (int j = 0; j < nEtapas; j++)
         {
-            if ((tempos[i].tempo < menorP_E1) && (tempos[i].tempo != 0))
-            {
-                menorP_E1 = tempos[i].tempo;
-            }
-        }
-        else if ((strcmp(tempos[i].etapaI, "E1") == 0) && (strcmp(tempos[i].etapaF, "E2") == 0))
-        {
-
-            if ((tempos[i].tempo < menorE1_E2) && (tempos[i].tempo != 0))
-            {
-                menorE1_E2 = tempos[i].tempo;
-            }
-        }
-        else if ((strcmp(tempos[i].etapaI, "E2") == 0) && (strcmp(tempos[i].etapaF, "C") == 0))
-        {
-
-            if ((tempos[i].tempo < menorE2_C) && (tempos[i].tempo != 0))
-            {
-                menorE2_C = tempos[i].tempo;
-            }
+            if (strcmp(tempos[i].etapaI, etapas[j].etapaNome) == 0 && tempos[i].tempo < menores[j])
+                menores[j] = tempos[i].tempo;
         }
     }
-    menor = menorP_E1 + menorE1_E2 + menorE2_C;
     //vamos transformar o tempo em minutos
-    tempoMinP_E1 = (menorP_E1 / 1000) / 60;
-    tempoMinE1_E2 = (menorE1_E2 / 1000) / 60;
-    tempoMinE2_C = (menorE2_C / 1000) / 60;
-    tempoMin = (menor / 1000) / 60;
+    for (int i = 0; i <= nEtapas; i++)
+    {
+        totalTempo += menores[i];
+        tempoMin[i] = (menores[i] / 1000) / 60;
+        tempoSec[i] = ((float)menores[i] / (float)1000) - (tempoMin[i] * 60);
+    }
 
-    //transformar o tempo em segundos e milésimos
-    tempoSecP_E1 = ((float)menorP_E1 / (float)1000) - (tempoMinP_E1 * 60);
-    tempoSecE1_E2 = ((float)menorE1_E2 / (float)1000) - (tempoMinE1_E2 * 60);
-    tempoSecE2_C = ((float)menorE2_C / (float)1000) - (tempoMinE2_C * 60);
-    tempoSec = ((float)menor / (float)1000) - (tempoMin * 60);
+    menorTempoMin = (totalTempo / 1000) / 60;
+    menorTempoSec = ((float)totalTempo / (float)1000) - (menorTempoMin * 60);
+    for (int i = 0, a = 0; i < nEtapas; i++)
+    {
+        a = i + 1;
+        if (i == 0)
+            printf("\nMenor tempo possivel(Partida-Etapa1):%d:%.3f", tempoMin[i], tempoSec[i]);
+        else if (i == nEtapas - 1)
+            printf("\nMenor tempo possivel(Etapa%d-Chegada):%d:%.3f", i, tempoMin[i], tempoSec[i]);
+        else
+            printf("\nMenor tempo possivel(Etapa%d-Etapa%d):%d:%.3f", i, a, tempoMin[i], tempoSec[i]);
+    }
 
-    printf("\nMenor tempo possivel(Partida-Etapa1):%d:%.3f", tempoMinP_E1, tempoSecP_E1);
-    printf("\nMenor tempo possivel(Etapa1-Etapa2):%d:%.3f", tempoMinE1_E2, tempoSecE1_E2);
-    printf("\nMenor tempo possivel(Etapa2-Chegada):%d:%.3f", tempoMinE2_C, tempoSecE2_C);
-    printf("\nMenor tempo possivel:%d:%.2f", tempoMin, tempoSec);
+    printf("\nMenor tempo possivel:%d:%.2f", menorTempoMin, menorTempoSec);
 }
 
-void velocidadesMedias(DISTANCIAS *distancias, int nEtapas, int *medTempos)
+void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int aprovados, int *medTempos)
 {
-    float distanciaP_E1, distanciaE1_E2, distanciaE2_C, distancia, medias[nEtapas], tempoP_E1, tempoE1_E2, tempoE2_C, tempo;
-    //verificar todas as distancias e guardar em variaveis
-    for (int j = 0; j < nEtapas; j++)
+    float dEtapas[nEtapas], medias[nEtapas], tempo[nEtapas], totalDist, totalTempo;
+
+    //verificar todas as distancias e guardar em vetor relembrando que o ficheiro estará organizado
+    for (int i = 0; i < nEtapas; i++)
     {
-        if ((strcmp(distancias[j].etapaI, "P") == 0) && (strcmp(distancias[j].etapaF, "E1") == 0))
+        for (int j = 0; j < nEtapas; j++)
         {
-            distanciaP_E1 = distancias[j].distancia;
-        }
-        else if ((strcmp(distancias[j].etapaI, "E1") == 0) && (strcmp(distancias[j].etapaF, "E2") == 0))
-        {
-            distanciaE1_E2 = distancias[j].distancia;
-        }
-        else
-        {
-            distanciaE2_C = distancias[j].distancia;
+            if (strcmp(distancias[i].etapaI, etapas[j].etapaNome) == 0)
+            {
+                dEtapas[i] = distancias[i].distancia;
+                totalDist += distancias[i].distancia;
+            }
         }
     }
-    distancia = distanciaP_E1 + distanciaE1_E2 + distanciaE2_C;
-
     //transformar o tempo em segundos
-    tempoP_E1 = (float)medTempos[0] / (float)1000;
-    tempoE1_E2 = (float)medTempos[1] / (float)1000;
-    tempoE2_C = (float)medTempos[2] / (float)1000;
-    tempo = (float)medTempos[3] / (float)1000;
+    for (int i = 0; i < nEtapas; i++)
+    {
+        tempo[i] = (float)medTempos[i] / (float)1000;
+        totalTempo += tempo[i];
+    }
 
     //velocidade media é igual à distancia percorrida a dividir pelo tempo demorado
-    medias[0] = distanciaP_E1 / tempoP_E1;
-    medias[1] = distanciaE1_E2 / tempoE1_E2;
-    medias[2] = distanciaE2_C / tempoE2_C;
-    medias[3] = distancia / tempo;
+    for (int i = 0; i < nEtapas; i++)
+    {
+        medias[i] = dEtapas[i] / tempo[i];
+    }
+    for (int i = 0, a = 0; i < nEtapas; i++)
+    {
+        a = i + 1;
+        if (i == 0)
+            printf("\nVelocidade Media (Partida-Etapa1):%.2fm/s", medias[i]);
+        else if (i == nEtapas - 1)
+            printf("\nVelocidade Media (Etapa%d-Chegada):%.2fm/s", i, medias[i]);
+        else
+            printf("\nVelocidade Media (Etapa%d-Etapa%d):%.2fm/s", i, a, medias[i]);
+    }
 
-    printf("\nVelocidade Media (Partida-Etapa1):%.2fm/s", medias[0]);
-    printf("\nVelocidade Media (Etapa1-Etapa2):%.2fm/s", medias[1]);
-    printf("\nVelocidade Media (Etapa2-Chegada):%.2fm/s", medias[2]);
-    printf("\nVelocidade Media (Total):%.2fm/s", medias[3]);
+    printf("\nVelocidade Media (Partida-Chegada):%.2fm/s", totalDist / totalTempo);
 }
 
 void tabelaClassificativa(PROVA *prova, int nPilotos)
@@ -525,7 +572,7 @@ void tabelaClassificativa(PROVA *prova, int nPilotos)
     printf("\n-----------------------------------------------------------------------------------------------------------------");
 }
 
-void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova, int nTotal, int nPilotos, int nEtapas, int aprovados)
+void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova, ETAPAS *etapas, int nTotal, int nPilotos, int nEtapas, int aprovados)
 {
     int escolha, medTempos[nEtapas], pilotosAprv[aprovados], numExtremos[1], maiorNum, menorNum;
     printf("\n**************************************************");
@@ -551,7 +598,7 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
         getchar();
         break;
     case 2:
-        printf("\nExistem %d concorrentes com prova valida!", verificaProva(tempos, nTotal, pilotosAprv));
+        printf("\nExistem %d concorrentes com prova valida!", verificaProva(tempos, nTotal, pilotosAprv, nEtapas));
         fflush(stdin);
         printf("\n(Enter)");
         getchar();
@@ -563,13 +610,18 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
         getchar();
         break;
     case 4:
-        verificaProva(tempos, nTotal, pilotosAprv);
-        medTemposEtapa(tempos, nTotal, pilotosAprv, medTempos, aprovados);
-
-        printf("\nMedia tempos entre Partida e Etapa1 : %d:%.3f", (medTempos[0] / 1000) / 60, ((float)medTempos[0] / (float)1000) - ((medTempos[0] / 1000) / 60) * 60);
-        printf("\nMedia tempos entre Etapa2 e Etapa1 : %d:%.3f", (medTempos[1] / 1000) / 60, ((float)medTempos[1] / (float)1000) - ((medTempos[1] / 1000) / 60) * 60);
-        printf("\nMedia tempos entre Etapa1 e Chegada : %d:%.3f", (medTempos[2] / 1000) / 60, ((float)medTempos[2] / (float)1000) - ((medTempos[2] / 1000) / 60) * 60);
-        printf("\nMedia tempos Total : %d:%.3f", (medTempos[3] / 1000) / 60, ((float)medTempos[3] / (float)1000) - ((medTempos[3] / 1000) / 60) * 60);
+        verificaProva(tempos, nTotal, pilotosAprv, nEtapas);
+        medTemposEtapa(tempos, etapas, nTotal, pilotosAprv, medTempos, aprovados, nEtapas);
+        for (int i = 0, a = 0; i < nEtapas; i++)
+        {
+            a = i + 1;
+            if (i == 0)
+                printf("\nMedia tempos entre Partida e Etapa%d : %d:%.3f", a, (medTempos[i] / 1000) / 60, ((float)medTempos[i] / (float)1000) - ((medTempos[i] / 1000) / 60) * 60);
+            else if (i == nEtapas - 1)
+                printf("\nMedia tempos entre Etapa%d e Chegada : %d:%.3f", a, (medTempos[i] / 1000) / 60, ((float)medTempos[i] / (float)1000) - ((medTempos[i] / 1000) / 60) * 60);
+            else
+                printf("\nMedia tempos entre Etapa%d e Etapa%d : %d:%.3f", i, a, (medTempos[i] / 1000) / 60, ((float)medTempos[i] / (float)1000) - ((medTempos[i] / 1000) / 60) * 60);
+        }
         fflush(stdin);
         printf("\n(Enter)");
         getchar();
@@ -596,15 +648,15 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
     case 6:
         extremos(prova, nPilotos, numExtremos);
         maiorNum = numExtremos[0];
-        menorTempo(tempos, nTotal, prova[maiorNum].tempoProva);
+        menorTempo(tempos, etapas, nTotal, prova[maiorNum].tempoProva, nEtapas);
         fflush(stdin);
         printf("\n(Enter)");
         getchar();
         break;
     case 7:
-        verificaProva(tempos, nTotal, pilotosAprv);
-        medTemposEtapa(tempos, nTotal, pilotosAprv, medTempos, aprovados);
-        velocidadesMedias(distancias, nEtapas, medTempos);
+        verificaProva(tempos, nTotal, pilotosAprv, nEtapas);
+        medTemposEtapa(tempos, etapas, nTotal, pilotosAprv, medTempos, aprovados, nEtapas);
+        velocidadesMedias(distancias, etapas, nEtapas, aprovados, medTempos);
         fflush(stdin);
         printf("\n(Enter)");
         getchar();
@@ -625,17 +677,32 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
         getchar();
         break;
     }
-    menu(tempos, pilotos, distancias, prova, nTotal, nPilotos, nEtapas, aprovados);
+    menu(tempos, pilotos, distancias, prova, etapas, nTotal, nPilotos, nEtapas, aprovados);
 }
 
 void main()
 {
     int n[1], nTotal, nEtapas, nPilotos, aprovados;
+
     Etapas(n);
 
     //valores q estão no começo do ficheiro tempos.txt com as informações dos Pilotos e Etapas
     nEtapas = n[0];
     nPilotos = n[1];
+    ETAPAS nomeEtapas[nEtapas];
+    for (int i = 0; i < nEtapas; i++)
+    {
+        char nome[3] = {'P', '\0'};
+        if (i == 0)
+        {
+            strcpy(nomeEtapas[i].etapaNome, nome);
+        }
+        else
+        {
+            sprintf(nome, "%c%d", 'E', i);
+            strcpy(nomeEtapas[i].etapaNome, nome);
+        }
+    }
 
     //o total de etapas que têm de estar registadas é o numero de etapas a multiplicar pelo
     //numero de pilotos que está no ficheiro
@@ -648,6 +715,7 @@ void main()
     //Carregamento das distancias das etapas para o vetor da estrutura DISTANCIAS
     DISTANCIAS distancias[nEtapas];
     loadDistancias(distancias);
+    arrumarVetor(distancias, nEtapas);
 
     //carregamento das informações dos pilotos para o vetor da estrutura PILOTO
     nPilotos = nPilotosCount();
@@ -655,7 +723,7 @@ void main()
     loadPilotos(pilotos);
 
     PROVA prova[nPilotos];
-    loadProva(prova, tempos, pilotos, nTotal, nPilotos);
-    aprovados = loadVerificaProva(tempos, nTotal);
-    menu(tempos, pilotos, distancias, prova, nTotal, nPilotos, nEtapas, aprovados);
+    loadProva(prova, tempos, pilotos, nTotal, nPilotos, nEtapas);
+    aprovados = loadVerificaProva(tempos, nTotal, nEtapas);
+    menu(tempos, pilotos, distancias, prova, nomeEtapas, nTotal, nPilotos, nEtapas, aprovados);
 }
