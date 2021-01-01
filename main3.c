@@ -43,19 +43,20 @@ typedef struct infoDistancias
     float distancia;
 } DISTANCIAS;
 
-int nPilotosCount();                                                                                                                                    //contagem do numero de pilotos registados no ficheiro pilotos.txt
-void Etapas(int *n);                                                                                                                                    //função que retira os valores no começo do ficheiro de tempos.txt e guarda em duas posições do vetor n, sendo n[0]<-nEtapas,n[1]<-nPilotos
-void loadTempos(TEMPOS *etapa);                                                                                                                         //carregamento das informações do ficheiro tempos.txt para uma estrutura que guarda os tempos, saltando os valores iniciais a frente
-void loadDistancias(DISTANCIAS *distancias);                                                                                                            //carregamento das informações do distancias.txt para o struck DISTANCIAS
-void loadPilotos(PILOTO *piloto);                                                                                                                       //carregamento das informações ds pilotos.txt para o struct PILoTOS
-int nPilotosCount();                                                                                                                                    //contagem de pilotos contidos no ficheiro pilotos.txt
-int verificaProva(TEMPOS *tempos, int n, int *aprovados, int nEtapas);                                                                                  //verificação de quantos pilotos têm prova valida
-void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int n, int nPilotos, int nEtapa);                                                          //carregamenteo das informações dos vários structs para um struct final contento informação da prova por completo
-void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados);                                                                                       //ordenção e amostra dos tempos por ordem descendente
-void medTemposEtapa(TEMPOS *tempos, ETAPAS *etapas, int n, int *aprovados, int *medTempos, int nAprovados, int nEtapas);                                //media de tempos por etapa
-void extremos(PROVA *prova, int nPilotos, int *tempoExtremos);                                                                                          //Amostra do piloto mais rapido e mais lento
-void menorTempo(TEMPOS *tempos, ETAPAS *etapas, int nTotal, int maior, int nEtapas);                                                                    //Amostra do menor tempo possivel para realizar a prova
-void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int aprovados, int *medTempos);                                             //Amostra das velocidades medias da prova
+int nPilotosCount();                                                                                                     //contagem do numero de pilotos registados no ficheiro pilotos.txt
+void Etapas(int *n);                                                                                                     //função que retira os valores no começo do ficheiro de tempos.txt e guarda em duas posições do vetor n, sendo n[0]<-nEtapas,n[1]<-nPilotos
+void loadTempos(TEMPOS *etapa, char *nomeProva);                                                                         //carregamento das informações do ficheiro tempos.txt para uma estrutura que guarda os tempos, saltando os valores iniciais a frente
+void loadDistancias(DISTANCIAS *distancias, char *nomeProva);                                                            //carregamento das informações do distancias.txt para o struck DISTANCIAS
+void loadPilotos(PILOTO *piloto, char *nomeProva);                                                                       //carregamento das informações ds pilotos.txt para o struct PILoTOS
+void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int n, int nPilotos, int nEtapa);                           //carregamenteo das informações dos vários structs para um struct final contento informação da prova por completo
+int nPilotosCount();                                                                                                     //contagem de pilotos contidos no ficheiro pilotos.txt
+int verificaProva(TEMPOS *tempos, int n, int *aprovados, int nEtapas);                                                   //verificação de quantos pilotos têm prova valida
+void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados);                                                        //ordenção e amostra dos tempos por ordem descendente
+void medTemposEtapa(TEMPOS *tempos, ETAPAS *etapas, int n, int *aprovados, int *medTempos, int nAprovados, int nEtapas); //media de tempos por etapa
+void extremos(PROVA *prova, int nPilotos, int *tempoExtremos);                                                           //Amostra do piloto mais rapido e mais lento
+void menorTempo(TEMPOS *tempos, ETAPAS *etapas, int nTotal, int maior, int nEtapas);                                     //Amostra do menor tempo possivel para realizar a prova
+void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int aprovados, int *medTempos);              //Amostra das velocidades medias da prova
+void loadTudo(char *nomeProva);
 void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova, ETAPAS *etapas, int nTotal, int nPilotos, int nEtapas, int aprovados); //Menu principal do programa
 
 void arrumarVetor(DISTANCIAS *distancias, int nEtapas)
@@ -113,53 +114,122 @@ void Etapas(int *n)
     fclose(f);
 }
 
-void loadTempos(TEMPOS *etapa)
+void loadTempos(TEMPOS *etapa, char *nomeProva)
 {
 
     FILE *f;
     int res, i = 0;
-    f = fopen("tempos.txt", "r");
-    fseek(f, sizeof(int), SEEK_SET); //saltar a primeira linha a frente
-    //enquanto tiver o que ler, vai ler
-    while (res != EOF)
+    char prova[30];
+    strcpy(prova, nomeProva);
+    strcat(prova, "/tempos.txt");
+
+    if (f = fopen(prova, "r"))
     {
-        res = fscanf(f, "%d;%[^;];%[^;];%d\n", &etapa[i].num, etapa[i].etapaI, etapa[i].etapaF, &etapa[i].tempo);
-        i++;
+        fseek(f, sizeof(int), SEEK_SET); //saltar a primeira linha a frente
+        //enquanto tiver o que ler, vai ler
+        while (res != EOF)
+        {
+            res = fscanf(f, "%d;%[^;];%[^;];%d\n", &etapa[i].num, etapa[i].etapaI, etapa[i].etapaF, &etapa[i].tempo);
+            i++;
+        }
+        fclose(f);
     }
-    fclose(f);
+    else
+    {
+        fflush(stdin);
+        printf("\nFicheiro nao existe!");
+        printf("\nIntroduza o nome da pasta da prova: ");
+        scanf("%s", prova);
+        loadTudo(prova);
+    }
 }
 
-void loadDistancias(DISTANCIAS *distancias)
+void loadDistancias(DISTANCIAS *distancias, char *nomeProva)
 {
     FILE *f;
     int res, i = 0;
-    f = fopen("distancias.txt", "r");
-    //ler o ficheiro até a função encontrar o fim do ficheiro
-    while (res != EOF)
-    {
-        //%[^;]->ler todos os carateres até encontrar o caracter ';'
-        res = fscanf(f, "%[^;];%[^;];%f\n", distancias[i].etapaI, distancias[i].etapaF, &distancias[i].distancia);
+    char prova[30];
+    strcpy(prova, nomeProva);
+    strcat(prova, "/distancias.txt");
 
-        i++;
+    if (f = fopen(prova, "r"))
+    {
+        //enquanto tiver o que ler, vai ler
+        while (res != EOF)
+        {
+            res = fscanf(f, "%[^;];%[^;];%f\n", distancias[i].etapaI, distancias[i].etapaF, &distancias[i].distancia);
+            i++;
+        }
+        fclose(f);
     }
-    fclose(f);
+    else
+    {
+        fflush(stdin);
+        printf("\nFicheiro nao existe!");
+        printf("\nIntroduza o nome da pasta da prova: ");
+        scanf("%s", prova);
+        loadTudo(prova);
+    }
 }
 
-void loadPilotos(PILOTO *piloto)
+void loadPilotos(PILOTO *piloto, char *nomeProva)
 {
     FILE *f;
     int res, i = 0;
-    f = fopen("pilotos.txt", "r");
+    char prova[30];
+    strcpy(prova, nomeProva);
+    strcat(prova, "/pilotos.txt");
 
-    //ler o ficheiro até a função encontrar o fim do ficheiro
-    while (res != EOF)
+    if (f = fopen(prova, "r"))
     {
-        //%[^;]->ler todos os carateres até encontrar o caracter ';'
-        res = fscanf(f, "%d;%[^;];%[^\n]\n", &piloto[i].num, piloto[i].nome, piloto[i].carro);
-
-        i++;
+        //enquanto tiver o que ler, vai ler
+        while (res != EOF)
+        {
+            res = fscanf(f, "%d;%[^;];%[^\n]\n", &piloto[i].num, piloto[i].nome, piloto[i].carro);
+            i++;
+        }
+        fclose(f);
     }
-    fclose(f);
+    else
+    {
+        fflush(stdin);
+        printf("\nFicheiro nao existe!");
+        printf("\nIntroduza o nome da pasta da prova: ");
+        scanf("%s", prova);
+        loadTudo(prova);
+    }
+}
+
+void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int n, int nPilotos, int nEtapa)
+{
+
+    for (int i = 0; i <= nPilotos; i++)
+    {
+        int tempoTotal = 0, contador = 0;
+        prova[i].piloto.num = piloto[i].num;
+        for (int j = 0; j <= n; j++)
+        {
+            //verificar se existe mais numeros iguais e somar o contador
+            if (piloto[i].num == tempos[j].num)
+            {
+                tempoTotal += tempos[j].tempo; //se houver um numero igual o tempo desse numero tem de ser somado ao tempoTotal
+                contador++;
+            }
+        }
+        //encontrar o piloto com o numero do piloto com prova valida
+        strcpy(prova[i].piloto.nome, piloto[i].nome);   //copia do nome do piloto
+        strcpy(prova[i].piloto.carro, piloto[i].carro); //copia do carro do piloto
+        prova[i].tempoProva = tempoTotal;               //copia do tempo total de prova para o struct
+        if (contador == nEtapa)
+        {
+            prova[i].aprovado = 1; //se tiver todas as etapas registadas está aprovado
+        }
+        else
+        {
+            prova[i].aprovado = 0; //senão não está aprovado
+        }
+        contador = 0;
+    }
 }
 
 int nPilotosCount()
@@ -223,38 +293,6 @@ int loadVerificaProva(TEMPOS *tempos, int n, int nEtapas)
         contador = 0;
     }
     return contadorPilotos;
-}
-
-void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int n, int nPilotos, int nEtapa)
-{
-
-    for (int i = 0; i <= nPilotos; i++)
-    {
-        int tempoTotal = 0, contador = 0;
-        prova[i].piloto.num = piloto[i].num;
-        for (int j = 0; j <= n; j++)
-        {
-            //verificar se existe mais numeros iguais e somar o contador
-            if (piloto[i].num == tempos[j].num)
-            {
-                tempoTotal += tempos[j].tempo; //se houver um numero igual o tempo desse numero tem de ser somado ao tempoTotal
-                contador++;
-            }
-        }
-        //encontrar o piloto com o numero do piloto com prova valida
-        strcpy(prova[i].piloto.nome, piloto[i].nome);   //copia do nome do piloto
-        strcpy(prova[i].piloto.carro, piloto[i].carro); //copia do carro do piloto
-        prova[i].tempoProva = tempoTotal;               //copia do tempo total de prova para o struct
-        if (contador == nEtapa)
-        {
-            prova[i].aprovado = 1; //se tiver todas as etapas registadas está aprovado
-        }
-        else
-        {
-            prova[i].aprovado = 0; //senão não está aprovado
-        }
-        contador = 0;
-    }
 }
 
 void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados)
@@ -575,6 +613,7 @@ void tabelaClassificativa(PROVA *prova, int nPilotos)
 void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova, ETAPAS *etapas, int nTotal, int nPilotos, int nEtapas, int aprovados)
 {
     int escolha, medTempos[nEtapas], pilotosAprv[aprovados], numExtremos[1], maiorNum, menorNum;
+    char nomeProva[30];
     printf("\n**************************************************");
     printf("\n** 1 - Numero de pilotos\t\t\t**");
     printf("\n** 2 - Numero de pilotos com prova valida\t**");
@@ -584,7 +623,8 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
     printf("\n** 6 - Menor tempo possivel de realizar a prova\t**");
     printf("\n** 7 - Media de velocidades \t\t\t**");
     printf("\n** 8 - Tabela classificativa da prova\t\t**");
-    printf("\n** 9 - Sair\t\t\t\t\t**");
+    printf("\n** 9 - Trocar de prova\t\t\t\t**");
+    printf("\n** 10 - Sair\t\t\t\t\t**");
     printf("\n**************************************************");
     printf("\n escolha: ");
     scanf("%d", &escolha);
@@ -668,6 +708,11 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
         getchar();
         break;
     case 9:
+        printf("Introduza o nome da pasta da prova: ");
+        scanf("%s", nomeProva);
+        loadTudo(nomeProva);
+        break;
+    case 10:
         return;
         break;
     default:
@@ -680,10 +725,9 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
     menu(tempos, pilotos, distancias, prova, etapas, nTotal, nPilotos, nEtapas, aprovados);
 }
 
-void main()
+void loadTudo(char *nomeProva)
 {
     int n[1], nTotal, nEtapas, nPilotos, aprovados;
-
     Etapas(n);
 
     //valores q estão no começo do ficheiro tempos.txt com as informações dos Pilotos e Etapas
@@ -710,20 +754,29 @@ void main()
 
     //carregamento dos tempos para o vetor da estrutura TEMPOS
     TEMPOS tempos[nTotal];
-    loadTempos(tempos);
+    loadTempos(tempos, nomeProva);
 
     //Carregamento das distancias das etapas para o vetor da estrutura DISTANCIAS
     DISTANCIAS distancias[nEtapas];
-    loadDistancias(distancias);
+    loadDistancias(distancias, nomeProva);
     arrumarVetor(distancias, nEtapas);
 
     //carregamento das informações dos pilotos para o vetor da estrutura PILOTO
     nPilotos = nPilotosCount();
     PILOTO pilotos[nPilotos];
-    loadPilotos(pilotos);
+    loadPilotos(pilotos, nomeProva);
 
     PROVA prova[nPilotos];
     loadProva(prova, tempos, pilotos, nTotal, nPilotos, nEtapas);
     aprovados = loadVerificaProva(tempos, nTotal, nEtapas);
     menu(tempos, pilotos, distancias, prova, nomeEtapas, nTotal, nPilotos, nEtapas, aprovados);
+}
+
+void main()
+{
+
+    char nomeProva[30];
+    printf("Introduza o nome da pasta da prova: ");
+    scanf("%s", nomeProva);
+    loadTudo(nomeProva);
 }
