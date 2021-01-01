@@ -20,13 +20,14 @@ typedef struct infoPiloto
 typedef struct infoProva
 {
     PILOTO piloto;
-    int tempoProva;
+    long int tempoProva;
     int aprovado;
 } PROVA;
 
 typedef struct infotempos
 {
-    int num, tempo;
+    int num;
+    long int tempo;
     char etapaI[3]; //Etapa inicial
     char etapaF[3]; //Etapa Final
 } TEMPOS;
@@ -391,7 +392,7 @@ void menorTempo(TEMPOS *tempos, int nTotal, int maior)
 
 void velocidadesMedias(DISTANCIAS *distancias, int nEtapas, int *medTempos)
 {
-    float distanciaP_E1, distanciaE1_E2, distanciaE2_C, distancia, medias[nEtapas], tempoP_E1, tempoE1_E2, tempoE2_C, tempo;
+    double distanciaP_E1, distanciaE1_E2, distanciaE2_C, distancia, medias[nEtapas], tempoP_E1, tempoE1_E2, tempoE2_C, tempo;
     //verificar todas as distancias e guardar em variaveis
     for (int j = 0; j < nEtapas; j++)
     {
