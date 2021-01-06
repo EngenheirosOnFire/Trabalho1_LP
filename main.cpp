@@ -10,41 +10,79 @@
 #include <stdlib.h>
 #define _CRT_SECURE_NO_WARNINGS
 
+///Estrutura que guarda informações sobre os pilotos
+///@param num ➔ numero do piloto
+///@param nome ➔ nome do piloto
+///@param carro ➔ carro do piloto
 typedef struct infoPiloto
 {
+    ///Esta variavel indica o numero do piloto
     int num;
+    ///Esta variavel guarda o nome do piloto
+    ///@note Foi dado aos vetores nome e carro tamanho 50 para assim ser possivel colocar qualquer tamanho de nomes nos mesmos
     char nome[50];
+    ///Esta variavel guarda o carro do piloto
+    ///@note Foi dado aos vetores nome e carro tamanho 50 para assim ser possivel colocar qualquer tamanho de nomes nos mesmos
     char carro[50];
 } PILOTO;
 
+///Estrutura que guarda informações de toda a prova
+///@param piloto ➔ Variável que guarda as informações dos pilotos
+///@param tempoProva ➔ Tempo total de prova
+///@param aprovado ➔ Variavél que guarda se o piloto está aprovado ou não
 typedef struct infoProva
 {
+    ///Variável do tipo **PILOTO**, esta variável vai conter todas as informações do piloto, pois é do tipo **struct infoPiloto**
+    ///@see infoPiloto
     PILOTO piloto;
+    ///Variável do tipo inteiro para guardar o tempo total de prova
+    ///@note É do tipo **long int** pois o numero pode ficar grande demais para a liguagem pois c tem um limite maximo de numero
     long int tempoProva;
+    ///Variável do tipo int para guardar se o piltoo foi aprovado ou não
+    ///@note **aprovado** varia entre 0 e 1,(0➔reprovado,1➔aprovado)
     int aprovado;
 } PROVA;
-
+///Estrutura que guarda os nomes das etapas todas
+///@param etapaNome ➔ Variável que guarda o nome das etapas
 typedef struct infoEtapas
 {
+    ///Variável do tipo char para guardar o nome das etapas
+    ///@note O tamanho é 3 pois precisa de guardar 'E' '1' e '\0' logo tem de ter 4 espaços reservados e não apenas 3
     char etapaNome[3]; //Etapa inicial
 } ETAPAS;
-
+///Estrutura que guarda informações de toda a prova
+///@param num ➔ Variável que guarda o numero referente ao numero do piloto
+///@param tempo ➔ Tempo que o piloto demorou a realizar a etapa
+///@param etapaI ➔ Variável que guarda o nome da etapa inical
+///@param etapaF ➔ Variável que guarda o nome da etapa final
+///@note os tempos são dados de acordo com (E1;E2) daí ter etapa inicial e etapa final
 typedef struct infotempos
 {
+    ///Variável que guarda o numero do piloto que realizou esta etapa
     int num;
+    ///Variável que guarda o tempo que o piloto demorou a realizar esta etapa
     long int tempo;
+    ///Variável que guarda a etapa inicial
     char etapaI[3]; //Etapa inicial
+    ///Variável que guarda a etapa final
     char etapaF[3]; //Etapa Final
 } TEMPOS;
 
+///Estrutura que guarda informações de toda a prova
+///@param etapaI ➔ Variavél que guarda o nome da etapa inical
+///@param etapaF ➔ Variavél que guarda o nome da etapa final
+///@param distancia ➔ Variavel que guarda a distancia da etapa
+///@note os tempos são dados de acordo com (E1;E2) daí ter etapa inicial e etapa final
 typedef struct infoDistancias
 {
+    ///Variável que guarda a etapa inicial
     char etapaI[3]; //Etapa inicial
+    ///Variável que guarda a etapa final
     char etapaF[3]; //Etapa Final
+    ///Variável do tipo **float** pois é necessário guardar os centimetros também, não só os metros como inteiro
     float distancia;
 } DISTANCIAS;
 
-int nPilotosCount();                                                                                                     //contagem do numero de pilotos registados no ficheiro pilotos.txt
 void Etapas(int *n, char *nomeProva);                                                                                    //função que retira os valores no começo do ficheiro de tempos.txt e guarda em duas posições do vetor n, sendo n[0]<-nEtapas,n[1]<-nPilotos
 void loadTempos(TEMPOS *etapa, char *nomeProva);                                                                         //carregamento das informações do ficheiro tempos.txt para uma estrutura que guarda os tempos, saltando os valores iniciais a frente
 void loadDistancias(DISTANCIAS *distancias, char *nomeProva);                                                            //carregamento das informações do distancias.txt para o struck DISTANCIAS
@@ -60,6 +98,14 @@ void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int 
 void loadTudo(char *nomeProva);
 void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova, ETAPAS *etapas, int nTotal, int nPilotos, int nEtapas, int aprovados, char *nomeProva); //Menu principal do programa
 
+///Esta função organiza o vetor distancias
+/**   @brief Esta função coloca primeiramente a etapa partida na primeira posição do vetor ou seja a posição 0 para depois organizar o restante vetor.
+*     @brief Para organizar o restante vetor é retirado momentaneamente de cada etapa iniciada por 'E' o caracter 'E' para assim organizar por numeros de etapa
+*     @brief Foi necessário criar variáveis auxiliares para guardar os valores contidos numa das posições do vetor, neste caso do i pois os valores de i vão ser substituidos pelos de j perdendo assim os valores
+*     @param auxDist ➔ variavel auxiliar para guardar a distancia 
+*     @param auxEtapaI ➔ variavel auxiliar para guardar o nome da etapa inicial 
+*     @param auxEtapaF ➔ variavel auxiliar para guardar o nome da etapa inicial 
+*/
 void arrumarVetor(DISTANCIAS *distancias, int nEtapas)
 {
     int auxDist;
@@ -91,9 +137,9 @@ void arrumarVetor(DISTANCIAS *distancias, int nEtapas)
             char *ptr1 = strtok(distancias[i].etapaI, ch1);
             if (ptr > ptr1)
             {
-                strcpy(auxEtapaI, distancias[j].etapaI);
-                strcpy(auxEtapaF, distancias[j].etapaF);
-                auxDist = distancias[j].distancia;
+                strcpy(auxEtapaI, distancias[i].etapaI);
+                strcpy(auxEtapaF, distancias[i].etapaF);
+                auxDist = distancias[i].distancia;
 
                 strcpy(distancias[i].etapaI, distancias[j].etapaI);
                 strcpy(distancias[i].etapaF, distancias[j].etapaF);
@@ -107,6 +153,7 @@ void arrumarVetor(DISTANCIAS *distancias, int nEtapas)
     }
 }
 
+///Esta le apenas a primeira linha do ficheiro etapas
 void Etapas(int *n, char *nomeProva)
 {
     FILE *f;
@@ -547,14 +594,21 @@ void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int 
     printf("\nVelocidade Media (Partida-Chegada):%.2fm/s", totalDist / totalTempo);
 }
 
-void tabelaClassificativa(PROVA *prova, int nPilotos)
+void tabelaClassificativa(PROVA *prova, int nPilotos, char *nomeProva)
 {
     int auxNum, auxTempo, auxApr, tempoMin, diTempoLdr, diTempoAnt, tempoLdr;
     float tempoSec, diLdr, diAnt;
-    char auxNome[30], auxCarro[30];
+    char auxNome[30], auxCarro[30], tabelaFile[50];
+    FILE *fp;
+    strcpy(tabelaFile, nomeProva);
+    strcat(tabelaFile, "/tabelaClassificativa.bin");
+    fp = fopen(tabelaFile, "wb");
     printf("\n-----------------------------------------------------------------------------------------------------------------");
     printf("\n|    Posicao\t|     Numero\t|      Nome\t|     Carro\t| Tempo de prova |    Di.Ant.    |    Di.Ldr.   |");
     printf("\n-----------------------------------------------------------------------------------------------------------------");
+    fprintf(fp, "\n-----------------------------------------------------------------------------------------------------------------");
+    fprintf(fp, "\n|    Posicao\t|     Numero\t|      Nome\t|     Carro\t| Tempo de prova |    Di.Ant.    |    Di.Ldr.   |");
+    fprintf(fp, "\n-----------------------------------------------------------------------------------------------------------------");
     //organizar de forma crescente de tempo o vetor prova
     //colocar os não aprovados no final assim facilitando a amostra dos pilotos afrente a realizar
     for (int i = 0; i < nPilotos; i++)
@@ -605,6 +659,7 @@ void tabelaClassificativa(PROVA *prova, int nPilotos)
                 a++;
                 //apenas colocar os ultimos valores a zeros
                 printf("\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %2d:%.3f   |\t0\t |\t0\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
+                fprintf(fp, "\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %2d:%.3f   |\t0\t |\t0\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
                 //guardar o tempo do lider em ms
                 tempoLdr = prova[i].tempoProva;
             }
@@ -628,6 +683,7 @@ void tabelaClassificativa(PROVA *prova, int nPilotos)
                 a++;
                 //mostrar as informações do piloto
                 printf("\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %2d:%6.3f   |     %.3f\t |    %.3f\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
+                fprintf(fp, "\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %2d:%6.3f   |     %.3f\t |    %.3f\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
             }
         }
     }
@@ -638,10 +694,13 @@ void tabelaClassificativa(PROVA *prova, int nPilotos)
         {
             //informações dos pilotos que não fizeram a prova por completo
             printf("\n|\t-\t|\t%d\t| %10s\t| %10s\t|\t-\t |\t-\t |\t-\t|", prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro);
+            fprintf(fp, "\n|\t-\t|\t%d\t| %10s\t| %10s\t|\t-\t |\t-\t |\t-\t|", prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro);
         }
     }
 
     printf("\n-----------------------------------------------------------------------------------------------------------------");
+    fprintf(fp, "\n-----------------------------------------------------------------------------------------------------------------");
+    fclose(fp);
 }
 
 void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova, ETAPAS *etapas, int nTotal, int nPilotos, int nEtapas, int aprovados, char *nomeProva)
@@ -736,7 +795,7 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
         getchar();
         break;
     case 8:
-        tabelaClassificativa(prova, nPilotos);
+        tabelaClassificativa(prova, nPilotos, nomeProva);
         fflush(stdin);
         printf("\n(Enter)");
         getchar();
@@ -807,11 +866,12 @@ void loadTudo(char *nomeProva)
     menu(tempos, pilotos, distancias, prova, nomeEtapas, nTotal, nPilotos, nEtapas, aprovados, nomeProva);
 }
 
-void main()
+int main()
 {
 
     char nomeProva[30];
     printf("Introduza o nome da pasta da prova: ");
     scanf("%s", nomeProva);
     loadTudo(nomeProva);
+    return 0;
 }
