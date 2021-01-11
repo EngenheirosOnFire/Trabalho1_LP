@@ -1093,6 +1093,9 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
 }
 
 ///Esta função tem como objetivo realizar o carregamento das informações do ficheiro
+/**
+ * @brief Esta função vai primeiramente executar a função Etapas para obter o numero de etapas e de pilotos 
+ */
 void loadTudo(char *nomeProva)
 {
     int n[1], nTotal, nEtapas, nPilotos, aprovados;
