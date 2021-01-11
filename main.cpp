@@ -1094,11 +1094,32 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
 
 ///Esta função tem como objetivo realizar o carregamento das informações do ficheiro
 /**
- * @brief Esta função vai primeiramente executar a função Etapas para obter o numero de etapas e de pilotos 
+ * @brief Primeiramente vai ser executado a função Etapas para obter o numero de etapas e de pilotos e é passado por parametro a variavel n para guaradar os valores que depois vão igualados a variaveis e também a variavel nomeProva para se obter a pasta correta a abrir
+ * @brief É então aproveitado o facto de se saber quantas etapas são para colocar etapas no vetor nomeEtapas, para o realizar é seguido o pensamento do que 3 etapas significa que a primeira etapa 
+ * será P e as seguintes E1 e E2, aproveitando este raciocinio é criado um ciclo for que quando estamos no primeiro ciclo coloca a primeira etapa com P e nos seguintes ciclos será E+n ciclos
+ * @brief Para inicar o vetor tempos foi necessário obter o numero total de tempos a ler, mas como no ficheiro tempos a primeira linha indica a quantidade de etapas e pilotos no ficheiro então 
+ * o numero de tempos a ler é o produto do pilotos com as etapas, para então depois colocar os tempos no vetor tempos é chamada a função loadTempos e passado por parametro tempos e o nome da pasta dos ficheiros da prova
+ * @brief Para inicar o vetor distancias foi utilizado então o numero de etapas obtido na função Etapas pois contém o numero total de etapas, de seguida para se colocar informações no vetor é 
+ * executada a função loadDistancias e passado por parametro o vetor distancias e nome da pasta a abrir para aceder aos ficheiros corretos, por ultimo é realizada a organização do vetor distancias por
+ * nome da prova sendo a primeira P e as seguintes E+n, pois assim o vetor estaria organizado para o restante do código facilitando a programação do mesmo
+ * @brief Para inciar o vetor pilotos é primeiramente executada a função nPilotosCount e é igualado à variavel nPilotos para assim guardar a quantidade total de pilotos inscritos na prova na variavel nPilotos, 
+ * de seguida é então iniciado o vetor com tamanho de nPilotos e chamada a função loadPilotos na qual se passa por parametro o vetor pilotos e o nome da prova para assim se colocar os dados dentro do vetor
+ * @brief Para iniciar o vetor prova é utilizado o tamanho de nPilotos pois este vetor vai conter as informações de todos os pilotos e as informações da prova referentes aos mesmos, para inciar o vetor 
+ * é executada a função loadProva e passado por parametro os vetores prova, tempos e pilotos pois as informações dos mesmos vão ser colcadas no vetor prova, é também passado por parametro as variaveis
+ * nTotal,nPilotos e nEtapas para se saber dentro da função quais são os limites dos vetores passados
+ * @brief De seguida é contabilizado a quantiade de pilotos aprovados, foi esta ação efetuada pois para criar o vetor contendo o numero dos pilotos aprovados seria necessário o numero total de pilotos aprovados
+ * @brief É por fim encaminhado para o vetor menu todas as variaveis obtidas nesta função apra então serem utilizadas no restante código
+ * @param nomeProva ➔ variavel do tipo char cujo objetivo é guardar o nome da pasta a abrir contendo as informações da prova
+ * @param n ➔ variavel do tipo inteiro que é um vetor cujo objetivo é guaradar na posição 0 o numero de etapas da prova e na posição 1 o numero de pilotos no ficheiro tempos.txt
+ * @param nTotal ➔ variavel do tipo inteiro cujo objetivo é guardar o numero total de informações a ler no ficheiro tempos.txt
+ * @param nEtapas ➔ variavel do tipo inteiro cujo objetivo é guardar o numero de etapas existentes na prova
+ * @param nPilotos ➔ variavel do tipo inteiro cujo objetivo é guardar o numero de pilotos existentes na prova e também o numero de pilotos presentes no ficheiro tempos.txt
+ * @param aprovados ➔ variavel do tipo inteiro cujo objetivo é guardar o numero de piltos aprovados
  */
 void loadTudo(char *nomeProva)
 {
     int n[1], nTotal, nEtapas, nPilotos, aprovados;
+
     Etapas(n, nomeProva);
 
     //valores q estão no começo do ficheiro tempos.txt com as informações dos Pilotos e Etapas
@@ -1144,6 +1165,12 @@ void loadTudo(char *nomeProva)
     menu(tempos, pilotos, distancias, prova, nomeEtapas, nTotal, nPilotos, nEtapas, aprovados, nomeProva);
 }
 
+///Esta é a função principal do programa
+/**
+ * @brief esta função tem como objetivo iniciar o progama pois a mesma vai pedir ao utilizador o nome da prova a abrir que seria o nome da pasta que contém os ficheiros com informações da prova
+ * e de seguinda vai executar a função load passando por parametro o nome da prova lindo anteriormente
+ * @param nomeProva ➔ variavel do tipo char que é um vetor cujo objetivo é guardar o nome da pasta que contém as informações da prova
+ */
 int main()
 {
 
