@@ -27,6 +27,7 @@ var main_8cpp =
     [ "nPilotosCount", "main_8cpp.html#a7187cd934eba042d2333dbad12069bee", null ],
     [ "ordenaTemposDesc", "main_8cpp.html#a4c0ba9b47b4b2e1730f794f899ee3eb1", null ],
     [ "tabelaClassificativa", "main_8cpp.html#a8bd81364b9cf0ee3ec1d991c9fa847a9", null ],
+    [ "velocidadesMedias", "main_8cpp.html#a7d57dfd280a0e1e70ec2e235a370625a", null ],
     [ "velocidadesMedias", "main_8cpp.html#a3692084024a5deecffddb696a26e2cc9", null ],
     [ "verificaProva", "main_8cpp.html#a41572e2db902817d236b4db5e4083d34", null ]
 ];

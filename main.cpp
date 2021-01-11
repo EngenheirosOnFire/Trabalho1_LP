@@ -827,7 +827,7 @@ void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int 
  * @brief Da mesma forma é calculada a distancia do lider e do piloto anterior, alterando apenas que não é preciso conversão e que se trata de distancia e não do tempo
  * @brief Para então escrever os pilotos não aprovados foi efetuado um novo ciclo for que percorrer todo o vetor prova verificando se o piloto não foi aprovado e caso não seja
  *  apenas é escrito o seu nome numero e carro, tanto na consola como no ficheiro binário
- * @param prova
+ * @param prova ➔ 
  * @param nPilotos
  * @param nomeProva
  * @param auxNum
