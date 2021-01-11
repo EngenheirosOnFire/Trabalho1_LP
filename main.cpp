@@ -96,9 +96,10 @@ void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados);               
 void medTemposEtapa(TEMPOS *tempos, ETAPAS *etapas, int n, int *aprovados, int *medTempos, int nAprovados, int nEtapas); //media de tempos por etapa
 void extremos(PROVA *prova, int nPilotos, int *tempoExtremos);                                                           //Amostra do piloto mais rapido e mais lento
 void menorTempo(TEMPOS *tempos, ETAPAS *etapas, int nTotal, int maior, int nEtapas);                                     //Amostra do menor tempo possivel para realizar a prova
-void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int aprovados, int *medTempos);              //Amostra das velocidades medias da prova
+void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int *medTempos);                             //Amostra das velocidades medias da prova
 void loadTudo(char *nomeProva);
 void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova, ETAPAS *etapas, int nTotal, int nPilotos, int nEtapas, int aprovados, char *nomeProva); //Menu principal do programa
+
 ///Esta função organiza o vetor distancias
 /**   
  * @brief Esta função coloca primeiramente a etapa partida na primeira posição do vetor ou seja a posição 0 para depois organizar o restante vetor.
@@ -827,22 +828,22 @@ void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int 
  * @brief Da mesma forma é calculada a distancia do lider e do piloto anterior, alterando apenas que não é preciso conversão e que se trata de distancia e não do tempo
  * @brief Para então escrever os pilotos não aprovados foi efetuado um novo ciclo for que percorrer todo o vetor prova verificando se o piloto não foi aprovado e caso não seja
  *  apenas é escrito o seu nome numero e carro, tanto na consola como no ficheiro binário
- * @param prova ➔ 
- * @param nPilotos
- * @param nomeProva
- * @param auxNum
- * @param auxTempo
- * @param auxApr
- * @param tempoMin
- * @param diTempoLdr
- * @param diTempoAnt
- * @param tempoLdr
- * @param tempoSec
- * @param diLdr
- * @param diAnt
- * @param auxNome
- * @param auxCarro
- * @param tabelaFile
+ * @param prova ➔ Apontador do tipo PROVA cujo objetivo é receber vetor prova
+ * @param nPilotos ➔ variavel do tipo inteiro que recebe a quantidade de pilotos em prova 
+ * @param nomeProva ➔ Apontador do tipo char para o vetor nomeProva que contém o nome da prova a abrir
+ * @param auxNum ➔ variavel do tipo inteiro cujo objetivo é servir como auxiliar na troca de valores no vetor prova
+ * @param auxTempo ➔ variavel do tipo inteiro cujo objetivo é servir como auxiliar na troca de valores no vetor prova
+ * @param auxApr ➔ variavel do tipo inteiro cujo objetivo é servir como auxiliar na troca de valores no vetor prova
+ * @param tempoMin ➔ variavel do tipo inteiro cujo objetivo é guardar o tempo em minutos da prova
+ * @param diTempoLdr ➔ variavel do tipo inteiro cujo objetivo é guardar a diferença de tempo para o lider
+ * @param diTempoAnt ➔ variavel do tipo inteiro cujo objetivo é guardar a diferença de tempo do piloto anterior
+ * @param tempoLdr ➔ variavel do tipo inteiro cujo objetivo é guardar o tempo do lider
+ * @param tempoSec ➔ variavel do tipo float cujo objetivo é guardar o tempo em segundo
+ * @param diLdr ➔ variavel do tipo inteiro cujo objetivo é guardar a diferença do lider
+ * @param diAnt ➔ variavel do tipo inteiro cujo objetivo é guardar a diferença do anterior
+ * @param auxNome ➔ variavel do tipo char cujo objetivo é auxiliar a troca de nome na organização do vetor
+ * @param auxCarro ➔ variavel do tipo char cujo objetivo é auxiliar a troca de nome do carro na organização do vetor
+ * @param tabelaFile ➔ variavel do tipo char cujo objetivo é guardar o caminho onde vai ser guardado o ficheiro contendo a tabela
  */
 void tabelaClassificativa(PROVA *prova, int nPilotos, char *nomeProva)
 {
@@ -908,8 +909,8 @@ void tabelaClassificativa(PROVA *prova, int nPilotos, char *nomeProva)
             {
                 a++;
                 //apenas colocar os ultimos valores a zeros
-                printf("\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %2d:%.3f   |\t0\t |\t0\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
-                fprintf(fp, "\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %2d:%.3f   |\t0\t |\t0\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
+                printf("\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %3d:%.3f   |\t0\t |\t0\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
+                fprintf(fp, "\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %3d:%.3f   |\t0\t |\t0\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
                 //guardar o tempo do lider em ms
                 tempoLdr = prova[i].tempoProva;
             }
@@ -932,8 +933,8 @@ void tabelaClassificativa(PROVA *prova, int nPilotos, char *nomeProva)
                     diAnt = ((float)diTempoAnt / (float)1000);
                 a++;
                 //mostrar as informações do piloto
-                printf("\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %2d:%6.3f   |     %.3f\t |    %.3f\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
-                fprintf(fp, "\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %2d:%6.3f   |     %.3f\t |    %.3f\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
+                printf("\n|\t%d\t|\t%d\t|%10s\t|%10s\t|   %3d:%6.3f   |     %.3f\t |    %.3f\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
+                fprintf(fp, "\n|\t%d\t|\t%d\t|%10s\t|%10s\t|   %3d:%6.3f   |     %.3f\t |    %.3f\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
             }
         }
     }
@@ -953,6 +954,29 @@ void tabelaClassificativa(PROVA *prova, int nPilotos, char *nomeProva)
     fclose(fp);
 }
 
+///Esta função tem o objetivo de servir como menu do software
+/**
+ * @brief Esta função primeiramente vai escrever na consola o menu do software
+ * @brief Após mostrar o menu ao utilizador é lido a escolha do utilizador e realizado um switch para efetuar as funções corretas
+ *  para a escolha do utilizador
+ * @param tempos ➔ apontador do tipo TEMPOS que recebe o vetor tempos
+ * @param pilotos ➔ apontador do tipo PILOTO que recebe o vetor pilotos
+ * @param distancias ➔ apontador do tipo DISTANCIAS que recebe o vetor distancias
+ * @param prova ➔ apontador do tipo PROVA que recebe o vetor prova
+ * @param etapas ➔ apontador do tipo ETAPAS que recebe o vetor etapas
+ * @param nTotal ➔ variavel do tipo inteiro que recebe o numero total de tempos no vetor tempos
+ * @param nPilotos ➔ variavel do tipo inteiro que recebe o numero total de pilotos inscritos na prova
+ * @param nEtapas ➔ variavel do tipo inteiro que recebe o numero total de etapas na prova
+ * @param nAprovados ➔ variavel do tipo inteiro que recebe o numero de pilotos aprovados
+ * @param nomeProva ➔ variavel do tipo char que recebe o nome da pasta na qual está guardado os ficheiros da prova
+ * @param escolha ➔ variavel do tipo inteiro que guarda a opção escolhida pelo utilizador
+ * @param medTempos ➔ variavel do tipo inteiro que é um vetor cujo objetivo é guardar a media de tempos e tem de tamanho o numero de etapas da prova
+ * @param pilotosAprv ➔ variavel do tipo inteiro que é um vetor cujo objetivo é guardar o numero dos pilotos que são aprovados na prova
+ * @param numExtremos ➔ variavel do tipo inteiro que guarda o numero dos pilotos mais rapido e mais lento
+ * @param maiorNum ➔ variavel do tipo inteiro que guarda o numero do piloto mais lento
+ * @param menorNum ➔ variavel do tipo inteiro que guarda o numero do piloto mais rápido
+ * @param novaProva ➔ variavel do tipo char cujo objetivo é guardar o nome da pasta onde estão guardados os ficheiros com as informações da prova
+ */
 void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova, ETAPAS *etapas, int nTotal, int nPilotos, int nEtapas, int aprovados, char *nomeProva)
 {
     int escolha, medTempos[nEtapas], pilotosAprv[aprovados], numExtremos[1], maiorNum, menorNum;
@@ -1039,7 +1063,7 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
     case 7:
         verificaProva(tempos, nTotal, pilotosAprv, nEtapas);
         medTemposEtapa(tempos, etapas, nTotal, pilotosAprv, medTempos, aprovados, nEtapas);
-        velocidadesMedias(distancias, etapas, nEtapas, aprovados, medTempos);
+        velocidadesMedias(distancias, etapas, nEtapas, medTempos);
         fflush(stdin);
         printf("\n(Enter)");
         getchar();
@@ -1068,6 +1092,7 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
     menu(tempos, pilotos, distancias, prova, etapas, nTotal, nPilotos, nEtapas, aprovados, nomeProva);
 }
 
+///Esta função tem como objetivo realizar o carregamento das informações do ficheiro
 void loadTudo(char *nomeProva)
 {
     int n[1], nTotal, nEtapas, nPilotos, aprovados;
