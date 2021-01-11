@@ -577,8 +577,22 @@ void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados)
 
 ///Esta função efetua a media dos tempos por prova
 /**
- * @brief Esta função primeiramente para organizar os somatórios foi criado um vetor chamado soma que vai ser inicalmente igualado a 0, este vetor está oganizado
+ * @brief Esta função primeiramente para organizar os somatórios foi criado um vetor chamado soma que vai ser inicalmente igualado a 0, este vetor está organizado
  *  sendo a primeira linha a etapa P e o restante visto que a função arrumarVetor 
+ * @brief São então criados dois ciclos for um ciclo para percorrer o vetor tempos e outro para percorrer o vetor aprovados, verificando então se o piloto estava no conjunto 
+ * de pilotos aprovados ou não
+ * @brief Após esta ação é verificado ainda dentro do segundo ciclo for se se está perante a primeira etapa, pois a primeira etapa estará sempre guardada na posição 0 do vetor soma de acordo com a organização previamente esquematizada
+ * @brief Após a obtenção dos valores no vetor soma, são calculadas as medias, ou seja a soma total a dividir pela quantidade total de pilotos aprovados
+ * @brief Após a verificação caso esteja perante a primeira etapa é então guardado o tempo na primeira etapa, caso contrário é guardado em outra posição do vetor pois o vetor etapas já está organizado de acordo com as etapas da prova
+ * @param tempos ➔ apontador do tipo TEMPOS que vai receber o vetor tempos
+ * @param etapas ➔ apontador do tipo ETAPAS que vai receber o vetor etapas
+ * @param n ➔ varivel do tipo inteiro que recebe o numero total de tempos a ler no vetor tempos
+ * @param aprovados ➔ apontador tipo inteiro que vai receber o vetor aprovados apra assim ter acesso ao numero dos pilotos aprovados
+ * @param medTempos ➔ apontador do tipo inteiro que vai receber o vetor medTempos para assim ser possivel alterar o vetor fora da função
+ * @param nAprovados ➔ variavel do tipo inteiro que recebe a quantidade de pilotos aprovados
+ * @param nEtapas ➔ variavel do tipo inteiro que recebe a quantidade de etapas na prova
+ * @param soma ➔ variavel do tipo double que é um vetor cujo objetivo é guardar organizadamente os valores da soma total de tempos
+ * @param media ➔ varivel do tipo double que é um vetor cujo objetivo é guardar organizademente as emdias de tempos da partida
  */
 void medTemposEtapa(TEMPOS *tempos, ETAPAS *etapas, int n, int *aprovados, int *medTempos, int nAprovados, int nEtapas)
 {
@@ -622,6 +636,23 @@ void medTemposEtapa(TEMPOS *tempos, ETAPAS *etapas, int n, int *aprovados, int *
     }
 }
 
+///Esta função vai calcular o menor e maior tempo registado na prova
+/**
+ * @brief Primeiramente as variaveis menor e maior são igualadas aos tempos da posição 0 do vetor pois a sua primeira posição vai ser 
+ * o maior e menor tempos lidos até ao momento
+ * @brief Após as variaveis obterem valores para comparar é realizado um ciclo for que percorre todo o vetor prova e verifica se o piloto 
+ * foi aprovado e se o tempo lido é menor ou se é maior que o menor e maior tempos lidos, caso sejam os valores são alterados para os atuais
+ * , e os numeros dos pilotos são guardadso também, para assim ser possivel verificar as informações dos pilotos fora da função
+ * @brief Após se obter o maior e menor tempos,os numeros desses pilotos são guardados no vetor temposExtremos pois é um apontador e assim é possivel 
+ * aceder a estes valores externamente pois se está a alterar um vetor externo
+ * @param prova ➔ apontador do tipo PROVA que recebe o vetor prova
+ * @param nPilotos ➔ variavel do tipo inteiro que recebe o numero total de pilotos inscritos na prova
+ * @param temposExtremos ➔ apontador do tipo inteiro que recebe o vetor numExtremos no qual se vai colocar o numero dos pilotos
+ * @param menor ➔ variavel do tipo inteiro que vai guardar o menor tempo lido
+ * @param maior ➔ variavel do tipo inteiro que vai guardar o menor tempo lido
+ * @param menorNum ➔ variavel do tipo inteiro que vai receber o numero do piloto com o menor tempo registado
+ * @param maiorNum ➔ variavel do tipo inteiro que vai recber o numero do piltoos com o maior tempo registado
+ */
 void extremos(PROVA *prova, int nPilotos, int *tempoExtremos)
 {
     int menor = prova[0].tempoProva, maior = prova[0].tempoProva, menorNum = 0, maiorNum = 0;
@@ -650,6 +681,31 @@ void extremos(PROVA *prova, int nPilotos, int *tempoExtremos)
     tempoExtremos[1] = menorNum;
 }
 
+///Esta função vai encontrar o menor tempo que é possivel realizar a prova e as diversas etapas
+/**
+ * @brief Esta função vai primeiramente colocar em todas as posições do vetor menores com os maiores tempo lidos na função extremos
+ * @brief Após coloccar valores em todas as posições deste vetor, foram criados dois ciclos for que vai percorrer os vetores tempos e etapas, o 
+ * primeiro ciclo percorre o 
+ * vetor tempos e encontra tempos para comparar com o vetor etapas que é percorrido no segundo ciclo for e sempre que se encontra uma etapa igual á 
+ * etapa do vetor tempos verifica-se se o tempo é menor que o menor tempo lido até ao momento,
+ * caso seja, o vetor de menores tempos lidos guarda esse valor no local o qual foi encontrado no vetor etapas, pois o vetor etapas está organizado 
+ * por etapa fazendo assim com que o vetor que guarda os menores numeros tembém esteja organizado
+ * @brief Após guardar os valores no vetor o mesmo é convetido para minutos e segundos e visto que estava organizado foram cirados mais dois vetores, um para guardar 
+ * os minutos e outro para guardar os segundos, ou seja o menor tempo na posição 0 estaria em minutos na posiçao 0 do vetor minutos e na posição 0 do vetor segundos
+ * @brief É tambem efetuada a conversão do menor tempo lido em toda a prova que resulta do somatório do menor tempo de cada etapa
+ * @brief Após todas as conversões é então aprensentado ao utilizador todos os valores obtidos
+ * @param tempos ➔ apontador do tipo TEMPOS que recebe o vetor tempos
+ * @param etapas ➔ apontador do tipo ETAPAS que recbe o vetor etapas
+ * @param nTotal ➔ variavel do tipo inteiro que recebe a quantidade de valores a ler no vetor tempos
+ * @param maior ➔ variavel do tipo inteiro que recebe o maior tempo lido 
+ * @param nEtapas ➔ variavel dot tipo inteiro que recebe o numero total de etapas existentes na prova
+ * @param tempoMin ➔ variavel do tipo inteiro que é um vetor cuja função é guardar a conversão do tempo para minutos e tenho de tamanho nEtapas pois vai conter tempos de todas as etapas
+ * @param menorTempoMin ➔ variavel do tipo inteiro que recebe o valor da conversão do menor tempo de prova total em minutos
+ * @param menores ➔ variavel do tipo double que é um vetor cuja função é guardar os menore tempos de cada etapa da prova e tem tamanho nEtapas pois vai ter tantos tempos quantas etapas existem
+ * @param totalTempo ➔ variavel do tipo double que vai conter o somatório dos menores tempos para assim obter o menor tempo possivel de realizar a prova
+ * @param tempoSec ➔ variavel do tipo double que é um vetor que vai receber o menor tempo convertido em segundos e milesimos de cada etapa
+ * @param menorTempoSec ➔ variavel do tipo double que vai receber o menor tempo em que é possivel efetuar a prova convertido em segundos e milesimos
+ */
 void menorTempo(TEMPOS *tempos, ETAPAS *etapas, int nTotal, int maior, int nEtapas)
 {
     int tempoMin[nEtapas], menorTempoMin;
@@ -691,7 +747,27 @@ void menorTempo(TEMPOS *tempos, ETAPAS *etapas, int nTotal, int maior, int nEtap
     printf("\nMenor tempo possivel:%d:%.2f", menorTempoMin, menorTempoSec);
 }
 
-void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int aprovados, int *medTempos)
+///Esta função vai calcular as velocidades medias de cada etapas e da prova por completo
+/**
+ * @brief Esta função primeiramente efetua dois ciclos for, sendo primeiro para percorrer o vetor distancias e o segundo para percorrer o vetor etapas e ir comparando 
+ * sempre que encontra uma etapa com o mesmo nome o mesmo guarda essa distancia num vetor na posição onde foi encontrada a etapa no vetor etapas pois este vetor já se encontra organizado e acrecenta também a distancia a variavel total distancias que guarda o total das distancias da prova
+ * @brief Após obter todas as distancias é então obtido a media de tempo de cada etapa a partir do vetor medTempos que contém a media de tempos calculado na função medTemposEtapa
+ * e guardado em segundos no vetor tempo o qual tambem acrescenta o tempo à variavel totalTempo que guarda o total de tempo que demora a efetuar a prova
+ * @brief Após obter os tempos é então calculada a velocidade média que demora a efetuar a prova em m/s, a formula de calculo da velociade media é distancia percorrida sobre o tempo que demorou a percorrer essa distancia, 
+ * utilizando então esta formula são calculadas as medias por etapa fazendo uso do vetor dEtapas e do vetor tempo pois ambos estão organizados para cada posição conter as mesma etapa
+ * e então os valores vao também ser guardardos organizadamente no vetor medias
+ * @brief Após o calculo das medias é também calculada a velocidade media total da prova e apresentados estes valores ao utilizador fazendo uso da organização dos vetores
+ * @param distancias ➔ apontador do tipo DISTANCIAS que vai receber o vetor distancias
+ * @param etapas ➔ apontador do tipo ETPAS que vai receber o vetor etapas
+ * @param nEtapas ➔ variavel do tipo inteiro que vai receber o numero total de etapas existentes na prova
+ * @param medTempos ➔ apontador do tipo inteiro que vai receber o vetor que contém as medias de tempos por etapa
+ * @param dEtapas ➔ variavel do tipo inteiro que é um vetor e recebe a distancia das etapas na partida
+ * @param medias ➔ variavel do tipo real que é um vetor que vai receber as velocidades medias organizadas por posição 
+ * @param tempo ➔ variavel do tipo real que vai receber as medias de tempos por etapa em segundos 
+ * @param totalDist ➔ variavel do tipo float que guarda a distancia total da prova 
+ * @param totalTempo ➔ variavel do tipo float que guarda o total de tempo em segundos da prova por completo
+ */
+void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int *medTempos)
 {
     float dEtapas[nEtapas], medias[nEtapas], tempo[nEtapas], totalDist, totalTempo;
 
@@ -733,6 +809,41 @@ void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int 
     printf("\nVelocidade Media (Partida-Chegada):%.2fm/s", totalDist / totalTempo);
 }
 
+///Esta função vai demonstrar ao utilizador a tabela classificativa e também criar um ficheiro binário com a mesma
+/**
+ * @brief Primeiramente esta função efetua a abertura do ficheiro tabelaClassificativa.bin no modo de escrita em binário
+ * @brief Após a abertura do ficheiro é escrito no ficheiro e também na consola o cabeçalho da tabela classificativa
+ * @brief Após a escrita do cabeçalho é efetuado uma organização do vetor tempo prova por tempo para assim obter as posições corretas dos pilotos colocando os pilotos não aprovados
+ *  em primeiro lugar
+ * @brief Para efetuar então a escrita organizada dos pilotos foi criado um ciclo for que percorre o vetor prova por completo e verifica se o piloto foi aprovado pois
+ *  primeiramente é necessário escrever os pilotos aprovados
+ * como ao realizar a organização do vetor os pilotos ficaram organizados por menor tempo ou seja com as posições corretas na prova não havia necessidade de mais organização
+ * logo para obter a posição do piloto foi criada uma outra variavel que é incrementada apenas quando um piloto aprovado é escrito conseguindo assim então a posição do piloto
+ * @brief Para verificar a distancia do lider, quando é escrito o primeiro piloto do vetor que esteja aprovado o tempo do mesmo é guardado numa variavel e a cada piloto é efetuada a diferença entre o tempo do mesmo e o tempo do lider  
+ * e convertido para minutos e segundos
+ * @brief O mesmo é efetuado para o calculo da distancia do anterior pois a cada piloto que é acrescentado à tabela, após o calculo da diferença do tempo do mesmo com o tempo do piloto anterior,
+ *  é atribuido o seu tempo à variavel que guarda o tempo do piloto anterior
+ * utilizando estes dados foi então escrito na consola e no ficheiro binário todos os pilotos aprovados organizados por posição
+ * @brief Da mesma forma é calculada a distancia do lider e do piloto anterior, alterando apenas que não é preciso conversão e que se trata de distancia e não do tempo
+ * @brief Para então escrever os pilotos não aprovados foi efetuado um novo ciclo for que percorrer todo o vetor prova verificando se o piloto não foi aprovado e caso não seja
+ *  apenas é escrito o seu nome numero e carro, tanto na consola como no ficheiro binário
+ * @param prova
+ * @param nPilotos
+ * @param nomeProva
+ * @param auxNum
+ * @param auxTempo
+ * @param auxApr
+ * @param tempoMin
+ * @param diTempoLdr
+ * @param diTempoAnt
+ * @param tempoLdr
+ * @param tempoSec
+ * @param diLdr
+ * @param diAnt
+ * @param auxNome
+ * @param auxCarro
+ * @param tabelaFile
+ */
 void tabelaClassificativa(PROVA *prova, int nPilotos, char *nomeProva)
 {
     int auxNum, auxTempo, auxApr, tempoMin, diTempoLdr, diTempoAnt, tempoLdr;
