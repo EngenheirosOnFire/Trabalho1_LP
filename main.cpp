@@ -11,9 +11,9 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 ///Estrutura que guarda informações sobre os pilotos
-///@param num ➔ numero do piloto
-///@param nome ➔ nome do piloto
-///@param carro ➔ carro do piloto
+///@param num ➔ Número do piloto
+///@param nome ➔ Nome do piloto
+///@param carro ➔ Carro do piloto
 typedef struct infoPiloto
 {
     ///Esta variavel indica o numero do piloto
@@ -57,7 +57,7 @@ typedef struct infoEtapas
 ///@param tempo ➔ Tempo que o piloto demorou a realizar a etapa
 ///@param etapaI ➔ Variável que guarda o nome da etapa inical
 ///@param etapaF ➔ Variável que guarda o nome da etapa final
-///@note os tempos são dados de acordo com (E1;E2) daí ter etapa inicial e etapa final
+///@note Os tempos são dados de acordo com (E1;E2) daí ter etapa inicial e etapa final
 typedef struct infoTempos
 {
     ///Variável que guarda o numero do piloto que realizou esta etapa
@@ -71,9 +71,9 @@ typedef struct infoTempos
 } TEMPOS;
 
 ///Estrutura que guarda informações das distancias da prova
-///@param etapaI ➔ Variavél que guarda o nome da etapa inical
-///@param etapaF ➔ Variavél que guarda o nome da etapa final
-///@param distancia ➔ Variavel que guarda a distancia da etapa
+///@param etapaI ➔ Variável que guarda o nome da etapa inical
+///@param etapaF ➔ Variável que guarda o nome da etapa final
+///@param distancia ➔ Variável que guarda a distancia da etapa
 ///@note os tempos são dados de acordo com (E1;E2) daí ter etapa inicial e etapa final
 typedef struct infoDistancias
 {
@@ -103,13 +103,13 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
 ///Esta função organiza o vetor distancias
 /**   
  * @brief Esta função coloca primeiramente a etapa partida na primeira posição do vetor ou seja a posição 0 para depois organizar o restante vetor.
- * @brief Para organizar o restante vetor é retirado momentaneamente de cada etapa iniciada por 'E' o caracter 'E' para assim organizar por numeros de etapa
- * @brief Existiu a necessidade de criar variáveis auxiliares para guardar os valores contidos numa das posições do vetor, neste caso do i pois os valores de i vão ser substituidos pelos de j perdendo assim os valores
- * @param distancias ➔ variavel do tipo DISTANCIAS que é um apontador para o vetor distancias que contém todas as distancias da prova 
- * @param nEtapas ➔ variavel do tipo inteiro que recebe o numero de etapas
- * @param auxDist ➔ variavel auxiliar para guardar a distancia 
- * @param auxEtapaI ➔ variavel auxiliar para guardar o nome da etapa inicial 
- * @param auxEtapaF ➔ variavel auxiliar para guardar o nome da etapa inicial 
+ * @brief Para organizar o restante vetor é retirado momentaneamente de cada etapa iniciada por 'E' o caracter 'E' para assim organizar por números de etapa
+ * @brief Existiu a necessidade de criar variáveis auxiliares para guardar os valores contidos numa das posições do vetor, neste caso do i pois os valores de i vão ser substituídos pelos de j perdendo assim os valores
+ * @param distancias ➔ Variável do tipo DISTANCIAS que é um apontador para o vetor distancias que contém todas as distâncias da prova
+ * @param nEtapas ➔ Variável do tipo inteiro que recebe o número de etapas
+ * @param auxDist ➔ Variável auxiliar para guardar a distância
+ * @param auxEtapaI ➔ Variável auxiliar para guardar o nome da etapa inicial
+ * @param auxEtapaF ➔ Variável auxiliar para guardar o nome da etapa inicial
  * @see infoDistancias
  */
 void arrumarVetor(DISTANCIAS *distancias, int nEtapas)
@@ -167,10 +167,10 @@ void arrumarVetor(DISTANCIAS *distancias, int nEtapas)
  * @brief Para a leitura do ficheiro foi criado um apontador do tipo file para o ficheiro, de seguida foi atribuido a este apontador a abertura do ficheiro 
  * tempos e assim aberto o ficheiro tempos
  * @brief Para ler foi efetuado um fscanf e lido apenas um linha, e guardado no vetor N os valores lidos
- * @param n ➔ variavel do tipo inteiro que é apontador para o vetor n 
- * @param nomeProva ➔ variavel do tipo char apontador para o vetor que contém o nome da prova
- * @param f ➔ variavel do tipo FILE que é apontador para o ficheiro tempos.txt
- * @param prova ➔ vetor que vai receber e juntar o nome da prova e o nome do ficheiro para assim obter o caminho para o ficheiro corretamente e é depois utilizada na função fopen
+ * @param n ➔ Variável do tipo inteiro que é apontador para o vetor n 
+ * @param nomeProva ➔ Variável do tipo char apontador para o vetor que contém o nome da prova
+ * @param f ➔ Variável do tipo FILE que é apontador para o ficheiro tempos.txt
+ * @param prova ➔ Vetor que vai receber e juntar o nome da prova e o nome do ficheiro para assim obter o caminho para o ficheiro corretamente e é depois utilizada na função fopen
  */
 void Etapas(int *n, char *nomeProva)
 {
@@ -196,20 +196,21 @@ void Etapas(int *n, char *nomeProva)
 
 ///Esta função le o ficheiro tempos e coloca os valores no vetor tempos
 /**
- * @brief  Esta função contem um apontador para um ficheiro, este apontador é depois igualado à abertura do ficheiro tempos.txt,
- *  para efetuar a leitura apenas dos valores que são importantes a primeira linha terá de ser ignorada, para isso é utilizada a 
+ * @brief Esta função contem um apontador para um ficheiro, este apontador é depois igualado à abertura do ficheiro tempos.txt,
+ * para efetuar a leitura apenas dos valores que são importantes a primeira linha terá de ser ignorada, para isso é utilizada a
  * função fseek para "saltar" a primeira linha
- * @brief Após ignorar a primeira linha vai ser efetuada a leitura do restante do ficheiro e guardadas as informações nos parametros do tempos
- *  até chegar ao fim do ficheiro(EOF), utilizando a função fscanf facilmente se denteta EOF, pois a função quando chega ao fim do ficheiro devolve EOF
+ * @brief Após ignorar a primeira linha vai ser efetuada a leitura do restante do ficheiro e guardadas as informações nos parâmetros do tempo
+ * até chegar ao fim do ficheiro (EOF), utilizando a função fscanf facilmente se deteta EOF, pois a função quando chega ao fim do ficheiro devolve EOF
  * @brief Para a leitura do ficheiro foi criado um apontador do tipo file para o ficheiro, de seguida foi atribuido a este apontador
- *  a abertura do ficheiro tempos e assim aberto o ficheiro tempos
- * @param tempos ➔ variavel do tipo TEMPOS que é um apontador para o vetor tempos para assim ser possivel atribuir valores ao vetor tempos 
- * @param nomeProva ➔ variavel do tipo char que é um apontador para o vetor nomeProva que contém o nome da prova a abrir
- * @param f ➔ variavel do tipo ficheiro que é um apontador
- * @param res ➔ variavel do tipo inteiro que guarda o valor devolvido pela função fsanf
- * @param i ➔ variavel do tipo inteiro que vai efetuar a contagem dos ciclos do while
- * @param prova ➔ variavel que vai receber o caminho do ficheiro tempos.txt
+ * a abertura do ficheiro tempos e assim aberto o ficheiro tempos
+ * @param tempos ➔ Variável do tipo TEMPOS que é um apontador para o vetor tempos para assim ser possivel atribuir valores ao vetor tempos
+ * @param nomeProva ➔ Variável do tipo char que é um apontador para o vetor nomeProva que contém o nome da prova a abrir
+ * @param f ➔ Variável do tipo ficheiro que é um apontador
+ * @param res ➔ Variável do tipo inteiro que guarda o valor devolvido pela função fsanf
+ * @param i ➔ Variável do tipo inteiro que vai efetuar a contagem dos ciclos do while
+ * @param prova ➔ Variável que vai receber o caminho do ficheiro tempos.txt
  * @see infoTempos
+
  */
 void loadTempos(TEMPOS *tempos, char *nomeProva)
 {
@@ -244,12 +245,12 @@ void loadTempos(TEMPOS *tempos, char *nomeProva)
 ///Esta função le o ficheiro distancias e coloca os valores no vetor distancias
 /**
  * @brief Esta função efetua a abertura do ficheiro distancias.txt e efetua um ciclo while que percorre o ficheiro todo e guarda os valores no vetor distancias
- * @param distancias ➔ variavel do tipos DISTANCIAS que é um apontador que recebe o vetor distancias para serem colocados os valores no mesmo 
- * @param nomeProva ➔ variavel do tipo char que contém o nome da prova a abrir
- * @param res ➔ variavel do tipo inteiro que guarda o valor devolvido pela função fscanf
- * @param i ➔ variavel do tipo inteiro que conta o numero de ciclos que o ciclo whiel usa, esta variavel é utilizada para saber a posição do vetor colocar a informação lida
- * @param prova ➔ variavel do tipo char que recebe o caminho para o ficheiro distancias.txt que é depois utilizada na função fopen
- * @param f ➔ variavel do tipo FILE que é um apontador e mais tarde vai ser atribuido a função fopen
+ * @param distancias ➔ Variável do tipo DISTANCIAS que é um apontador que recebe o vetor distancia para serem colocados os valores no mesmo
+ * @param nomeProva ➔ Variável do tipo char que contém o nome da prova a abrir
+ * @param res ➔ Variável do tipo inteiro que guarda o valor devolvido pela função fscanf
+ * @param i ➔ Variável do tipo inteiro que conta o número de ciclos que o ciclo while usa, esta variável é utilizada para saber a posição do vetor colocar a informação lida
+ * @param prova ➔ Variável do tipo char que recebe o caminho para o ficheiro distancias.txt que é depois utilizada na função fopen
+ * @param f ➔ Variável do tipo FILE que é um apontador e mais tarde vai ser atribuído a função fopen
  * @see infoDistancias
  */
 void loadDistancias(DISTANCIAS *distancias, char *nomeProva)
@@ -282,15 +283,15 @@ void loadDistancias(DISTANCIAS *distancias, char *nomeProva)
 
 ///Esta função le o ficheiro pilotos.txt e coloca os valores no vetor piloto
 /**
- * @brief Esta função efetua a abertura do ficheiro pilotos.txt e efetua um ciclo while que percorre o ficheiro todo e guarda os valores no vetor pilotos
- * @param piloto ➔ variavel do tipo PILOTO que é um apontador que recebe o vetor pilotos para serem colocador as informações dos pilotos no mesmo 
- * @param nomeProva ➔ varaivel do tipo char que contém o nome da prova a abrir
- * @param res ➔ variavel do tipo inteiro que guarda o valor devolvido pela função fscanf
- * @param i ➔ variavel do tipo inteiro que conta o numero de ciclos que o ciclo whiel usa, esta variavel é utilizada para saber a posição do vetor colocar a informação lida
- * @param prova ➔ variavel do tipo char que recebe o caminho para o ficheiro distancias.txt que é depois utilizada na função fopen
- * @param f ➔ variavel do tipo FILE que é um apontador e mais tarde vai ser atribuido a função fopen
- * @see infoPiloto
- */
+* @brief Esta função efetua a abertura do ficheiro pilotos.txt e efetua um ciclo while que percorre o ficheiro todo e guarda os valores no vetor pilotos
+* @param piloto ➔ Variável do tipo PILOTO que é um apontador que recebe o vetor pilotos para serem colocador as informações dos pilotos no mesmo
+* @param nomeProva ➔ Variável do tipo char que contém o nome da prova a abrir
+* @param res ➔ Variável do tipo inteiro que guarda o valor devolvido pela função fscanf
+* @param i ➔ Variável do tipo inteiro que conta o número de ciclos que o ciclo while usa, esta variável é utilizada para saber a posição do vetor colocar a informação lida
+* @param prova ➔ Variável do tipo char que recebe o caminho para o ficheiro distancias.txt que é depois utilizada na função fopen
+* @param f ➔ Variável do tipo FILE que é um apontador e mais tarde vai ser atribuído a função fopen
+* @see infoPiloto
+*/
 void loadPilotos(PILOTO *piloto, char *nomeProva)
 {
     FILE *f;
@@ -322,15 +323,15 @@ void loadPilotos(PILOTO *piloto, char *nomeProva)
 ///Esta função coloca os valores dos vetores anteriores num vetor final
 /**
  * @brief Esta função recebe os vetores prova, tempos e pilotos para colocar os seus valores num vetor final
- * @brief A função prova tem dentro da mesma um ciclo for que serve pr percorrer todos os pilotos e colocar as informações dos mesmos no vetor prova
- *  e para obter o tempo total de prova foi então criado outro ciclo for que procura por o numero do piloto atual no vetor tempos e efetu o somtório
- *  do tempo do piloto sempre que encontra uma correspondência e por fim coloca o somatório no parametro tempoTotal do vetor
- * @param prova ➔ variavel do tipo PROVA que recebe o vetor prova para o mesmo receber os valores dos outros vetores 
- * @param tempos ➔ variavel do tipo TEMPOS que recebe o vetor tempos para aproveitar as informações dos tempos
- * @param piloto ➔ varivel do tipo PILOTOS que recebe o vetor pilotos para aproveitar as informações dos pilotos
- * @param nTotal ➔ variavel do tipo inteiro que recebe o total de tempos a ler
- * @param nPilotos ➔ variavel do tipo inteiro que recebe o numero de pilotos inscritos na prova
- * @param nEtapas ➔ variavel do tipo inteiro que recebe o numero total de etapas existentes na prova
+ * @brief A função prova tem dentro da mesma um ciclo for que serve para percorrer todos os pilotos e colocar as informações dos mesmos no vetor prova
+ * e para obter o tempo total de prova foi então criado outro ciclo for que procura por o número do piloto atual no vetor tempos e efetua o somatório
+ * do tempo do piloto sempre que encontra uma correspondência e por fim coloca o somatório no parametro tempoTotal do vetor
+ * @param prova ➔ Variável do tipo PROVA que recebe o vetor prova para o mesmo receber os valores dos outros vetores
+ * @param tempos ➔ Variável do tipo TEMPOS que recebe o vetor tempos para aproveitar as informações dos tempos
+ * @param piloto ➔ Variável do tipo PILOTOS que recebe o vetor pilotos para aproveitar as informações dos pilotos
+ * @param nTotal ➔ Variável do tipo inteiro que recebe o total de tempos a ler
+ * @param nPilotos ➔ Variável do tipo inteiro que recebe o número de pilotos inscritos na prova
+ * @param nEtapas ➔ Variável do tipo inteiro que recebe o número total de etapas existentes na prova
  * @see infoProva, infoTempos, infoPiloto
  */
 void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int nTotal, int nPilotos, int nEtapas)
@@ -372,22 +373,22 @@ void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int nTotal, int nPi
 
 ///Esta função le o ficheiro pilotos.txt e conta o numero de linhas
 /**
- * @brief Como cada linha no ficheiro pilotos.txt equivale a um piloto, então para se obter o numero total de pilotos na prova
- *  basta efetuar a contagem no numero de linhas no ficheiro.
- * @brief Para efetuar a contagem do numero de linhas foi efetuado um ciclo for que percorre o ficheiro todo até encontrar EOF(end of file)
+ * @brief Como cada linha no ficheiro pilotos.txt equivale a um piloto, então para se obter o número total de pilotos na prova
+ * basta efetuar a contagem no número de linhas no ficheiro.
+ * @brief Para efetuar a contagem do número de linhas foi efetuado um ciclo for que percorre o ficheiro todo até encontrar EOF (end of file)
  * este ciclo faz uso da função getc para ler todos os caracters, sempre que o caracter lido fosse "\n" new line, significa que existe mais uma linha
- * obtendo assim o numero de linhas
- * @param nomeProva ➔ apontador para o nome da prova
- * @param f ➔ apontador do tipo ficheiro que vai ser utilizado para efetuar a abertura do ficheiro pilotos.txt
- * @param contador ➔ variavel do tipo int que sempre que se encontra o caracter "\n" se incrementa por 1
- * @param c ➔ variavel do tipo char que vai lhe ser atribuido os caracters a ler
- * @param prova ➔ variavel do tipo char que vai ser utilizada para juntamente com a varaivel nomeProva obter o caminho para o ficheiro pilotos.txt
- * @returns numero de linhas contadas pelo parametro contador
+ * obtendo assim o número de linhas
+ * @param nomeProva ➔ Apontador para o nome da prova
+ * @param f ➔ Apontador do tipo ficheiro que vai ser utilizado para efetuar a abertura do ficheiro pilotos.txt
+ * @param contador ➔ Variável do tipo int que sempre que se encontra o caracter "\n" se incrementa por 1
+ * @param c ➔ Variável do tipo char que vai lhe ser atribuido os caracters a ler
+ * @param prova ➔ Variável do tipo char que vai ser utilizada para juntamente com a varaivel nomeProva obter o caminho para o ficheiro pilotos.txt
+ * @returns Número de linhas contadas pelo parametro contador
  */
 int nPilotosCount(char *nomeProva)
 {
     FILE *f;
-    int contador = 0; //pois sempre irá existir pelomenos um piloto
+    int contador = 1; //pois sempre irá existir pelomenos um piloto
     char c;
     char prova[30];
     strcpy(prova, nomeProva);
@@ -418,14 +419,14 @@ int nPilotosCount(char *nomeProva)
 /**
  * @brief Esta função percorre o vetor tempos por completo e verifica se um piloto aparece tantas vezes quantas etapas existem
  * @brief Para efetuar esta verificação foram efetuados dois ciclos for, o primeiro for serviria para obter um numero de piloto a comparar com o restante do vetor
- * e o segundo vetor serviria para percorrer o restante do vetor e caso fosse encontrado um piloto com o mesmo, a variavel contador(que contém a contagem de vezes que o piloto aparece)
+ * e o segundo vetor serviria para percorrer o restante do vetor e caso fosse encontrado um piloto com o mesmo, a variável contador(que contém a contagem de vezes que o piloto aparece)
  * vai ser incrementada por 1.
- * @brief No fim do segundo ciclo for é verificado se a variavel contador contou tantos pilotos quantas provas existem, aprovando ou não assim o piloto
- * @param tempos ➔ apontador do tipo TEMPOS para o vetor tempos, para assim obter acesso ao vetor tempos 
- * @param nTotal ➔ variavel do tipo inteiro que contém o numero total de valores  ler
- * @param aprovados ➔ apontador do tipo inteiro para o vetor aprovados para assim ficar registado em um vetor os pilotos aprovados
- * @param nEtapas ➔ variavel do tipo inteiro que contém o numero de etapas existentes na prova
- * @param contador ➔ variavel do tipo inteiro cujo objetivo é contar o numero de vezes que um piloto está em um vetor
+ * @brief No fim do segundo ciclo for é verificado se a variável contador contou tantos pilotos quantas provas existem, aprovando ou não assim o piloto
+ * @param tempos ➔ Apontador do tipo TEMPOS para o vetor tempos, para assim obter acesso ao vetor tempos
+ * @param nTotal ➔ Variável do tipo inteiro que contém o número total de valores ler
+ * @param aprovados ➔ Apontador do tipo inteiro para o vetor aprovados para assim ficar registado em um vetor os pilotos aprovados
+ * @param nEtapas ➔ Variável do tipo inteiro que contém o número de etapas existentes na prova
+ * @param contador ➔ Variável do tipo inteiro cujo objetivo é contar o número de vezes que um piloto está em um vetor
  * @see infoTempos
  */
 void verificaProva(TEMPOS *tempos, int nTotal, int *aprovados, int nEtapas)
@@ -454,17 +455,18 @@ void verificaProva(TEMPOS *tempos, int nTotal, int *aprovados, int nEtapas)
 /**
  * @brief Esta função percorre o vetor tempos por completo e verifica se um piloto aparece tantas vezes quantas etapas existem
  * @brief Para efetuar esta verificação foram efetuados dois ciclos for, o primeiro for serviria para obter um numero de piloto a comparar com o restante do vetor
- * e o segundo vetor serviria para percorrer o restante do vetor e caso fosse encontrado um piloto com o mesmo, a variavel contador(que contém a contagem de vezes que o piloto aparece)
+ * e o segundo vetor serviria para percorrer o restante do vetor e caso fosse encontrado um piloto com o mesmo, a variável contador (que contém a contagem de vezes que o piloto aparece)
  * vai ser incrementada por 1.
- * @brief No fim do segundo ciclo for é verificado se a variavel contador contou tantos pilotos quantas provas existem, aprovando ou não assim o piloto
- * @param tempos ➔ apontador do tipo TEMPOS para o vetor tempos, para assim obter acesso ao vetor tempos 
- * @param nTotal ➔ variavel do tipo inteiro que contém o numero total de valores  ler
- * @param aprovados ➔ apontador do tipo inteiro para o vetor aprovados para assim ficar registado em um vetor os pilotos aprovados
- * @param nEtapas ➔ variavel do tipo inteiro que contém o numero de etapas existentes na prova
- * @param contador ➔ variavel do tipo inteiro cujo objetivo é contar o numero de vezes que um piloto está em um vetor
- * @param contadorPilotos ➔ variavel do tipo inteiro cujo objetivo é contar o numero de pilotos aprovados 
- * @returns contagem de pilotos aprovados contados pela variavel contadorPilotos
+ * @brief No fim do segundo ciclo for é verificado se a variável contador contou tantos pilotos quantas provas existem, aprovando ou não assim o piloto
+ * @param tempos ➔ Apontador do tipo TEMPOS para o vetor tempos, para assim obter acesso ao vetor tempos
+ * @param nTotal ➔ Variável do tipo inteiro que contém o número total de valores ler
+ * @param aprovados ➔ Apontador do tipo inteiro para o vetor aprovados para assim ficar registado em um vetor os pilotos aprovados
+ * @param nEtapas ➔ Variável do tipo inteiro que contém o número de etapas existentes na prova
+ * @param contador ➔ Variável do tipo inteiro cujo objetivo é contar o número de vezes que um piloto está em um vetor
+ * @param contadorPilotos ➔ Variável do tipo inteiro cujo objetivo é contar o número de pilotos aprovados
+ * @returns Contagem de pilotos aprovados contados pela variável contadorPilotos
  * @see infoTempos
+
  */
 int loadVerificaProva(TEMPOS *tempos, int n, int nEtapas)
 {
@@ -490,25 +492,23 @@ int loadVerificaProva(TEMPOS *tempos, int n, int nEtapas)
 
 ///Esta função ordena o vetor prova por ordem descendente de tempo e mostra ao utilizador
 /**
- * @brief esta função primeiramente para não criar conflitos com o vetor original e também para o vetor apenas conter pilotos aprovados
- *  é realizada a copia do vetor prova por completo para outro vetor que tem de tamanho a quantidade de pilotos aprovados
- * @brief para organizar o vetor são realizados dois ciclos for, o primeiro obtém um tempo e o segundo compara esse tempo com o restante do vetor e sempre que encontra um
+ * @brief Esta função primeiramente para não criar conflitos com o vetor original e também para o vetor apenas conter pilotos aprovados
+ * é realizada a cópia do vetor prova por completo para outro vetor que tem de tamanho a quantidade de pilotos aprovados
+ * @brief Para organizar o vetor são realizados dois ciclos for, o primeiro obtém um tempo e o segundo compara esse tempo com o restante do vetor e sempre que encontra um
  * tempo maior, estes trocam de lugar para assim organizar o vetor do maior tempo de prova para o menor tempo
- * @brief Por fim para mostrar ao utilizador o vetor ordenado de forma descendente é realizado um ciclo for que percorre o vetor por completo, converte o tempo de milesimos para 
- * minutos e segundos e ainda mostra as informaçoes para o utilizador
- * @param prova ➔ apontador do tipo PROVA para o vetor prova, para assim ser possivel aceder ao vetor
- * @param nPilotos ➔ variavel do tipo inteiro que recebe o numero de pilotos em prova
- * @param aprovados ➔ variavel do tipo inteiro que recebe a quantidade de pilotos aprovados para assim o vetor copia do vetor provas apenas ter o tamanho dos pilotos aprovados
- * @param auxNum ➔ variavel que serve como auxiliar na troca de valores no vetor, guardando o numero do piloto de uma das posições
- * @param auxTempo ➔ variavel que serve como auxiliar na troca de valores no vetor, guardando o tempo de uma das posições
- * @param auxApr ➔ variavel que serve como auxiliar na troca de valores no vetor, guardando a aprovação de cada pessoa
- * @param auxNome ➔ variavel que serve como auxiliar na troca de valores no vetor, guardando o nome do piloto de uma das posições
- * @param auxCarro ➔ variavel que serve como auxiliar na troca de valores no vetor, guardando o nome do carro de uma das posições
- * @param a ➔ variavel do tipo inteiro que serve como contador auxiliar do vetor copia pois ao percorrer o vetor original caso não existam 2 pilotos seguidos aprovados o vetor a receber não pode 
- * avançar também duas posições fazendoa assim este contador incrementar por 1 a cada vez que o vetor é modificado
- * @param tempoMin ➔ variavel do tipo inteiro que vai receber o tempo em minutos da sua conversão
- * @param tempoSec ➔ variavel do tipo real que vai recever o tempo em segundos e milesimos da sua conversão
- * @param provaOrdenado ➔ variavel do tipo PROVA com o tamanho de numero de pilotos aprovados, cujo objetivo é receber a copia dos pilotos aprovados do vetor original
+ * @brief Por fim para mostrar ao utilizador o vetor ordenado de forma descendente é realizado um ciclo for que percorre o vetor por completo, converte o tempo de milésimos para
+ * minutos e segundos e ainda mostra as informações para o utilizador
+ * @param prova ➔ Apontador do tipo PROVA para o vetor prova, para assim ser possível aceder ao vetor
+ * @param nPilotos ➔ Variável do tipo inteiro que recebe o número de pilotos em prova
+ * @param aprovados ➔ Variável do tipo inteiro que recebe a quantidade de pilotos aprovados para assim o vetor cópia do vetor provas apenas ter o tamanho dos pilotos aprovados
+ * @param auxNum ➔ Variável que serve como auxiliar na troca de valores no vetor, guardando o numero do piloto de uma das posições
+ * @param auxTempo ➔ Variável que serve como auxiliar na troca de valores no vetor, guardando o tempo de uma das posições
+ * @param auxApr ➔ Variável que serve como auxiliar na troca de valores no vetor, guardando a aprovação de cada pessoa
+ * @param auxNome ➔ Variável que serve como auxiliar na troca de valores no vetor, guardando o nome do piloto de uma das posições
+ * @param auxCarro ➔ Variável que serve como auxiliar na troca de valores no vetor, guardando o nome do carro de uma das posições
+ * @param a ➔ Variável do tipo inteiro que serve como contador auxiliar do vetor copia pois ao percorrer o vetor original caso não existam 2 pilotos seguidos aprovados o vetor a receber não pode
+ * avançar também duas posições fazendo assim este contador incrementar por 1 a cada vez que o vetor é modificado
+ * @param tempoMin ➔ Variável do tipo inteiro que vai receber o tempo em minutos da sua conversão
  * @see infoProva
  */
 void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados)
@@ -578,22 +578,23 @@ void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados)
 
 ///Esta função efetua a media dos tempos por prova
 /**
- * @brief Esta função primeiramente para organizar os somatórios foi criado um vetor chamado soma que vai ser inicalmente igualado a 0, este vetor está organizado
- *  sendo a primeira linha a etapa P e o restante visto que a função arrumarVetor 
+ * @brief Esta função primeiramente para organizar os somatórios foi criado um vetor chamado soma que vai ser inicialmente igualado a 0, este vetor está organizado
+ * sendo a primeira linha a etapa P e o restante visto que a função arrumarVetor
  * @brief São então criados dois ciclos for um ciclo para percorrer o vetor tempos e outro para percorrer o vetor aprovados, verificando então se o piloto estava no conjunto 
  * de pilotos aprovados ou não
  * @brief Após esta ação é verificado ainda dentro do segundo ciclo for se se está perante a primeira etapa, pois a primeira etapa estará sempre guardada na posição 0 do vetor soma de acordo com a organização previamente esquematizada
- * @brief Após a obtenção dos valores no vetor soma, são calculadas as medias, ou seja a soma total a dividir pela quantidade total de pilotos aprovados
+ * @brief Após a obtenção dos valores no vetor soma, são calculadas as médias, ou seja a soma total a dividir pela quantidade total de pilotos aprovados
  * @brief Após a verificação caso esteja perante a primeira etapa é então guardado o tempo na primeira etapa, caso contrário é guardado em outra posição do vetor pois o vetor etapas já está organizado de acordo com as etapas da prova
- * @param tempos ➔ apontador do tipo TEMPOS que vai receber o vetor tempos
- * @param etapas ➔ apontador do tipo ETAPAS que vai receber o vetor etapas
- * @param n ➔ varivel do tipo inteiro que recebe o numero total de tempos a ler no vetor tempos
- * @param aprovados ➔ apontador tipo inteiro que vai receber o vetor aprovados apra assim ter acesso ao numero dos pilotos aprovados
- * @param medTempos ➔ apontador do tipo inteiro que vai receber o vetor medTempos para assim ser possivel alterar o vetor fora da função
- * @param nAprovados ➔ variavel do tipo inteiro que recebe a quantidade de pilotos aprovados
- * @param nEtapas ➔ variavel do tipo inteiro que recebe a quantidade de etapas na prova
- * @param soma ➔ variavel do tipo double que é um vetor cujo objetivo é guardar organizadamente os valores da soma total de tempos
- * @param media ➔ varivel do tipo double que é um vetor cujo objetivo é guardar organizademente as emdias de tempos da partida
+ * @param tempos ➔ Apontador do tipo TEMPOS que vai receber o vetor tempos
+ * @param etapas ➔ Apontador do tipo ETAPAS que vai receber o vetor etapas
+ * @param n ➔ Variável do tipo inteiro que recebe o número total de tempos a ler no vetor tempos
+ * @param aprovados ➔ Apontador tipo inteiro que vai receber o vetor aprovados para assim ter acesso ao número dos pilotos aprovados
+ * @param medTempos ➔ Apontador do tipo inteiro que vai receber o vetor medTempos para assim ser possível alterar o vetor fora da função
+ * @param nAprovados ➔ Variável do tipo inteiro que recebe a quantidade de pilotos aprovados
+ * @param nEtapas ➔ Variável do tipo inteiro que recebe a quantidade de etapas na prova
+ * @param soma ➔ Variável do tipo double que é um vetor cujo objetivo é guardar organizadamente os valores da soma total de tempos
+ * @param media ➔ Variável do tipo double que é um vetor cujo objetivo é guardar organizademente as medias de tempos da partida
+ * @see infoTempos,infoEtapas
  */
 void medTemposEtapa(TEMPOS *tempos, ETAPAS *etapas, int n, int *aprovados, int *medTempos, int nAprovados, int nEtapas)
 {
@@ -641,18 +642,19 @@ void medTemposEtapa(TEMPOS *tempos, ETAPAS *etapas, int n, int *aprovados, int *
 /**
  * @brief Primeiramente as variaveis menor e maior são igualadas aos tempos da posição 0 do vetor pois a sua primeira posição vai ser 
  * o maior e menor tempos lidos até ao momento
- * @brief Após as variaveis obterem valores para comparar é realizado um ciclo for que percorre todo o vetor prova e verifica se o piloto 
+ * @brief Após as variáveis obterem valores para comparar é realizado um ciclo for que percorre todo o vetor prova e verifica se o piloto
  * foi aprovado e se o tempo lido é menor ou se é maior que o menor e maior tempos lidos, caso sejam os valores são alterados para os atuais
- * , e os numeros dos pilotos são guardadso também, para assim ser possivel verificar as informações dos pilotos fora da função
- * @brief Após se obter o maior e menor tempos,os numeros desses pilotos são guardados no vetor temposExtremos pois é um apontador e assim é possivel 
+ * , e os números dos pilotos são guardados também, para assim ser possível verificar as informações dos pilotos fora da função
+ * @brief Após se obter o maior e menor tempos, os números desses pilotos são guardados no vetor temposExtremos pois é um apontador e assim é possível
  * aceder a estes valores externamente pois se está a alterar um vetor externo
- * @param prova ➔ apontador do tipo PROVA que recebe o vetor prova
- * @param nPilotos ➔ variavel do tipo inteiro que recebe o numero total de pilotos inscritos na prova
- * @param temposExtremos ➔ apontador do tipo inteiro que recebe o vetor numExtremos no qual se vai colocar o numero dos pilotos
- * @param menor ➔ variavel do tipo inteiro que vai guardar o menor tempo lido
- * @param maior ➔ variavel do tipo inteiro que vai guardar o menor tempo lido
- * @param menorNum ➔ variavel do tipo inteiro que vai receber o numero do piloto com o menor tempo registado
- * @param maiorNum ➔ variavel do tipo inteiro que vai recber o numero do piltoos com o maior tempo registado
+ * @param prova ➔ Apontador do tipo PROVA que recebe o vetor prova
+ * @param nPilotos ➔ Variável do tipo inteiro que recebe o número total de pilotos inscritos na prova
+ * @param temposExtremos ➔ Apontador do tipo inteiro que recebe o vetor numExtremos no qual se vai colocar o número dos pilotos
+ * @param menor ➔ Variável do tipo inteiro que vai guardar o menor tempo lido
+ * @param maior ➔ Variável do tipo inteiro que vai guardar o menor tempo lido
+ * @param menorNum ➔ Variável do tipo inteiro que vai receber o número do piloto com o menor tempo registado
+ * @param maiorNum ➔ Variável do tipo inteiro que vai recber o número do piltoos com o maior tempo registado
+ * @see infoProva
  */
 void extremos(PROVA *prova, int nPilotos, int *tempoExtremos)
 {
@@ -684,28 +686,29 @@ void extremos(PROVA *prova, int nPilotos, int *tempoExtremos)
 
 ///Esta função vai encontrar o menor tempo que é possivel realizar a prova e as diversas etapas
 /**
- * @brief Esta função vai primeiramente colocar em todas as posições do vetor menores com os maiores tempo lidos na função extremos
- * @brief Após coloccar valores em todas as posições deste vetor, foram criados dois ciclos for que vai percorrer os vetores tempos e etapas, o 
- * primeiro ciclo percorre o 
- * vetor tempos e encontra tempos para comparar com o vetor etapas que é percorrido no segundo ciclo for e sempre que se encontra uma etapa igual á 
+ * @brief Esta função vai primeiramente colocar em todas as posições do vetor menores com os maiores tempos lidos na função extremos
+ * @brief Após colocar valores em todas as posições deste vetor, foram criados dois ciclos for que vai percorrer os vetores tempos e etapas, o
+ * primeiro ciclo percorre o
+ * vetor tempos e encontra tempos para comparar com o vetor etapas que é percorrido no segundo ciclo for e sempre que se encontra uma etapa igual á
  * etapa do vetor tempos verifica-se se o tempo é menor que o menor tempo lido até ao momento,
- * caso seja, o vetor de menores tempos lidos guarda esse valor no local o qual foi encontrado no vetor etapas, pois o vetor etapas está organizado 
- * por etapa fazendo assim com que o vetor que guarda os menores numeros tembém esteja organizado
- * @brief Após guardar os valores no vetor o mesmo é convetido para minutos e segundos e visto que estava organizado foram cirados mais dois vetores, um para guardar 
- * os minutos e outro para guardar os segundos, ou seja o menor tempo na posição 0 estaria em minutos na posiçao 0 do vetor minutos e na posição 0 do vetor segundos
- * @brief É tambem efetuada a conversão do menor tempo lido em toda a prova que resulta do somatório do menor tempo de cada etapa
- * @brief Após todas as conversões é então aprensentado ao utilizador todos os valores obtidos
- * @param tempos ➔ apontador do tipo TEMPOS que recebe o vetor tempos
- * @param etapas ➔ apontador do tipo ETAPAS que recbe o vetor etapas
- * @param nTotal ➔ variavel do tipo inteiro que recebe a quantidade de valores a ler no vetor tempos
- * @param maior ➔ variavel do tipo inteiro que recebe o maior tempo lido 
- * @param nEtapas ➔ variavel dot tipo inteiro que recebe o numero total de etapas existentes na prova
- * @param tempoMin ➔ variavel do tipo inteiro que é um vetor cuja função é guardar a conversão do tempo para minutos e tenho de tamanho nEtapas pois vai conter tempos de todas as etapas
- * @param menorTempoMin ➔ variavel do tipo inteiro que recebe o valor da conversão do menor tempo de prova total em minutos
- * @param menores ➔ variavel do tipo double que é um vetor cuja função é guardar os menore tempos de cada etapa da prova e tem tamanho nEtapas pois vai ter tantos tempos quantas etapas existem
- * @param totalTempo ➔ variavel do tipo double que vai conter o somatório dos menores tempos para assim obter o menor tempo possivel de realizar a prova
- * @param tempoSec ➔ variavel do tipo double que é um vetor que vai receber o menor tempo convertido em segundos e milesimos de cada etapa
- * @param menorTempoSec ➔ variavel do tipo double que vai receber o menor tempo em que é possivel efetuar a prova convertido em segundos e milesimos
+ * caso seja, o vetor de menores tempos lidos guarda esse valor no local o qual foi encontrado no vetor etapas, pois o vetor etapas está organizado
+ * por etapa fazendo assim com que o vetor que guarda os menores números também esteja organizado
+ * @brief Após guardar os valores no vetor o mesmo é convertido para minutos e segundos e visto que estava organizado foram criados mais dois vetores, um para guardar
+ * os minutos e outro para guardar os segundos, ou seja o menor tempo na posição 0 estaria em minutos na posição 0 do vetor minutos e na posição 0 do vetor segundos
+ * @brief É também efetuada a conversão do menor tempo lido em toda a prova que resulta do somatório do menor tempo de cada etapa
+ * @brief Após todas as conversões é então apresentado ao utilizador todos os valores obtidos
+ * @param tempos ➔ Apontador do tipo TEMPOS que recebe o vetor tempos
+ * @param etapas ➔ Apontador do tipo ETAPAS que recebe o vetor etapas
+ * @param nTotal ➔ Variável do tipo inteiro que recebe a quantidade de valores a ler no vetor tempos
+ * @param maior ➔ Variável do tipo inteiro que recebe o maior tempo lido 
+ * @param nEtapas ➔ Variável do tipo inteiro que recebe o número total de etapas existentes na prova
+ * @param tempoMin ➔ Variável do tipo inteiro que é um vetor cuja função é guardar a conversão do tempo para minutos e tenho de tamanho nEtapas pois vai conter tempos de todas as etapas
+ * @param menorTempoMin ➔ Variável do tipo inteiro que recebe o valor da conversão do menor tempo de prova total em minutos
+ * @param menores ➔ Variável do tipo double que é um vetor cuja função é guardar os menores tempos de cada etapa da prova e tem tamanho nEtapas pois vão ter tantos tempos quantas etapas existem
+ * @param totalTempo ➔ Variável do tipo double que vai conter o somatório dos menores tempos para assim obter o menor tempo possível de realizar a prova
+ * @param tempoSec ➔ Variável do tipo double que é um vetor que vai receber o menor tempo convertido em segundos e milésimos de cada etapa
+ * @param menorTempoSec ➔ Variável do tipo double que vai receber o menor tempo em que é possível efetuar a prova convertido em segundos e milésimos
+ * @see infoTempos,infoEtapas
  */
 void menorTempo(TEMPOS *tempos, ETAPAS *etapas, int nTotal, int maior, int nEtapas)
 {
@@ -750,23 +753,24 @@ void menorTempo(TEMPOS *tempos, ETAPAS *etapas, int nTotal, int maior, int nEtap
 
 ///Esta função vai calcular as velocidades medias de cada etapas e da prova por completo
 /**
- * @brief Esta função primeiramente efetua dois ciclos for, sendo primeiro para percorrer o vetor distancias e o segundo para percorrer o vetor etapas e ir comparando 
- * sempre que encontra uma etapa com o mesmo nome o mesmo guarda essa distancia num vetor na posição onde foi encontrada a etapa no vetor etapas pois este vetor já se encontra organizado e acrecenta também a distancia a variavel total distancias que guarda o total das distancias da prova
- * @brief Após obter todas as distancias é então obtido a media de tempo de cada etapa a partir do vetor medTempos que contém a media de tempos calculado na função medTemposEtapa
- * e guardado em segundos no vetor tempo o qual tambem acrescenta o tempo à variavel totalTempo que guarda o total de tempo que demora a efetuar a prova
- * @brief Após obter os tempos é então calculada a velocidade média que demora a efetuar a prova em m/s, a formula de calculo da velociade media é distancia percorrida sobre o tempo que demorou a percorrer essa distancia, 
- * utilizando então esta formula são calculadas as medias por etapa fazendo uso do vetor dEtapas e do vetor tempo pois ambos estão organizados para cada posição conter as mesma etapa
- * e então os valores vao também ser guardardos organizadamente no vetor medias
- * @brief Após o calculo das medias é também calculada a velocidade media total da prova e apresentados estes valores ao utilizador fazendo uso da organização dos vetores
- * @param distancias ➔ apontador do tipo DISTANCIAS que vai receber o vetor distancias
- * @param etapas ➔ apontador do tipo ETPAS que vai receber o vetor etapas
- * @param nEtapas ➔ variavel do tipo inteiro que vai receber o numero total de etapas existentes na prova
- * @param medTempos ➔ apontador do tipo inteiro que vai receber o vetor que contém as medias de tempos por etapa
- * @param dEtapas ➔ variavel do tipo inteiro que é um vetor e recebe a distancia das etapas na partida
- * @param medias ➔ variavel do tipo real que é um vetor que vai receber as velocidades medias organizadas por posição 
- * @param tempo ➔ variavel do tipo real que vai receber as medias de tempos por etapa em segundos 
- * @param totalDist ➔ variavel do tipo float que guarda a distancia total da prova 
- * @param totalTempo ➔ variavel do tipo float que guarda o total de tempo em segundos da prova por completo
+ * @brief Esta função primeiramente efetua dois ciclos for, sendo primeiro para percorrer o vetor distancias e o segundo para percorrer o vetor etapas e ir comparando
+ * sempre que encontra uma etapa com o mesmo nome o mesmo guarda essa distancia num vetor na posição onde foi encontrada a etapa no vetor etapas pois este vetor já se encontra organizado e acrescenta também a distancia a variável total distancias que guarda o total das distancias da prova
+ * @brief Após obter todas as distancias é então obtido a média de tempo de cada etapa a partir do vetor medTempos que contém a média de tempos calculado na função medTemposEtapa
+ * e guardado em segundos no vetor tempo o qual também acrescenta o tempo à variável totalTempo que guarda o total de tempo que demora a efetuar a prova
+ * @brief Após obter os tempos é então calculada a velocidade média que demora a efetuar a prova em m/s, a formula de calculo da velocidade media é distancia percorrida sobre o tempo que demorou a percorrer essa distancia,
+ * utilizando então esta fórmula são calculadas as médias por etapa fazendo uso do vetor dEtapas e do vetor tempo pois ambos estão organizados para cada posição conter a mesma etapa
+ * e então os valores vão também ser guardados organizadamente no vetor média
+ * @brief Após o cálculo das médias é também calculada a velocidade média total da prova e apresentados estes valores ao utilizador fazendo uso da organização dos vetores
+ * @param distancias ➔ Apontador do tipo DISTANCIAS que vai receber o vetor distancias
+ * @param etapas ➔ Apontador do tipo ETAPAS que vai receber o vetor etapas
+ * @param nEtapas ➔ Variável do tipo inteiro que vai receber o número total de etapas existentes na prova
+ * @param medTempos ➔ Apontador do tipo inteiro que vai receber o vetor que contém as médias de tempos por etapa
+ * @param dEtapas ➔ Variável do tipo inteiro que é um vetor e recebe a distância das etapas na partida
+ * @param medias ➔ Variável do tipo real que é um vetor que vai receber as velocidades médias organizadas por posição 
+ * @param tempo ➔ Variável do tipo real que vai receber as médias de tempos por etapa em segundos 
+ * @param totalDist ➔ Variável do tipo float que guarda a distância total da prova 
+ * @param totalTempo ➔ Variável do tipo float que guarda o total de tempo em segundos da prova por completo
+ * @see infoDistancias,infoEtapas
  */
 void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int *medTempos)
 {
@@ -779,7 +783,7 @@ void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int 
         {
             if (strcmp(distancias[i].etapaI, etapas[j].etapaNome) == 0)
             {
-                dEtapas[i] = distancias[i].distancia;
+                dEtapas[j] = distancias[i].distancia;
                 totalDist += distancias[i].distancia;
             }
         }
@@ -817,33 +821,34 @@ void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int 
  * @brief Após a escrita do cabeçalho é efetuado uma organização do vetor tempo prova por tempo para assim obter as posições corretas dos pilotos colocando os pilotos não aprovados
  *  em primeiro lugar
  * @brief Para efetuar então a escrita organizada dos pilotos foi criado um ciclo for que percorre o vetor prova por completo e verifica se o piloto foi aprovado pois
- *  primeiramente é necessário escrever os pilotos aprovados
+ * primeiramente é necessário escrever os pilotos aprovados
  * como ao realizar a organização do vetor os pilotos ficaram organizados por menor tempo ou seja com as posições corretas na prova não havia necessidade de mais organização
- * logo para obter a posição do piloto foi criada uma outra variavel que é incrementada apenas quando um piloto aprovado é escrito conseguindo assim então a posição do piloto
- * @brief Para verificar a distancia do lider, quando é escrito o primeiro piloto do vetor que esteja aprovado o tempo do mesmo é guardado numa variavel e a cada piloto é efetuada a diferença entre o tempo do mesmo e o tempo do lider  
+ * logo para obter a posição do piloto foi criada uma outra variável que é incrementada apenas quando um piloto aprovado é escrito conseguindo assim então a posição do piloto
+ * @brief Para verificar a distância do líder, quando é escrito o primeiro piloto do vetor que esteja aprovado o tempo do mesmo é guardado numa variável e a cada piloto é efetuada a diferença entre o tempo do mesmo e o tempo do líder
  * e convertido para minutos e segundos
  * @brief O mesmo é efetuado para o calculo da distancia do anterior pois a cada piloto que é acrescentado à tabela, após o calculo da diferença do tempo do mesmo com o tempo do piloto anterior,
- *  é atribuido o seu tempo à variavel que guarda o tempo do piloto anterior
+ * é atribuído o seu tempo à variável que guarda o tempo do piloto anterior
  * utilizando estes dados foi então escrito na consola e no ficheiro binário todos os pilotos aprovados organizados por posição
- * @brief Da mesma forma é calculada a distancia do lider e do piloto anterior, alterando apenas que não é preciso conversão e que se trata de distancia e não do tempo
+ * @brief Da mesma forma é calculada a distância do líder e do piloto anterior, alterando apenas que não é preciso conversão e que se trata de distância e não do tempo
  * @brief Para então escrever os pilotos não aprovados foi efetuado um novo ciclo for que percorrer todo o vetor prova verificando se o piloto não foi aprovado e caso não seja
- *  apenas é escrito o seu nome numero e carro, tanto na consola como no ficheiro binário
+ * apenas é escrito o seu nome número e carro, tanto na consola como no ficheiro binário
  * @param prova ➔ Apontador do tipo PROVA cujo objetivo é receber vetor prova
- * @param nPilotos ➔ variavel do tipo inteiro que recebe a quantidade de pilotos em prova 
+ * @param nPilotos ➔ Variável do tipo inteiro que recebe a quantidade de pilotos em prova 
  * @param nomeProva ➔ Apontador do tipo char para o vetor nomeProva que contém o nome da prova a abrir
- * @param auxNum ➔ variavel do tipo inteiro cujo objetivo é servir como auxiliar na troca de valores no vetor prova
- * @param auxTempo ➔ variavel do tipo inteiro cujo objetivo é servir como auxiliar na troca de valores no vetor prova
- * @param auxApr ➔ variavel do tipo inteiro cujo objetivo é servir como auxiliar na troca de valores no vetor prova
- * @param tempoMin ➔ variavel do tipo inteiro cujo objetivo é guardar o tempo em minutos da prova
- * @param diTempoLdr ➔ variavel do tipo inteiro cujo objetivo é guardar a diferença de tempo para o lider
- * @param diTempoAnt ➔ variavel do tipo inteiro cujo objetivo é guardar a diferença de tempo do piloto anterior
- * @param tempoLdr ➔ variavel do tipo inteiro cujo objetivo é guardar o tempo do lider
- * @param tempoSec ➔ variavel do tipo float cujo objetivo é guardar o tempo em segundo
- * @param diLdr ➔ variavel do tipo inteiro cujo objetivo é guardar a diferença do lider
- * @param diAnt ➔ variavel do tipo inteiro cujo objetivo é guardar a diferença do anterior
- * @param auxNome ➔ variavel do tipo char cujo objetivo é auxiliar a troca de nome na organização do vetor
- * @param auxCarro ➔ variavel do tipo char cujo objetivo é auxiliar a troca de nome do carro na organização do vetor
- * @param tabelaFile ➔ variavel do tipo char cujo objetivo é guardar o caminho onde vai ser guardado o ficheiro contendo a tabela
+ * @param auxNum ➔ Variável do tipo inteiro cujo objetivo é servir como auxiliar na troca de valores no vetor prova
+ * @param auxTempo ➔ Variável do tipo inteiro cujo objetivo é servir como auxiliar na troca de valores no vetor prova
+ * @param auxApr ➔ Variável do tipo inteiro cujo objetivo é servir como auxiliar na troca de valores no vetor prova
+ * @param tempoMin ➔ Variável do tipo inteiro cujo objetivo é guardar o tempo em minutos da prova
+ * @param diTempoLdr ➔ Variável do tipo inteiro cujo objetivo é guardar a diferença de tempo para o líder
+ * @param diTempoAnt ➔ Variável do tipo inteiro cujo objetivo é guardar a diferença de tempo do piloto anterior
+ * @param tempoLdr ➔ Variável do tipo inteiro cujo objetivo é guardar o tempo do líder
+ * @param tempoSec ➔ Variável do tipo float cujo objetivo é guardar o tempo em segundo
+ * @param diLdr ➔ Variável do tipo inteiro cujo objetivo é guardar a diferença do líder
+ * @param diAnt ➔ Variável do tipo inteiro cujo objetivo é guardar a diferença do anterior
+ * @param auxNome ➔ Variável do tipo char cujo objetivo é auxiliar a troca de nome na organização do vetor
+ * @param auxCarro ➔ Variável do tipo char cujo objetivo é auxiliar a troca de nome do carro na organização do vetor
+ * @param tabelaFile ➔ Variável do tipo char cujo objetivo é guardar o caminho onde vai ser guardado o ficheiro contendo a tabela
+ * @see infoProva
  */
 void tabelaClassificativa(PROVA *prova, int nPilotos, char *nomeProva)
 {
@@ -959,23 +964,24 @@ void tabelaClassificativa(PROVA *prova, int nPilotos, char *nomeProva)
  * @brief Esta função primeiramente vai escrever na consola o menu do software
  * @brief Após mostrar o menu ao utilizador é lido a escolha do utilizador e realizado um switch para efetuar as funções corretas
  *  para a escolha do utilizador
- * @param tempos ➔ apontador do tipo TEMPOS que recebe o vetor tempos
- * @param pilotos ➔ apontador do tipo PILOTO que recebe o vetor pilotos
- * @param distancias ➔ apontador do tipo DISTANCIAS que recebe o vetor distancias
- * @param prova ➔ apontador do tipo PROVA que recebe o vetor prova
- * @param etapas ➔ apontador do tipo ETAPAS que recebe o vetor etapas
- * @param nTotal ➔ variavel do tipo inteiro que recebe o numero total de tempos no vetor tempos
- * @param nPilotos ➔ variavel do tipo inteiro que recebe o numero total de pilotos inscritos na prova
- * @param nEtapas ➔ variavel do tipo inteiro que recebe o numero total de etapas na prova
- * @param nAprovados ➔ variavel do tipo inteiro que recebe o numero de pilotos aprovados
- * @param nomeProva ➔ variavel do tipo char que recebe o nome da pasta na qual está guardado os ficheiros da prova
- * @param escolha ➔ variavel do tipo inteiro que guarda a opção escolhida pelo utilizador
- * @param medTempos ➔ variavel do tipo inteiro que é um vetor cujo objetivo é guardar a media de tempos e tem de tamanho o numero de etapas da prova
- * @param pilotosAprv ➔ variavel do tipo inteiro que é um vetor cujo objetivo é guardar o numero dos pilotos que são aprovados na prova
- * @param numExtremos ➔ variavel do tipo inteiro que guarda o numero dos pilotos mais rapido e mais lento
- * @param maiorNum ➔ variavel do tipo inteiro que guarda o numero do piloto mais lento
- * @param menorNum ➔ variavel do tipo inteiro que guarda o numero do piloto mais rápido
- * @param novaProva ➔ variavel do tipo char cujo objetivo é guardar o nome da pasta onde estão guardados os ficheiros com as informações da prova
+ * @param tempos ➔ Apontador do tipo TEMPOS que recebe o vetor tempos
+ * @param pilotos ➔ Apontador do tipo PILOTO que recebe o vetor pilotos
+ * @param distancias ➔ Apontador do tipo DISTANCIAS que recebe o vetor distancias
+ * @param prova ➔ Apontador do tipo PROVA que recebe o vetor prova
+ * @param etapas ➔ Apontador do tipo ETAPAS que recebe o vetor etapas
+ * @param nTotal ➔ Variável do tipo inteiro que recebe o número total de tempos no vetor tempos
+ * @param nPilotos ➔ Variável do tipo inteiro que recebe o número total de pilotos inscritos na prova
+ * @param nEtapas ➔ Variável do tipo inteiro que recebe o número total de etapas na prova
+ * @param nAprovados ➔ Variável do tipo inteiro que recebe o número de pilotos aprovados
+ * @param nomeProva ➔ Variável do tipo char que recebe o nome da pasta na qual está guardado os ficheiros da prova
+ * @param escolha ➔ Variável do tipo inteiro que guarda a opção escolhida pelo utilizador
+ * @param medTempos ➔ Variável do tipo inteiro que é um vetor cujo objetivo é guardar a media de tempos e tem de tamanho o número de etapas da prova
+ * @param pilotosAprv ➔ Variável do tipo inteiro que é um vetor cujo objetivo é guardar o número dos pilotos que são aprovados na prova
+ * @param numExtremos ➔ Variável do tipo inteiro que guarda o número dos pilotos mais rápido e mais lento
+ * @param maiorNum ➔ Variável do tipo inteiro que guarda o número do piloto mais lento
+ * @param menorNum ➔ Variável do tipo inteiro que guarda o número do piloto mais rápido
+ * @param novaProva ➔ Variável do tipo char cujo objetivo é guardar o nome da pasta onde estão guardados os ficheiros com as informações da prova
+ * @see infoEtapas,infoTempos,infoDistancias,infoPilotos,infoProva,menu
  */
 void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova, ETAPAS *etapas, int nTotal, int nPilotos, int nEtapas, int aprovados, char *nomeProva)
 {
@@ -999,7 +1005,7 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
     switch (escolha)
     {
     case 1:
-        printf("\nNumero de pilotos: %d", nPilotosCount(nomeProva) + 1);
+        printf("\nNumero de pilotos: %d", nPilotosCount(nomeProva));
         fflush(stdin);
         printf("\n(Enter)");
         getchar();
@@ -1094,27 +1100,29 @@ void menu(TEMPOS *tempos, PILOTO *pilotos, DISTANCIAS *distancias, PROVA *prova,
 
 ///Esta função tem como objetivo realizar o carregamento das informações do ficheiro
 /**
- * @brief Primeiramente vai ser executado a função Etapas para obter o numero de etapas e de pilotos e é passado por parametro a variavel n para guaradar os valores que depois vão igualados a variaveis e também a variavel nomeProva para se obter a pasta correta a abrir
- * @brief É então aproveitado o facto de se saber quantas etapas são para colocar etapas no vetor nomeEtapas, para o realizar é seguido o pensamento do que 3 etapas significa que a primeira etapa 
- * será P e as seguintes E1 e E2, aproveitando este raciocinio é criado um ciclo for que quando estamos no primeiro ciclo coloca a primeira etapa com P e nos seguintes ciclos será E+n ciclos
- * @brief Para inicar o vetor tempos foi necessário obter o numero total de tempos a ler, mas como no ficheiro tempos a primeira linha indica a quantidade de etapas e pilotos no ficheiro então 
- * o numero de tempos a ler é o produto do pilotos com as etapas, para então depois colocar os tempos no vetor tempos é chamada a função loadTempos e passado por parametro tempos e o nome da pasta dos ficheiros da prova
- * @brief Para inicar o vetor distancias foi utilizado então o numero de etapas obtido na função Etapas pois contém o numero total de etapas, de seguida para se colocar informações no vetor é 
- * executada a função loadDistancias e passado por parametro o vetor distancias e nome da pasta a abrir para aceder aos ficheiros corretos, por ultimo é realizada a organização do vetor distancias por
+ * @brief Primeiramente vai ser executado a função Etapas para obter o número de etapas e de pilotos e é passado por parâmetro a variável n para guardar os valores
+ *  que depois vão igualados a variáveis e também a variável nomeProva para se obter a pasta correta a abrir
+ * @brief É então aproveitado o facto de se saber quantas etapas são para colocar etapas no vetor nomeEtapas, para o realizar é seguido o pensamento do que 3 etapas
+ *  significa que a primeira etapa será P e as seguintes E1 e E2, aproveitando este raciocínio é criado um ciclo for que quando estamos no primeiro ciclo coloca a primeira etapa com P e nos seguintes ciclos será E+n ciclos
+ * @brief Para iniciar o vetor tempos foi necessário obter o número total de tempos a ler, mas como no ficheiro tempos a primeira linha indica a quantidade de etapas e pilotos no ficheiro então
+ *  o número de tempos a ler é o produto dos pilotos com as etapas, para então depois colocar os tempos no vetor tempos é chamada a função loadTempos e passado por parâmetro tempos e o nome da pasta dos ficheiros da prova
+ * @brief Para iniciar o vetor distâncias foi utilizado então o número de etapas obtido na função Etapas pois contém o número total de etapas, de seguida para se colocar informações no vetor é
+ * executada a função loadDistancias e passado por parâmetro o vetor distancias e nome da pasta a abrir para aceder aos ficheiros corretos, por ultimo é realizada a organização do vetor distancias por
  * nome da prova sendo a primeira P e as seguintes E+n, pois assim o vetor estaria organizado para o restante do código facilitando a programação do mesmo
- * @brief Para inciar o vetor pilotos é primeiramente executada a função nPilotosCount e é igualado à variavel nPilotos para assim guardar a quantidade total de pilotos inscritos na prova na variavel nPilotos, 
- * de seguida é então iniciado o vetor com tamanho de nPilotos e chamada a função loadPilotos na qual se passa por parametro o vetor pilotos e o nome da prova para assim se colocar os dados dentro do vetor
- * @brief Para iniciar o vetor prova é utilizado o tamanho de nPilotos pois este vetor vai conter as informações de todos os pilotos e as informações da prova referentes aos mesmos, para inciar o vetor 
- * é executada a função loadProva e passado por parametro os vetores prova, tempos e pilotos pois as informações dos mesmos vão ser colcadas no vetor prova, é também passado por parametro as variaveis
+ * @brief Para iniciar o vetor pilotos é primeiramente executada a função nPilotosCount e é igualado à variável nPilotos para assim guardar a quantidade total de pilotos inscritos na prova na variável nPilotos,
+ * de seguida é então iniciado o vetor com tamanho de nPilotos e chamada a função loadPilotos na qual se passa por parâmetro o vetor pilotos e o nome da prova para assim se colocar os dados dentro do vetor
+ * @brief Para iniciar o vetor prova é utilizado o tamanho de nPilotos pois este vetor vai conter as informações de todos os pilotos e as informações da prova referentes aos mesmos, para iniciar o vetor
+ * é executada a função loadProva e passado por parâmetro os vetores prova, tempos e pilotos pois as informações dos mesmos vão ser colocadas no vetor prova, é também passado por parâmetro as variáveis
  * nTotal,nPilotos e nEtapas para se saber dentro da função quais são os limites dos vetores passados
- * @brief De seguida é contabilizado a quantiade de pilotos aprovados, foi esta ação efetuada pois para criar o vetor contendo o numero dos pilotos aprovados seria necessário o numero total de pilotos aprovados
- * @brief É por fim encaminhado para o vetor menu todas as variaveis obtidas nesta função apra então serem utilizadas no restante código
- * @param nomeProva ➔ variavel do tipo char cujo objetivo é guardar o nome da pasta a abrir contendo as informações da prova
- * @param n ➔ variavel do tipo inteiro que é um vetor cujo objetivo é guaradar na posição 0 o numero de etapas da prova e na posição 1 o numero de pilotos no ficheiro tempos.txt
- * @param nTotal ➔ variavel do tipo inteiro cujo objetivo é guardar o numero total de informações a ler no ficheiro tempos.txt
- * @param nEtapas ➔ variavel do tipo inteiro cujo objetivo é guardar o numero de etapas existentes na prova
- * @param nPilotos ➔ variavel do tipo inteiro cujo objetivo é guardar o numero de pilotos existentes na prova e também o numero de pilotos presentes no ficheiro tempos.txt
- * @param aprovados ➔ variavel do tipo inteiro cujo objetivo é guardar o numero de piltos aprovados
+ * @brief De seguida é contabilizado a quantidade de pilotos aprovados, foi esta ação efetuada pois para criar o vetor contendo o número dos pilotos aprovados seria necessário o número total de pilotos aprovados
+ * @brief É por fim encaminhado para o vetor menu todas as variáveis obtidas nesta função para então serem utilizadas no restante código
+ * @param nomeProva ➔ Variável do tipo char cujo objectivo é guardar o nome da pasta a abrir contendo as informações da prova
+ * @param n ➔ Variável do tipo inteiro que é um vetor cujo objetivo é guardar na posição 0 o número de etapas da prova e na posição 1 o número de pilotos no ficheiro tempos.txt
+ * @param nTotal ➔ Variável do tipo inteiro cujo objetivo é guardar o número total de informações a ler no ficheiro tempos.txt
+ * @param nEtapas ➔ Variável do tipo inteiro cujo objetivo é guardar o número de etapas existentes na prova
+ * @param nPilotos ➔ Variável do tipo inteiro cujo objetivo é guardar o número de pilotos existentes na prova e também o número de pilotos presentes no ficheiro tempos.txt
+ * @param aprovados ➔ Variável do tipo inteiro cujo objetivo é guardar o número de pilotos aprovados
+ * @see infoEtapas,infoTempos,infoDistancias,infoPilotos,infoProva,Etapas,loadTempos,loadDistancias,arrumarVetor,nPilotosCount,LoadProva,loadVerificaProva,menu
  */
 void loadTudo(char *nomeProva)
 {
@@ -1167,9 +1175,10 @@ void loadTudo(char *nomeProva)
 
 ///Esta é a função principal do programa
 /**
- * @brief esta função tem como objetivo iniciar o progama pois a mesma vai pedir ao utilizador o nome da prova a abrir que seria o nome da pasta que contém os ficheiros com informações da prova
- * e de seguinda vai executar a função load passando por parametro o nome da prova lindo anteriormente
- * @param nomeProva ➔ variavel do tipo char que é um vetor cujo objetivo é guardar o nome da pasta que contém as informações da prova
+ * @brief Esta função tem como objetivo iniciar o programa pois a mesma vai pedir ao utilizador o nome da prova que seria o nome da pasta que contém os ficheiros
+ *  com informações da prova e de seguida vai executar a função loadTudo passando por parâmetro o nome da prova lido anteriormente
+ * @param nomeProva ➔ Variável do tipo char que é um vetor cujo objetivo é guardar o nome da pasta que contém as informações da prova
+ * @see loadTudo
  */
 int main()
 {
