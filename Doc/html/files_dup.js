@@ -1,4 +1,4 @@
 var files_dup =
 [
-    [ "trabalho1", "dir_d2cae577d632d5eba63978880920a57b.html", "dir_d2cae577d632d5eba63978880920a57b" ]
+    [ "trabalho1 copy", "dir_48112f01ab3630dba3ca95e4c2afa947.html", "dir_48112f01ab3630dba3ca95e4c2afa947" ]
 ];
