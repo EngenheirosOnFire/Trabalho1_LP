@@ -1,7 +1,0 @@
-1;Antonio;Astra
-2;Jose;Focus
-3;Alexandre;Mercedes
-4;Ellon;Tesla
-6;Carlos;punto
-7;Pinto;fiat
-8;Bruno;Alfa
