@@ -20,10 +20,10 @@ typedef struct infoPiloto
     int num;
     ///Esta variavel guarda o nome do piloto
     ///@note Foi dado aos vetores nome e carro tamanho 50 para assim ser possivel colocar qualquer tamanho de nomes nos mesmos
-    char nome[50];
+    char nome[15];
     ///Esta variavel guarda o carro do piloto
     ///@note Foi dado aos vetores nome e carro tamanho 50 para assim ser possivel colocar qualquer tamanho de nomes nos mesmos
-    char carro[50];
+    char carro[15];
 } PILOTO;
 
 ///Estrutura que guarda informações de toda a prova
@@ -206,17 +206,15 @@ void Etapas(int *n, char *nomeProva)
  * @param tempos ➔ Variável do tipo TEMPOS que é um apontador para o vetor tempos para assim ser possivel atribuir valores ao vetor tempos
  * @param nomeProva ➔ Variável do tipo char que é um apontador para o vetor nomeProva que contém o nome da prova a abrir
  * @param f ➔ Variável do tipo ficheiro que é um apontador
- * @param res ➔ Variável do tipo inteiro que guarda o valor devolvido pela função fsanf
  * @param i ➔ Variável do tipo inteiro que vai efetuar a contagem dos ciclos do while
  * @param prova ➔ Variável que vai receber o caminho do ficheiro tempos.txt
  * @see infoTempos
-
  */
 void loadTempos(TEMPOS *tempos, char *nomeProva)
 {
 
     FILE *f;
-    int res, i = 0;
+    int i = 0;
     char prova[30];
     strcpy(prova, nomeProva);
     strcat(prova, "/tempos.txt");
@@ -225,9 +223,9 @@ void loadTempos(TEMPOS *tempos, char *nomeProva)
     {
         fseek(f, sizeof(int), SEEK_SET); //saltar a primeira linha a frente
         //enquanto tiver o que ler, vai ler
-        while (res != EOF)
+        while (!feof(f))
         {
-            res = fscanf(f, "%d;%[^;];%[^;];%d\n", &tempos[i].num, tempos[i].etapaI, tempos[i].etapaF, &tempos[i].tempo);
+            fscanf(f, "%d;%[^;];%[^;];%d\n", &tempos[i].num, tempos[i].etapaI, tempos[i].etapaF, &tempos[i].tempo);
             i++;
         }
         fclose(f);
@@ -247,7 +245,6 @@ void loadTempos(TEMPOS *tempos, char *nomeProva)
  * @brief Esta função efetua a abertura do ficheiro distancias.txt e efetua um ciclo while que percorre o ficheiro todo e guarda os valores no vetor distancias
  * @param distancias ➔ Variável do tipo DISTANCIAS que é um apontador que recebe o vetor distancia para serem colocados os valores no mesmo
  * @param nomeProva ➔ Variável do tipo char que contém o nome da prova a abrir
- * @param res ➔ Variável do tipo inteiro que guarda o valor devolvido pela função fscanf
  * @param i ➔ Variável do tipo inteiro que conta o número de ciclos que o ciclo while usa, esta variável é utilizada para saber a posição do vetor colocar a informação lida
  * @param prova ➔ Variável do tipo char que recebe o caminho para o ficheiro distancias.txt que é depois utilizada na função fopen
  * @param f ➔ Variável do tipo FILE que é um apontador e mais tarde vai ser atribuído a função fopen
@@ -256,7 +253,7 @@ void loadTempos(TEMPOS *tempos, char *nomeProva)
 void loadDistancias(DISTANCIAS *distancias, char *nomeProva)
 {
     FILE *f;
-    int res, i = 0;
+    int i = 0;
     char prova[30];
     strcpy(prova, nomeProva);
     strcat(prova, "/distancias.txt");
@@ -264,9 +261,9 @@ void loadDistancias(DISTANCIAS *distancias, char *nomeProva)
     if (f = fopen(prova, "r"))
     {
         //enquanto tiver o que ler, vai ler
-        while (res != EOF)
+        while (!feof(f))
         {
-            res = fscanf(f, "%[^;];%[^;];%f\n", distancias[i].etapaI, distancias[i].etapaF, &distancias[i].distancia);
+            fscanf(f, "%[^;];%[^;];%f\n", distancias[i].etapaI, distancias[i].etapaF, &distancias[i].distancia);
             i++;
         }
         fclose(f);
@@ -286,7 +283,6 @@ void loadDistancias(DISTANCIAS *distancias, char *nomeProva)
 * @brief Esta função efetua a abertura do ficheiro pilotos.txt e efetua um ciclo while que percorre o ficheiro todo e guarda os valores no vetor pilotos
 * @param piloto ➔ Variável do tipo PILOTO que é um apontador que recebe o vetor pilotos para serem colocador as informações dos pilotos no mesmo
 * @param nomeProva ➔ Variável do tipo char que contém o nome da prova a abrir
-* @param res ➔ Variável do tipo inteiro que guarda o valor devolvido pela função fscanf
 * @param i ➔ Variável do tipo inteiro que conta o número de ciclos que o ciclo while usa, esta variável é utilizada para saber a posição do vetor colocar a informação lida
 * @param prova ➔ Variável do tipo char que recebe o caminho para o ficheiro distancias.txt que é depois utilizada na função fopen
 * @param f ➔ Variável do tipo FILE que é um apontador e mais tarde vai ser atribuído a função fopen
@@ -295,7 +291,7 @@ void loadDistancias(DISTANCIAS *distancias, char *nomeProva)
 void loadPilotos(PILOTO *piloto, char *nomeProva)
 {
     FILE *f;
-    int res, i = 0;
+    int i = 0;
     char prova[30];
     strcpy(prova, nomeProva);
     strcat(prova, "/pilotos.txt");
@@ -303,9 +299,9 @@ void loadPilotos(PILOTO *piloto, char *nomeProva)
     if (f = fopen(prova, "r"))
     {
         //enquanto tiver o que ler, vai ler
-        while (res != EOF)
+        while (!feof(f))
         {
-            res = fscanf(f, "%d;%[^;];%[^\n]\n", &piloto[i].num, piloto[i].nome, piloto[i].carro);
+            fscanf(f, "%d;%[^;];%[^\n]\n", &piloto[i].num, piloto[i].nome, piloto[i].carro);
             i++;
         }
         fclose(f);
@@ -388,7 +384,7 @@ void loadProva(PROVA *prova, TEMPOS *tempos, PILOTO *piloto, int nTotal, int nPi
 int nPilotosCount(char *nomeProva)
 {
     FILE *f;
-    int contador = 1; //pois sempre irá existir pelomenos um piloto
+    int contador = 0;
     char c;
     char prova[30];
     strcpy(prova, nomeProva);
@@ -598,11 +594,8 @@ void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados)
  */
 void medTemposEtapa(TEMPOS *tempos, ETAPAS *etapas, int n, int *aprovados, int *medTempos, int nAprovados, int nEtapas)
 {
-    double soma[nEtapas], media[nEtapas];
-    for (int i = 0; i <= nEtapas; i++)
-    {
-        soma[i] = 0;
-    }
+    long int soma[nEtapas] = {0}, media[nEtapas];
+
     //verificar o vetor tempos por completo
     for (int t = 0; t <= n; t++)
     {
@@ -644,7 +637,7 @@ void medTemposEtapa(TEMPOS *tempos, ETAPAS *etapas, int n, int *aprovados, int *
  * o maior e menor tempos lidos até ao momento
  * @brief Após as variáveis obterem valores para comparar é realizado um ciclo for que percorre todo o vetor prova e verifica se o piloto
  * foi aprovado e se o tempo lido é menor ou se é maior que o menor e maior tempos lidos, caso sejam os valores são alterados para os atuais
- * , e os números dos pilotos são guardados também, para assim ser possível verificar as informações dos pilotos fora da função
+ * , e as posições são guardadas também, para assim ser possível verificar as informações dos pilotos fora da função
  * @brief Após se obter o maior e menor tempos, os números desses pilotos são guardados no vetor temposExtremos pois é um apontador e assim é possível
  * aceder a estes valores externamente pois se está a alterar um vetor externo
  * @param prova ➔ Apontador do tipo PROVA que recebe o vetor prova
@@ -652,19 +645,24 @@ void medTemposEtapa(TEMPOS *tempos, ETAPAS *etapas, int n, int *aprovados, int *
  * @param temposExtremos ➔ Apontador do tipo inteiro que recebe o vetor numExtremos no qual se vai colocar o número dos pilotos
  * @param menor ➔ Variável do tipo inteiro que vai guardar o menor tempo lido
  * @param maior ➔ Variável do tipo inteiro que vai guardar o menor tempo lido
- * @param menorNum ➔ Variável do tipo inteiro que vai receber o número do piloto com o menor tempo registado
- * @param maiorNum ➔ Variável do tipo inteiro que vai recber o número do piltoos com o maior tempo registado
+ * @param menorNum ➔ Variável do tipo inteiro que vai receber a posição no vetor do piloto com o menor tempo registado
+ * @param maiorNum ➔ Variável do tipo inteiro que vai receber a posição no vetor do piloto com o maior tempo registado
  * @see infoProva
  */
 void extremos(PROVA *prova, int nPilotos, int *tempoExtremos)
 {
-    int menor = prova[0].tempoProva, maior = prova[0].tempoProva, menorNum = 0, maiorNum = 0;
+    long int menor = 0, maior = 0, menorNum = 0, maiorNum = 0;
     //percorrer o vetor prova todo
-    for (int i = 0; i <= nPilotos; i++)
+    for (int i = 0, a = 0; i <= nPilotos; i++)
     {
         //verificar se é um piloto aprovado
         if (prova[i].aprovado == 1)
         {
+            if (a == 0)
+            {
+                menor = prova[i].tempoProva;
+                maior = prova[i].tempoProva;
+            }
             //verficar se é maior ou menor que o menor ou maior tempo registado
             //guardar o local do vetor onde fica o menor e o maior
             if (prova[i].tempoProva < menor)
@@ -677,6 +675,7 @@ void extremos(PROVA *prova, int nPilotos, int *tempoExtremos)
                 maior = prova[i].tempoProva;
                 maiorNum = i;
             }
+            a++;
         }
     }
 
@@ -712,19 +711,24 @@ void extremos(PROVA *prova, int nPilotos, int *tempoExtremos)
  */
 void menorTempo(TEMPOS *tempos, ETAPAS *etapas, int nTotal, int maior, int nEtapas)
 {
-    int tempoMin[nEtapas], menorTempoMin;
+
+    long int tempoMin[nEtapas], menorTempoMin;
     double menores[nEtapas], totalTempo = 0, tempoSec[nEtapas], menorTempoSec;
 
     for (int i = 0; i < nEtapas; i++)
     {
         menores[i] = maior;
     }
+
     for (int i = 0; i < nTotal; i++)
     {
+
         for (int j = 0; j < nEtapas; j++)
         {
             if (strcmp(tempos[i].etapaI, etapas[j].etapaNome) == 0 && tempos[i].tempo < menores[j])
+            {
                 menores[j] = tempos[i].tempo;
+            }
         }
     }
     //vamos transformar o tempo em minutos
@@ -774,7 +778,7 @@ void menorTempo(TEMPOS *tempos, ETAPAS *etapas, int nTotal, int maior, int nEtap
  */
 void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int *medTempos)
 {
-    float dEtapas[nEtapas], medias[nEtapas], tempo[nEtapas], totalDist, totalTempo;
+    float dEtapas[nEtapas], medias[nEtapas], totalDist, tempo[nEtapas], totalTempo;
 
     //verificar todas as distancias e guardar em vetor relembrando que o ficheiro estará organizado
     for (int i = 0; i < nEtapas; i++)
@@ -914,8 +918,8 @@ void tabelaClassificativa(PROVA *prova, int nPilotos, char *nomeProva)
             {
                 a++;
                 //apenas colocar os ultimos valores a zeros
-                printf("\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %3d:%.3f   |\t0\t |\t0\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
-                fprintf(fp, "\n|\t%d\t|\t%d\t|%10s\t|%10s\t|    %3d:%.3f   |\t0\t |\t0\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
+                printf("\n|\t%d\t|\t%d\t|%15s|%15s|   %3d:%.3f   |\t0\t |\t0\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
+                fprintf(fp, "\n|\t%d\t|\t%d\t|%15s|%15s|   %3d:%.3f   |\t0\t |\t0\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
                 //guardar o tempo do lider em ms
                 tempoLdr = prova[i].tempoProva;
             }
@@ -938,8 +942,8 @@ void tabelaClassificativa(PROVA *prova, int nPilotos, char *nomeProva)
                     diAnt = ((float)diTempoAnt / (float)1000);
                 a++;
                 //mostrar as informações do piloto
-                printf("\n|\t%d\t|\t%d\t|%10s\t|%10s\t|   %3d:%6.3f   |     %.3f\t |    %.3f\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
-                fprintf(fp, "\n|\t%d\t|\t%d\t|%10s\t|%10s\t|   %3d:%6.3f   |     %.3f\t |    %.3f\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
+                printf("\n|\t%d\t|\t%d\t|%15s|%15s|   %3d:%6.3f   |     %.3f\t |    %.3f\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
+                fprintf(fp, "\n|\t%d\t|\t%d\t|%15s|%15s|   %3d:%6.3f   |     %.3f\t |    %.3f\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
             }
         }
     }
@@ -949,8 +953,8 @@ void tabelaClassificativa(PROVA *prova, int nPilotos, char *nomeProva)
         if (prova[i].aprovado == 0)
         {
             //informações dos pilotos que não fizeram a prova por completo
-            printf("\n|\t-\t|\t%d\t| %10s\t| %10s\t|\t-\t |\t-\t |\t-\t|", prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro);
-            fprintf(fp, "\n|\t-\t|\t%d\t| %10s\t| %10s\t|\t-\t |\t-\t |\t-\t|", prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro);
+            printf("\n|\t-\t|\t%d\t|%15s|%15s|\t-\t |\t-\t |\t-\t|", prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro);
+            fprintf(fp, "\n|\t-\t|\t%d\t|%15s|%15s|\t-\t |\t-\t |\t-\t|", prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro);
         }
     }
 
