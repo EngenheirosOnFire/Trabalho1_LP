@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['tabelaclassificativa_33',['tabelaClassificativa',['../main2_8cpp.html#aa96cbd544871901e5bdb2074659604df',1,'main2.cpp']]],
-  ['tempo_34',['tempo',['../structinfotempos.html#aa790fe2ec26cca04c28844add558d5c0',1,'infotempos']]],
-  ['tempoprova_35',['tempoProva',['../structinfo_prova.html#a17bc348bf432cff16f3eb5c380309986',1,'infoProva']]],
-  ['tempos_36',['TEMPOS',['../main2_8cpp.html#aff1fa2c181f7d799fa64a7d66476877a',1,'main2.cpp']]]
+  ['piloto_32',['piloto',['../structinfo_prova.html#aa22ee592bfd6f1cc0850073144acc112',1,'infoProva::piloto()'],['../structs_8c.html#ad06ca42a0be2597137e7e442dfa34ff4',1,'PILOTO():&#160;structs.c']]],
+  ['prova_33',['PROVA',['../structs_8c.html#a8759ee9bfca75f424488e7bb08628905',1,'structs.c']]]
 ];

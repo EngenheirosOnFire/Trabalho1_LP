@@ -4,5 +4,5 @@ var annotated_dup =
     [ "infoEtapas", "structinfo_etapas.html", "structinfo_etapas" ],
     [ "infoPiloto", "structinfo_piloto.html", "structinfo_piloto" ],
     [ "infoProva", "structinfo_prova.html", "structinfo_prova" ],
-    [ "infotempos", "structinfotempos.html", "structinfotempos" ]
+    [ "infoTempos", "structinfo_tempos.html", "structinfo_tempos" ]
 ];

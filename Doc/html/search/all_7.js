@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['main_22',['main',['../main2_8cpp.html#acdef7a1fd863a6d3770c1268cb06add3',1,'main2.cpp']]],
-  ['main2_2ecpp_23',['main2.cpp',['../main2_8cpp.html',1,'']]],
-  ['medtemposetapa_24',['medTemposEtapa',['../main2_8cpp.html#a64691a297ebc3593148b46290127ad4b',1,'main2.cpp']]],
-  ['menortempo_25',['menorTempo',['../main2_8cpp.html#a2536759cdfffffe23656b158143aadb0',1,'main2.cpp']]],
-  ['menu_26',['menu',['../main2_8cpp.html#ab441533a34b161fcf0834cfabe0f6ea4',1,'main2.cpp']]]
+  ['loaddistancias_17',['loadDistancias',['../funcoes_8c.html#a12db14e2f0778c91fa21a280af8b2070',1,'funcoes.c']]],
+  ['loadpilotos_18',['loadPilotos',['../funcoes_8c.html#ac3dcd52954b7bd37e5c8e42ea92749c7',1,'funcoes.c']]],
+  ['loadprova_19',['loadProva',['../funcoes_8c.html#a92880efb5dd797bc27416fcd1ddc3748',1,'funcoes.c']]],
+  ['loadtempos_20',['loadTempos',['../funcoes_8c.html#a156020999ed2ba2da99e2942d81424b2',1,'funcoes.c']]],
+  ['loadtudo_21',['loadTudo',['../funcoes_8c.html#ac3f10cb200f7de698674fe7a82b11a0a',1,'funcoes.c']]],
+  ['loadverificaprova_22',['loadVerificaProva',['../funcoes_8c.html#a0d8cf881cb975028ef130972362714d3',1,'funcoes.c']]]
 ];

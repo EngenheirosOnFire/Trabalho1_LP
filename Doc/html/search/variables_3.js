@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['etapaf_66',['etapaF',['../structinfotempos.html#a6e9e5e3a44fc774d57d1d019bab98f67',1,'infotempos::etapaF()'],['../structinfo_distancias.html#a720bbb6d5b284bc39c758240b851b886',1,'infoDistancias::etapaF()']]],
-  ['etapai_67',['etapaI',['../structinfotempos.html#a0b27f41ed3f384bbba3ff285d022f543',1,'infotempos::etapaI()'],['../structinfo_distancias.html#a3712416fa3e59c9bf8d7da58c22204b2',1,'infoDistancias::etapaI()']]],
-  ['etapanome_68',['etapaNome',['../structinfo_etapas.html#a11cf94d99c651ba0b56ac625bb416df8',1,'infoEtapas']]]
+  ['etapaf_70',['etapaF',['../structinfo_tempos.html#a34187743ba903585cdace40c94d3913c',1,'infoTempos::etapaF()'],['../structinfo_distancias.html#a720bbb6d5b284bc39c758240b851b886',1,'infoDistancias::etapaF()']]],
+  ['etapai_71',['etapaI',['../structinfo_tempos.html#a7a36200a41ab3a3ab05cf04be53f6a2e',1,'infoTempos::etapaI()'],['../structinfo_distancias.html#a3712416fa3e59c9bf8d7da58c22204b2',1,'infoDistancias::etapaI()']]],
+  ['etapanome_72',['etapaNome',['../structinfo_etapas.html#a11cf94d99c651ba0b56ac625bb416df8',1,'infoEtapas']]]
 ];
