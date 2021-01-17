@@ -473,7 +473,7 @@ void ordenaTemposDesc(PROVA *prova, int nPilotos, int aprovados)
         tempoMin = (provaOrdenado[i].tempoProva / 1000) / 60;
         //transformar o tempo em segundos e milésimos
         tempoSec = ((float)provaOrdenado[i].tempoProva / (float)1000) - (tempoMin * 60);
-        printf("\nNumero: %d\t| Nome: %s\t| Carro: %s\t| tempo: %d:%.3f", provaOrdenado[i].piloto.num, provaOrdenado[i].piloto.nome, provaOrdenado[i].piloto.carro, tempoMin, tempoSec);
+        printf("\nNumero: %d\t| Nome: %15s | Carro: %15s | tempo: %d:%.3f", provaOrdenado[i].piloto.num, provaOrdenado[i].piloto.nome, provaOrdenado[i].piloto.carro, tempoMin, tempoSec);
     }
 }
 
@@ -827,8 +827,8 @@ void tabelaClassificativa(PROVA *prova, int nPilotos, char *nomeProva)
             {
                 a++;
                 //apenas colocar os ultimos valores a zeros
-                printf("\n|\t%d\t|\t%d\t|%15s|%15s|   %3d:%.3f   |\t0\t |\t0\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
-                fprintf(fp, "\n|\t%d\t|\t%d\t|%15s|%15s|   %3d:%.3f   |\t0\t |\t0\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
+                printf("\n|\t%d\t|\t%d\t|%15s|%15s|   %3d:%6.3f   |\t0\t |\t0\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
+                fprintf(fp, "\n|\t%d\t|\t%d\t|%15s|%15s|   %3d:%6.3f   |\t0\t |\t0\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec);
                 //guardar o tempo do lider em ms
                 tempoLdr = prova[i].tempoProva;
             }
@@ -851,8 +851,8 @@ void tabelaClassificativa(PROVA *prova, int nPilotos, char *nomeProva)
                     diAnt = ((float)diTempoAnt / (float)1000);
                 a++;
                 //mostrar as informações do piloto
-                printf("\n|\t%d\t|\t%d\t|%15s|%15s|   %3d:%6.3f   |     %.3f\t |    %.3f\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
-                fprintf(fp, "\n|\t%d\t|\t%d\t|%15s|%15s|   %3d:%6.3f   |     %.3f\t |    %.3f\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
+                printf("\n|\t%d\t|\t%d\t|%15s|%15s|   %3d:%6.3f   |     %6.3f\t |    %6.3f\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
+                fprintf(fp, "\n|\t%d\t|\t%d\t|%15s|%15s|   %3d:%6.3f   |     %6.3f\t |    %6.3f\t|", a, prova[i].piloto.num, prova[i].piloto.nome, prova[i].piloto.carro, tempoMin, tempoSec, diAnt, diLdr);
             }
         }
     }
