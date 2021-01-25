@@ -23,7 +23,7 @@ void arrumarVetor(DISTANCIAS *distancias, int nEtapas)
     char auxEtapaI[3], auxEtapaF[3];
     for (int i = 0; i < nEtapas; i++)
     {
-        if (i != 0 && strcmp(distancias[i].etapaI, "P") == 0)
+        if (i != 0 && stricmp(distancias[i].etapaI, "P") == 0)
         {
             auxDist = distancias[i].distancia;
             strcpy(auxEtapaI, distancias[i].etapaI);
@@ -514,7 +514,7 @@ void medTemposEtapa(TEMPOS *tempos, ETAPAS *etapas, int n, int *aprovados, int *
             if (tempos[t].num == aprovados[j])
             {
 
-                if ((strcmp(tempos[t].etapaI, "P") == 0))
+                if ((stricmp(tempos[t].etapaI, "P") == 0))
                 {
                     soma[0] += tempos[t].tempo;
                 }
@@ -522,7 +522,7 @@ void medTemposEtapa(TEMPOS *tempos, ETAPAS *etapas, int n, int *aprovados, int *
                 {
                     for (int h = 0; h <= nEtapas; h++)
                     {
-                        if ((strcmp(tempos[t].etapaI, etapas[h].etapaNome) == 0))
+                        if ((stricmp(tempos[t].etapaI, etapas[h].etapaNome) == 0))
                         {
 
                             soma[h] += tempos[t].tempo;
@@ -634,7 +634,7 @@ void menorTempo(TEMPOS *tempos, ETAPAS *etapas, int nTotal, int maior, int nEtap
 
         for (int j = 0; j < nEtapas; j++)
         {
-            if (strcmp(tempos[i].etapaI, etapas[j].etapaNome) == 0 && tempos[i].tempo < menores[j])
+            if (stricmp(tempos[i].etapaI, etapas[j].etapaNome) == 0 && tempos[i].tempo < menores[j])
             {
                 menores[j] = tempos[i].tempo;
             }
@@ -694,7 +694,7 @@ void velocidadesMedias(DISTANCIAS *distancias, ETAPAS *etapas, int nEtapas, int 
     {
         for (int j = 0; j < nEtapas; j++)
         {
-            if (strcmp(distancias[i].etapaI, etapas[j].etapaNome) == 0)
+            if (stricmp(distancias[i].etapaI, etapas[j].etapaNome) == 0)
             {
                 dEtapas[j] = distancias[i].distancia;
                 totalDist += distancias[i].distancia;
